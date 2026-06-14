@@ -1,0 +1,305 @@
+[
+    {
+        "typeKtaTTA": [
+            {
+                "code": "A1",
+                "name": "Perkakas atau peralatan rusak atau tidak sesuai",
+                "type": "KTA"
+            },
+            {
+                "code": "A2",
+                "name": "Sistem atau alat pengamanan atau pelindung mesin tidak lengkap",
+                "type": "KTA"
+            },
+            {
+                "code": "A3",
+                "name": "Peringatan atau rambu tidak lengkap",
+                "type": "KTA"
+            },
+            {
+                "code": "A4",
+                "name": "Housekeeping tidak baik",
+                "type": "KTA"
+            },
+            {
+                "code": "A5",
+                "name": "Batu menggantung tidak digugurkan",
+                "type": "KTA"
+            },
+            {
+                "code": "A6",
+                "name": "Kebisingan tinggi",
+                "type": "KTA"
+            },
+            {
+                "code": "A7",
+                "name": "Temperatur rendah atau tinggi",
+                "type": "KTA"
+            },
+            {
+                "code": "A8",
+                "name": "Ventilasi tidak memadai",
+                "type": "KTA"
+            },
+            {
+                "code": "A9",
+                "name": "Berdebu",
+                "type": "KTA"
+            },
+            {
+                "code": "A10",
+                "name": "Penerangan kurang",
+                "type": "KTA"
+            },
+            {
+                "code": "A11",
+                "name": "Lereng kritis",
+                "type": "KTA"
+            },
+            {
+                "code": "A12",
+                "name": "Tali keselamatan tidak sesuai",
+                "type": "KTA"
+            },
+            {
+                "code": "A13",
+                "name": "Bagian benda kerja atau material yang tajam",
+                "type": "KTA"
+            },
+            {
+                "code": "A14",
+                "name": "Kebakaran dan peledakan",
+                "type": "KTA"
+            },
+            {
+                "code": "A15",
+                "name": "Sistem Drainage tidak baik",
+                "type": "KTA"
+            },
+            {
+                "code": "A16",
+                "name": "Arus dan Angin kencang",
+                "type": "KTA"
+            },
+            {
+                "code": "A17",
+                "name": "Alat atau system pengaman yang tidak lengkap",
+                "type": "KTA"
+            },
+            {
+                "code": "A18",
+                "name": "Penyangga tidak memadai",
+                "type": "KTA"
+            },
+            {
+                "code": "A19",
+                "name": "Permukaan tidak rata atau berlubang",
+                "type": "KTA"
+            },
+            {
+                "code": "A20",
+                "name": "Ruang kerja yang terbatas",
+                "type": "KTA"
+            },
+            {
+                "code": "A21",
+                "name": "Pohon yang mengganggu/rebah",
+                "type": "KTA"
+            },
+            {
+                "code": "A22",
+                "name": "Kondisi overheat",
+                "type": "KTA"
+            },
+            {
+                "code": "A23",
+                "name": "Tidak adanya akses perlintasan orang yang aman",
+                "type": "KTA"
+            },
+            {
+                "code": "A24",
+                "name": "Kondisi jalan licin",
+                "type": "KTA"
+            },
+            {
+                "code": "A25",
+                "name": "Tumpukan barang yang tidak aman",
+                "type": "KTA"
+            },
+            {
+                "code": "A26",
+                "name": "Hujan/Cuaca",
+                "type": "KTA"
+            },
+            {
+                "code": "A27",
+                "name": "Sump melebar/meluap",
+                "type": "KTA"
+            },
+            {
+                "code": "A28",
+                "name": "Kondisi geologi",
+                "type": "KTA"
+            },
+            {
+                "code": "A29",
+                "name": "Unit parkir di area berbahaya",
+                "type": "KTA"
+            },
+            {
+                "code": "A30",
+                "name": "Komunikasi yang terganggu",
+                "type": "KTA"
+            },
+            {
+                "code": "A31",
+                "name": "Jalan tidak memadai (blind spot, grade, median, dll)",
+                "type": "KTA"
+            },
+            {
+                "code": "A32",
+                "name": "Rambu-rambu tidak tersedia/kondisi rusak",
+                "type": "KTA"
+            },
+            {
+                "code": "A33",
+                "name": "Not Applicable",
+                "type": "KTA"
+            },
+            {
+                "code": "B1",
+                "name": "Mengoperasikan alat tanpa izin",
+                "type": "TTA"
+            },
+            {
+                "code": "B2",
+                "name": "Mengoperasikan alat melebihi batas kecepatan",
+                "type": "TTA"
+            },
+            {
+                "code": "B3",
+                "name": "Menggunakan alat yang tidak lengkap",
+                "type": "TTA"
+            },
+            {
+                "code": "B4",
+                "name": "Menggunakan alat yang rusak",
+                "type": "TTA"
+            },
+            {
+                "code": "B5",
+                "name": "Tidak memakai APD",
+                "type": "TTA"
+            },
+            {
+                "code": "B6",
+                "name": "Merokok di tempat terlarang",
+                "type": "TTA"
+            },
+            {
+                "code": "B7",
+                "name": "Membuat peralatan keselamatan tidak berfungsi",
+                "type": "TTA"
+            },
+            {
+                "code": "B8",
+                "name": "Tidak memasang alat pelindung",
+                "type": "TTA"
+            },
+            {
+                "code": "B9",
+                "name": "Bekerja dengan posisi tidak benar",
+                "type": "TTA"
+            },
+            {
+                "code": "B10",
+                "name": "Bekerja di bawah alkohol",
+                "type": "TTA"
+            },
+            {
+                "code": "B11",
+                "name": "Melayani mesin yang sedang bergerak",
+                "type": "TTA"
+            },
+            {
+                "code": "B12",
+                "name": "Menggunakan alat dengan tidak tepat",
+                "type": "TTA"
+            },
+            {
+                "code": "B13",
+                "name": "Terlalu menforsir tenaga",
+                "type": "TTA"
+            },
+            {
+                "code": "B14",
+                "name": "Bercanda sambil bekerja",
+                "type": "TTA"
+            },
+            {
+                "code": "B15",
+                "name": "Berjalan meniti pipa tanpa alat keselamatan yang sesuai",
+                "type": "TTA"
+            },
+            {
+                "code": "B16",
+                "name": "Tidak mengikuti prosedur kerja",
+                "type": "TTA"
+            },
+            {
+                "code": "B17",
+                "name": "Mengabaikan perintah/peraturan/larangan",
+                "type": "TTA"
+            },
+            {
+                "code": "B18",
+                "name": "Bekerja dengan kondisi mengantuk (fatigue)",
+                "type": "TTA"
+            },
+            {
+                "code": "B19",
+                "name": "Memposisikan sebagian tubuh ke titik jepit",
+                "type": "TTA"
+            },
+            {
+                "code": "B20",
+                "name": "Melakukan pekerjaan pada area kritis",
+                "type": "TTA"
+            },
+            {
+                "code": "B21",
+                "name": "Mengendarai unit beriringan",
+                "type": "TTA"
+            },
+            {
+                "code": "B22",
+                "name": "Not Applicable",
+                "type": "TTA"
+            }
+        ]
+    },
+    {
+        "potency": [
+            {
+                "code": "C",
+                "name": "Risiko Mayor"
+            },
+            {
+                "code": "H",
+                "name": "Risiko Tinggi"
+            },
+            {
+                "code": "M",
+                "name": "Risiko Menengah"
+            },
+            {
+                "code": "L",
+                "name": "Risiko Rendah"
+            },
+            {
+                "code": "NA",
+                "name": "Not Applicable"
+            }
+        ]
+    }
+]

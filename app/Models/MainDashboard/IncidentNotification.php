@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models\MainDashboard;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+/**
+ * @mixin IdeHelperIncidentNotification
+ */
+class IncidentNotification extends Model
+{
+    use HasUuids, SoftDeletes;
+    protected $table = "dashboard_incident_notification";
+    protected $fillable = [
+        'user_id',
+        'slug',
+        'date',
+        'case',
+        'category',
+        'description',
+        'visible',
+        'attc',
+        'url'
+    ];
+
+    protected $hidden = [
+        'user_id',
+    ];
+}

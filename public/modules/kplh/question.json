@@ -1,0 +1,4422 @@
+{
+    "food-hygiene": [
+        {
+            "category_order": "A",
+            "category_name": "BANGUNAN",
+            "data": [
+                {
+                    "criteria": "building_criteria_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Bangunan atau ruangan tempat pengolahan makanan harus dilengkapi dengan ventilasi yang memadai. Pada dapur dilengkapi dengan ventilasi alat pembuangan asap, penangkap asap, dan cerobong asap"
+                },
+                {
+                    "criteria": "building_criteria_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan pendingin ruangan seperti AC, kipas angin, atau exhauster serta jendela yang dapat berfungsi dengan baik sehingga pekerja dapat bekerja tanpa berkeringat. Merawat pendingin ruangan secara berkala sehingga tidak mengumpulkan debu"
+                },
+                {
+                    "criteria": "building_criteria_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan penerangan yang memadai untuk dapat melakukan pemeriksaan dan pembersihan serta melakukan pekerjaan-pekerjaan secara efektif"
+                },
+                {
+                    "criteria": "building_criteria_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan penangkap lemak (grease trap) pada pembuangan air kotor sebelum dialirkan ke penampungan air kotor (septic tank) atau tempat pembuangan lainnya"
+                },
+                {
+                    "criteria": "building_criteria_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Pembuangan air kotor/ limbah tidak menimbulkan sarang serangga, jalan masuk tikus, dan dipelihara kebersihannya"
+                },
+                {
+                    "criteria": "building_criteria_6",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Ruang pengolahan makanan tidak boleh berhubungan langsung dengan toilet/ jamban, peturasan dan kamar mandi"
+                },
+                {
+                    "criteria": "building_criteria_7",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Bidang langit-langit harus menutupi seluruh atap bangunan"
+                },
+                {
+                    "criteria": "building_criteria_8",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Pintu ruang pengolahan makanan dilengkapi peralatan anti serangga/lalat seperti kassa, tirai, pintu perangkap dan lain-lain yang dapat dibuka dan dipasang untuk dibersihkan"
+                },
+                {
+                    "criteria": "building_criteria_9",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Fasilitas pencucian peralatan dan bahan makanan dari bahan yang kuat, permukaan halus dan mudah dibersihkan"
+                },
+                {
+                    "criteria": "building_criteria_10",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tersedia petugas khusus bagian tehnik pemeliharaan / perbaikan dan pembersihan dan bukan merupakan penjamah makanan. Dapur tidak dijadikan tempat untuk tidur, tempat cuci pakaian, jemur pakaian, gantung pakaian."
+                },
+                {
+                    "criteria": "building_criteria_11",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan kotak P3K di dapur (khususnya untuk luka bakar dan terpotong). Melakukan inspeksi sekurang-kurangnya sekali sebulan untuk memastikan ketersediaan dan kecukupannya"
+                }
+            ]
+        },
+        {
+            "category_order": "B",
+            "category_name": "FASILITAS SANITASI",
+            "data": [
+                {
+                    "criteria": "sanitation_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan tempat sampah yang cukup dan diberi tutup, memisahkan jenis sampah organik dan non-organik, serta diberi kantong plastik untuk menampung sampah tanpa mengotori tempat sampah"
+                },
+                {
+                    "criteria": "sanitation_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memastikan tempat sampah dan area sekelilingnya bersih dan bebas dari serangga dan binatang lainnya"
+                },
+                {
+                    "criteria": "sanitation_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Membuang sampah dan membersihkan tempat sampah setiap hari. Jika memiliki tempat pembuangan sementara (TPS) sampah, maka TPS sampah terletak minimal 500 meter dari bangunan pengelolaan makanan, penyimpanan bahan dan perlengkapan"
+                },
+                {
+                    "criteria": "sanitation_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tersedia tempat cuci tangan yang terpisah dari tempat cuci peralatan maupun bahan makanan dilengkapi dengan air mengalir dan sabun, saluran pembuangan tertutup, bak penampungan air dan alat pengering"
+                },
+                {
+                    "criteria": "sanitation_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Halaman bersih, tidak ada tumpukan sampah, puing atau barang-barang tidak terpakai lainnya dan tidak ada genangan air"
+                },
+                {
+                    "criteria": "sanitation_6",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memiliki kamar mandi, jamban, dan peturasan yang cukup sesuai jumlah karyawan dan pintu selalu tertutup"
+                }
+            ]
+        },
+        {
+            "category_order": "C",
+            "category_name": "PERALATAN",
+            "data": [
+                {
+                    "criteria": "equipment_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Membersihkan dispenser air minum sekurang-kurangnya sekali seminggu khususnya ujung saluran air dispenser. Air yang tertampung dalam penadah dispenser dibuang setiap hari"
+                },
+                {
+                    "criteria": "equipment_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Setiap peralatan dibebashamakan dengan merendam selama 5 detik dengan air mendidih 800° C-1000° C"
+                },
+                {
+                    "criteria": "equipment_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memeriksa peralatan pengolahan (kompor, oven, tabung gas, dll.) dan fasilitas dapur bekerja dengan baik minimal 1 x perbulan"
+                },
+                {
+                    "criteria": "equipment_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Membersihkan lemari dingin (chiller dan freezer) dan memeriksa temperatur setiap hari. Untuk chiller antara 1° - 5° C dan freezer dibawah -100° C"
+                },
+                {
+                    "criteria": "equipment_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memastikan tidak terdapat lalat, kecoa, tikus dan binatang lainnya di ruang dapur, ruang makan, ruang bahan makanan, dan tempat peralatan"
+                },
+                {
+                    "criteria": "equipment_6",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Alat harus utuh, bentuk aman dan kebersihan alat harus bebas dari sisa makanan, lemak dan bahan pencuci."
+                },
+                {
+                    "criteria": "equipment_7",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Cara penyimpanan peralatan terlindung dari pencemaran, ruang penyimpanan tidak\n mudah berdebu, rak atau tempat penyimpanan bersih dan teratur, ruangan bebas dari lalat, kecoa, tikus dan hewan lainnya."
+                },
+                {
+                    "criteria": "equipment_8",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tempat penirisan dan lap pengering dijaga kebersihannya, bahan lap tidak menimbulkan noda / sisa benang, tempat penirisan bebas debu / endapan. Mencuci dan mengeringkan kain lap setiap hari"
+                }
+            ]
+        },
+        {
+            "category_order": "D",
+            "category_name": "PENGOLAH/PENJAMAH MAKANAN",
+            "data": [
+                {
+                    "criteria": "food_handler_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Melakukan pemeriksaan kesehatan pekerja penjamah makanan minimum 2 kali setahun dan melaporkan hasilnya kepada manajemen unit bisnis Adaro terkait"
+                },
+                {
+                    "criteria": "food_handler_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Pengelola/ penjamah makanan harus sehat dan tidak menderita penyakit menular dibuktikan dengan surat keterangan dokter/ hasil pemeriksaan kesehatan"
+                },
+                {
+                    "criteria": "food_handler_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Pekerja penjamah makanan harus memiliki pengetahuan mengenai sanitasi makanan (sertifikat kursus atau pelatihan)"
+                },
+                {
+                    "criteria": "food_handler_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Setiap hari memastikan petugas yang menangani makanan tidak dalam kondisi sakit, termasuk:\n                    ·         Infeksi kulit\n                    ·         Luka di permukaan kulit\n                    ·         Flu dan batuk\n                    ·         Diare dan muntah-muntah\n\n                    Petugas yang sakit dibebaskan sementara dari tugas menangani makanan"
+                },
+                {
+                    "criteria": "food_handler_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memastikan petugas dapur memakai penutup kepala, celemek dan masker/penutup mulut, mengenakan sarung tangan plastik sekali pakai, dan sepatu tertutup (bukan sandal terbuka atau tidak beralas kaki). Memastikan APD (alat pelindung diri) yang digunakan dalam keadaan bersih"
+                },
+                {
+                    "criteria": "food_handler_6",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Setiap petugas dapur memiliki APD (Alat Pelindung Diri) sendiri, APD tidak dipakai bersama, dan memiliki tempat penyimpanan APD yang layak"
+                },
+                {
+                    "criteria": "food_handler_7",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Melarang petugas dapur untuk merokok dan mengunyah permen karet atau lainnya selama bekerja"
+                },
+                {
+                    "criteria": "food_handler_8",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Melarang petugas dapur memakai anting, jam tangan, cincin atau perhiasan lainnya selama bekerja"
+                }
+            ]
+        },
+        {
+            "category_order": "E",
+            "category_name": "PENYIMPANAN BAHAN MAKANAN",
+            "data": [
+                {
+                    "criteria": "food_storage_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tempat penyimpanan bahan makanan harus terhindar dari kemungkinan kontaminasi baik oleh bakteri, serangga, tikus dan hewan lainnya maupun bahan berbahaya"
+                },
+                {
+                    "criteria": "food_storage_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Penyimpanan termasuk pada gudang kering dan gudang basah, harus memerhatikan prinsip First In First Out (FIFO) dan First Expired First Out (FEFO) yaitu bahan makanan yang disimpan terlebih dahulu dan yang mendekati masa kadaluarsa dimanfaatkan/digunakan lebih dahulu"
+                },
+                {
+                    "criteria": "food_storage_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tempat atau wadah penyimpanan harus sesuai dengan jenis bahan makanan contohnya bahan makanan yang cepat rusak disimpan dalam lemari pendingin dan bahan makanan kering disimpan ditempat yang kering dan tidak lembab"
+                },
+                {
+                    "criteria": "food_storage_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan tempat khusus penyimpanan bahan makanan basah dan makanan kering. Menjaga suhu tempat penyimpanan disesuaikan dengan jenis bahan makanan"
+                },
+                {
+                    "criteria": "food_storage_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menyediakan rak penyimpan dan meja penyiapan makanan dan bahan makanan yang terbuat dari stainless steel dan terlindungi dari cemaran/ debu. Rak atau meja kayu tidak diperbolehkan dengan alasan mudah tumbuh jamur, rayap, serta mikroorganisme lainnya"
+                }
+            ]
+        },
+        {
+            "category_order": "F",
+            "category_name": "PENGOLAH MAKANAN",
+            "data": [
+                {
+                    "criteria": "food_processers_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Peracikan bahan, persiapan bumbu, persiapan pengolahan dan prioritas dalam memasak harus dilakukan sesuai tahapan dan harus higienis dan semua bahan yang siap dimasak harus dicuci dengan air mengalir"
+                },
+                {
+                    "criteria": "food_processers_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Peralatan masak dan peralatan makan terbuat dari bahan selain kayu, kuat dan tidak melepas bahan beracun serta aman bagi kesehatan"
+                },
+                {
+                    "criteria": "food_processers_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Perlengkapan pengolahan seperti kompor, tabung gas, lampu, kipas angin harus bersih, kuat dan berfungsi dengan baik, tidak menjadi sumber pencemaran dan tidak menyebabkan sumber bencana (kecelakaan)"
+                },
+                {
+                    "criteria": "food_processers_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Wadah penyimpanan makanan yang digunakan harus mempunyai tutup yang dapat menutup sempurna dan dapat mengeluarkan udara panas dari makanan untuk mencegah pengembunan atau kontaminasi ulang, terpisah untuk setiap jenis makanan"
+                },
+                {
+                    "criteria": "food_processers_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Keadaan peralatan harus utuh, tidak cacat, tidak retak, tidak gompal dan mudah dibersihkan"
+                },
+                {
+                    "criteria": "food_processers_6",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Proses pencairan makanan beku dilakukan secara perlahan pada suhu 10°C sampai kekenyalan makanan jadi/matang menjadi normal kembali (thawing) atau dengan menggunakan mesin thawing."
+                },
+                {
+                    "criteria": "food_processers_7",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tidak menjamah makanan jadi / masak dengan tangan tetapi harus menggunakan alat seperti penjepit atau sendok yang selalu dicuci"
+                }
+            ]
+        },
+        {
+            "category_order": "G",
+            "category_name": "PENGANGKUTAN",
+            "data": [
+                {
+                    "criteria": "food_transport_1_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tidak bercampur dengan Bahan Berbahaya dan Beracun (B3)"
+                },
+                {
+                    "criteria": "food_transport_1_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Bahan makanan tidak boleh diinjak, dibanting, dan diduduki"
+                },
+                {
+                    "criteria": "food_transport_1_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Bahan makanan yang harus selalu dalam keadaan dingin, diangkut dengan menggunakan alat pendingin"
+                },
+                {
+                    "criteria": "food_transport_2_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Tidak bercampur dengan Bahan Berbahaya dan Beracun (B3)"
+                },
+                {
+                    "criteria": "food_transport_2_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Menggunakan kendaraan khusus pengangkut makanan jadi / masak dan harus selalu higienis"
+                },
+                {
+                    "criteria": "food_transport_2_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Setiap jenis makanan jadi mempunyai wadah masing-masing yang utuh, kuat, tidak karat dan ukurannya memadai dan bertutup"
+                }
+            ]
+        },
+        {
+            "category_order": "H",
+            "category_name": "PENCEGAHAN UMUM",
+            "data": [
+                {
+                    "criteria": "general_precautions_1",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Setiap menu makanan harus ada satu porsi sampel (contoh) makanan yang disimpan sebagai bank sampel"
+                },
+                {
+                    "criteria": "general_precautions_2",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Penempatan sampel makanan untuk setiap jenis makanan harus steril, disimpan dalam suhu 100°C selama minimal 1 x 24 jam"
+                },
+                {
+                    "criteria": "general_precautions_3",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Memiliki mekanisme / prosedur tanggap darurat food outbreak"
+                },
+                {
+                    "criteria": "general_precautions_4",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Melakukan pengujian kualitas air minum sekurang-kurangnya sekali dalam sebulan"
+                },
+                {
+                    "criteria": "general_precautions_5",
+                    "type": "option",
+                    "option": [
+                        0,
+                        5,
+                        10
+                    ],
+                    "question": "Melakukan pemeriksaan vektor penyakit di lingkungan kerja katering (termasuk mess di lokasi katering dan di luar katering)"
+                }
+            ]
+        }
+    ],
+    "workplace": [
+        {
+            "category_order": "A",
+            "category_name": "PERILAKU KARYAWAN SAAT BEKERJA",
+            "data": [
+                {
+                    "criteria": "workplace_a_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Apakah karyawan menggunakan Sepatu Safety, Helmet dan Kacamata Safety?"
+                },
+                {
+                    "criteria": "workplace_a_2",
+                    "question": "Apakah kondisi alat pelindung diri tersebut dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_3",
+                    "question": "Apakah karyawan yang sedang bekerja telah menggunakan Alat Pelindung Diri yang sesuai dengan resiko dan bahaya dalam pekerjaannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_4",
+                    "question": "Apakah posisi karyawan yang sedang bekerja tersebut, akan TIDAK mungkin (atau kecil sekali kemungkinanya) bagi dirinya untuk dapat terjepit, tertabrak, terkena, tertimpa, terjatuh atau tersandung oleh suatu benda?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_5",
+                    "question": "Apakah cara naik/turun yang dilakukan karyawan itu benar dan aman? Selalu berpegangan pada handrail? Menginjak anak tangga satu per satu? Tidak terburu-buru? Selalu menjaga tiga titik kontak saat naik/turun? Tidak membawa serta peralatan kerja/barang saat naik/turun?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_6",
+                    "question": "Apakah selama bekerja, karyawan selalu memperhatikan tangannya saat bekerja atau memperhatikan tempat saat menginjakkan kakinya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_7",
+                    "question": "Apakah penempatan material, perkakas kerja dan sampah itu dikumpulkan pada satu tempat yang terpisah? Tidak menghambat jalan? Tidak mempersempit lokasi kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_8",
+                    "question": "Apakah karyawan telah menggunakan peralatan/perkakas kerja dengan cara yang aman dan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_9",
+                    "question": "Apakah peralatan/perkakas kerja yang digunakan itu dalam kondisi baik? Tidak menggunakan peralatan kerja yang rusak? Pegangan dari peralatan kerja itu bersih? Bebas dari oli atau sejenisnya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_10",
+                    "question": "Apakah kerapihan dan kebersihan tempat kerja itu baik? Tidak menghambat jalan? Perkakas kerja tersimpan atau ditempatkan dengan rapi?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_11",
+                    "question": "Apakah sisa material yang dipakai itu telah disimpan dengan benar, aman dan tidak mengganggu?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_12",
+                    "question": "Apakah karyawan tidak mengindahkan rambu-rambu keselamatan kerja dan pita barikade?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_a_13",
+                    "question": "Apakah karyawan tidak bercanda saat bekerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "B",
+            "category_name": "KONDISI TEMPAT KERJA (WORKPLACE AMENITIES)",
+            "data": [
+                {
+                    "criteria": "workplace_b_1",
+                    "question": "Apakah jalan masuk dan keluar tempat kerja anda cukup aman dan memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_2",
+                    "question": "Apakah pencahayaan dan ventilasi tempat kerja anda cukup memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_3",
+                    "question": "Apakah tempat kerja telah dilengkapi dengan demarkasi area kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_4",
+                    "question": "Apakah demarkasi area kerja telah memenuhi persyaratan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_5",
+                    "question": "Apakah terdapat toilet? Dalam kondisi bersih dan tidak licin?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_6",
+                    "question": "Perbedaan tinggi rendah pada lantai kerja diberikan pagar atau sticker kuning-hitam ?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_b_7",
+                    "question": "Apakah kondisi kebersihan tempat kerja telah memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "C",
+            "category_name": "TABUNG GAS BERTEKANAN",
+            "data": [
+                {
+                    "criteria": "workplace_c_1",
+                    "question": "Apakah terdapat tabung gas bertekanan diposisikan berdiri dan terikat ?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_c_2",
+                    "question": "Tabung gas bertekanan disimpan dengan jarak yang aman? Oxygen dan acetylene ditempatkan minimal pada jarak 3 meter",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_c_3",
+                    "question": "Kondisi tabung gas bertekanan tidak korosif?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "D",
+            "category_name": "BEKERJA DI ATAS KETINGGIAN (WORKING AT HEIGHT)",
+            "data": [
+                {
+                    "criteria": "workplace_d_1",
+                    "question": " Apakah “Fullbody Harness” dan tali pengamannya telah diperiksa dan diregistrasi setiap bulannya oleh karyawan yang berkompeten?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_2",
+                    "question": "Apakah sudah dilakukan pemeriksaan terhadap ”Fullbody Harness” dan tali pengamannya sebelum digunakan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_3",
+                    "question": "Apakah “Fullbody Harness” dilengkapi dengan double lanyard?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_4",
+                    "question": "Ijin bekerja diketinggian untuk kegiatan bekerja di ketinggian 1.8m pada perancah atau 4 meter pada tangga.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_5",
+                    "question": "Pemeriksaan kesehatan dilakukan sebelum bekerja di ketinggian 15 meter",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_6",
+                    "question": "Apakah karyawan sudah pernah mengikuti pelatihan dalam menggunakannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_7",
+                    "question": "Apakah karyawan memiliki akses naik dan turun yang aman?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_8",
+                    "question": "Apakah area kerja di bawah orang yang bekerja di ketinggian itu telah dipasang barikade dengan benar??",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_d_9",
+                    "question": "Apakah karyawan menggunakan static line (digunakan bila tidak ada tempat untuk mengaitkan tali pengaman di atas kepalanya)? Apakah dalam kondisi baik? Sudah diinspeksi oleh karyawan yang kompeten? Mempunyai SWL yang memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "E",
+            "category_name": "PERANCAH (SCAFFOLD)",
+            "data": [
+                {
+                    "criteria": "workplace_e_1",
+                    "question": "Apakah pekerjaan pembuatan/pembongkaran perancah telah memiliki ijin kerja yang diperlukan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_e_2",
+                    "question": "Apakah perancah dibangun oleh karyawan sudah mengikuti pelatihan scaffold?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_e_3",
+                    "question": "Apakah perancah dilengkapi dengan toe-board atau kick board dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_e_4",
+                    "question": "Apakah perancah dilengkapi dengan handrail dan midrail dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_e_5",
+                    "question": "Apakah lantai perancah dipasang dengan aman?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_e_6",
+                    "question": "Apakah perancah telah dipasangkan Scaffold Tag dengan benar? Pada jalan masuk atau tangga untuk naik/turun? Apakah karyawan menggunakan tangga yang telah disediakan saat naik/turun?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "F",
+            "category_name": "TANGGA (LADDER)",
+            "data": [
+                {
+                    "criteria": "workplace_f_1",
+                    "question": "Apakah tangga dipasangkan dengan sudut kemiringan yang aman (ratio 4:1)? Apakah terdapat bagian tangga yang dilebihkan sekitar 1 meter pada bagian lantai atas suatu struktur bangunan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_2",
+                    "question": "Apakah tangga diikat pada bagian atasnya? Atau ada karyawan lain yang memegang di bawahnya, saat tangga digunakan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_3",
+                    "question": "Apakah terdapat bagian “anti slip” pada kaki tangga?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_4",
+                    "question": "Apakah semua bagian tangga tidak terdapat suatu keretakan atau bengkok?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_5",
+                    "question": "Apakah terdapat nomor registrasi inspeksi pada tangga?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_6",
+                    "question": "Apakah “Tangga Ekstensi” dapat dipanjangkan atau dipendekkan dengan mudah? Apakah sistem pengunci/pengaman untuk ”Tangga Ekstensi” masih dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_7",
+                    "question": " Apakah tali penarik dari “Tangga Ekstensi” masih dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_8",
+                    "question": "Apakah “Tangga Lipat” masih memiliki sistem pengunci/pengaman dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_f_9",
+                    "question": "Apakah karyawan tidak duduk pada bagian paling atas dari “Tangga Lipat” atau tidak berdiri pada anak tangga kedua dari anak tangga paling atas?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "G",
+            "category_name": "PESAWAT ANGKAT (CRANE, FORKLIFT, OVERHEAD CRANE)",
+            "data": [
+                {
+                    "criteria": "workplace_g_1",
+                    "question": "Apakah karyawan yang telah terlatih dan diijinkan untuk mengoperasikan Pesawat Angkat?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_2",
+                    "question": "Apakah operator Crane dan Forklift memiliki SIO yang masih berlaku dan sesuai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_3",
+                    "question": "Apakah karyawan mengetahui batasan berat aman (SWL) yang diperbolehkan? Mengetahui radius kerja aman dari Crane?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_4",
+                    "question": "Apakah karyawan telah terlatih yang dapat memberikan instruksi kepada operator Crane?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_5",
+                    "question": "Apakah karyawan telah terlatih yang menentukan konfigurasi alat bantu angkat pada beban yang akan diangkat?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_6",
+                    "question": "Apakah daerah kerja pengangkatan dipasangkan pita barikade? Tidak ada karyawan yang berjalan di bawah beban yang diangkat?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_7",
+                    "question": "Apakah karyawan yang operasikan Crane/Forklift tetap berada di dalam kabinnya, hingga proses pengangkatan selesai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_g_8",
+                    "question": "Apakah bantalan, penyangga atau penopang untuk barang yang diangkat itu dalam kondisi baik dan memiliki kekuatan yang memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "H",
+            "category_name": "PERALATAN BANTU ANGKAT (LIFTING GEARS and SLINGS)",
+            "data": [
+                {
+                    "criteria": "workplace_h_1",
+                    "question": "Apakah setiap Alat Bantu Angkat yang digunakan memiliki Tag Identifikasi?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_h_2",
+                    "question": "Apakah setiap Alat Bantu Angkat yang digunakan memiliki tanda SWL?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_h_3",
+                    "question": "Apakah semua Alat Bantu Angkat memiliki warna Tag Inspeksi yang masih berlaku? Dan diperiksa oleh karyawan yang berkompeten?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_h_4",
+                    "question": "Apakah orang yang menggunakan Alat Bantu Angkat telah mengikuti pelatihan yang sesuai untuk pekerjaan angkat mengangkat?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_h_5",
+                    "question": "Apakah alat angkat tersebut telah memiliki sertifikat uji kelayakan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_h_6",
+                    "question": "Apakah Alat Bantu Angkat yang tidak digunakan itu disimpan dengan baik dan aman?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "I",
+            "category_name": "GALIAN dan PARITAN (EXCAVATION and TRENCHING)",
+            "data": [
+                {
+                    "criteria": "workplace_i_1",
+                    "question": "Apakah pekerjaan untuk Galian (lebih dari 30cm) atau Paritan itu telah memiliki ijin kerja yang diperlukan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_2",
+                    "question": "Apakah dilakukan pemeriksaan fasilitas bawah tanah telah dilakukan sebelum ijin kerja dikeluarkan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_3",
+                    "question": "Bila pemeriksaan fasilitas bawah tanah belum dilakukan, apakah pekerjaan galian atau paritan dilakukan dengan manual (tidak menggunakan kendaraan berat atau mesin penggali)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_4",
+                    "question": "Untuk pekerjaan Paritan (tinggi dinding lebih besar dari lebar dasar galian) yang lebih 2 meter, apakah diberikan tiang penyangga agar dinding galian tidak runtuh?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_5",
+                    "question": "Apakah pada galian dan paritan itu telah di-barikade dengan benar (minimal 2.5 meter dari tepi galian)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_6",
+                    "question": "Apakah tanah yang tergali itu ditumpuk atau ditempatkan jauh dari bibir galian dan paritan (tidak ada kemungkinan tanah tergali dapat jatuh kembali ke dalam galian atau paritan)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_7",
+                    "question": "Apakah pada galian dan paritan itu telah disediakan tangga atau jalan masuk/keluar yang aman?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_i_8",
+                    "question": "Apakah tangga atau jalan masuk tersebut telah dilengkapi dengan handrail (bila memungkinkan)? Memiliki pijakan/anak tangga yang lebar dengan jarak yang memadai? Tangga atau jalan masuk yang tidak curam?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "J",
+            "category_name": "LISTRIK (ELECTRICAL)",
+            "data": [
+                {
+                    "criteria": "workplace_j_1",
+                    "question": "Apakah karyawan menggunakan peralatan kerja listrik dengan benar dan aman? Mengetahui cara menggunakannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_2",
+                    "question": "Apakah karyawan menggunakan APD yang berbahan “tidak menghantar listrik” atau tidak basah (tetap kering)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_3",
+                    "question": "Apakah semua peralatan kerja listrik telah diinspeksi? Apakah diberi label inspeksi yang benar dan sesuai? Apakah masih dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_4",
+                    "question": "Apakah kabel dan sambungan listrik tidak berserakan di permukaan lantai dan jauh dari genangan air?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_5",
+                    "question": " Apakah pengaman masih terpasang pada peralatan kerja tersebut? Masih memberikan perlindungan yang memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_6",
+                    "question": "Apakah ELCB atau GFCI terpasang? Atau sejenis pelindung “earth leakage” lainnya, telah terpasang?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_7",
+                    "question": "Apakah menggunakan sambungan listrik yang sesuai dan dipasang dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_j_8",
+                    "question": "Apakah peralatan dan perkakas kerja yang tidak sedang digunakan, telah ditempatkan dengan benar dan aman?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "K",
+            "category_name": "RUANG TERBATAS",
+            "data": [
+                {
+                    "criteria": "workplace_k_1",
+                    "question": " Apakah pekerjaan di ruang kerja terbatas telah memiliki ijin kerja dan ada di tempat kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_2",
+                    "question": "Apakah pemeriksaan gas beracun di ruang terbatas telah dilakukan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_3",
+                    "question": "Apakah pekerja berwenang melakukan Kerja di ruang terbatas ?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_4",
+                    "question": "Apakah ruang kerja terbatas di tempat anda bekerja sudah dilengkapi dengan rambu yang memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_5",
+                    "question": "Apakah jalan akses masuk dan keluar Ruang Terbatas aman dan memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_6",
+                    "question": "Apakah sistem ventilasi memadai? Jika tidak diperlukan penambahan ventilasi buatan.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_7",
+                    "question": "Apakah pencahayaan itu sudah mencukupi?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_8",
+                    "question": "Jika diperlukan ada penerangan tambahan, telah dilakukan analisa risiko dan pengendalian yang memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_9",
+                    "question": "Apakah menggunakan peralatan kerja dan APD yang sesuai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_10",
+                    "question": "Apakah ada karyawan yang selalu standby di luar Ruang Kerja Terbatas? ",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_11",
+                    "question": "Peralatan rescue Ruang terbatas tersedia?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_k_12",
+                    "question": "Rescuer telah memahami tindakan atau tehnik penyelamatan dari kecelakaan di Ruang Kerja Terbatas tersebut?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "L",
+            "category_name": "PROSEDUR ISOLASI (ISOLATION PROCEDURE)",
+            "data": [
+                {
+                    "criteria": "workplace_l_1",
+                    "question": "Apakah ijin kerja isolasi telah diperoleh?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_2",
+                    "question": "Apakah MCC atau lokal switch telah dipasangkan gembok (Isolasi Lock) dan Tanda Bahaya Pribadi (Isolasi Tag), sebelum pekerjaan dimulai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_3",
+                    "question": " Apakah penanggung jawab pekerjaan atau team leader telah juga memasangkan gemboknya, sebelum pekerjaan dimulai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_4",
+                    "question": "Apakah ruang kerja tertutup tempat anda bekerja sudah dilengkapi dengan “Lock Box” (kotak gembok)? Dan papan informasi? Apakah dapat diketahui jumlah karyawan yang masuk ke dalam?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_5",
+                    "question": " Apakah MCC dan “Push Button” untuk ruang kerja terbatas tempat di mana anda bekerja sudah terdapat faslitas untuk memasang gembok? ",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_6",
+                    "question": "Apakah sistem penguncian dan Tanda Bahaya Pribadi telah terpasang dengan benar? ",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_7",
+                    "question": "Prosedur isolasi (LOTO) diimplementasikan dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_8",
+                    "question": "Apakah karyawan melakukan pemeriksaan terhadap mesin (memastikan bahwa mesin telah mati dan terisolasi) sebelum melakukan pekerjaan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_9",
+                    "question": "Apakah karyawan mengetahui tombol gawat darurat pada mesin (bila ada)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_10",
+                    "question": "Apakah karyawan menginformasikan pekerjaan yang selesai kepada penanggung jawab pekerjaan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_11",
+                    "question": "Apakah karyawan memasang kembali pengaman mesin setelah pekerjaan selesai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_12",
+                    "question": "Apakah hanya karyawan yang mamasang Isolasi Lock dan Isolasi Tag adalah yang hanya dapat melepaskannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_l_13",
+                    "question": "Apakah penanggung jawab pekerjaan atau team leader telah memeriksa pekerjaan yang telah selesai, Isolasi Lock dan Isolasi Tag milik karyawan lain, sebelum melepas Isolasi Lock dan Isolasi Tag miliknya sendiri?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "M",
+            "category_name": "BAGIAN KOMPONEN BERPUTAR (ROTATING PART)",
+            "data": [
+                {
+                    "criteria": "workplace_m_1",
+                    "question": "Apakah semua mesin atau bagian berputar telah terlindungi dengan guarding yang sesuai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_m_2",
+                    "question": "Karyawan TIDAK menggunakan ROMPI, baju kerja yang longgar, berambut panjang atau kalung yang berjuntai keluar dari baju?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_m_3",
+                    "question": "Apakah terdapat rambu peringatan mengenai bahaya / resiko saat menggunakan mesin berputar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_m_4",
+                    "question": "Emergency line pada Conveyor baik di CHPP maupun Port dapat dilakukan pengetesan secara reguler dan di record",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "N",
+            "category_name": "GERINDA, PENGELASAN dan PEMOTONGAN (GRINDING, WELDING and CUTTING)",
+            "data": [
+                {
+                    "criteria": "workplace_n_1",
+                    "question": "Apakah ijin kerja panas telah diperoleh, sebelum pekerjaan dimulai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_2",
+                    "question": "Apakah karyawan menggunakan APD yang sesuai dengan pekerjaan panas (gerinda, pengelasan atau pemotongan)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_3",
+                    "question": "Apakah terdapat jarak yang aman antara lokasi pekerjaan panas dengan bahan-bahan yang dapat/mudah terbakar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_4",
+                    "question": "Apakah batu gerinda yang dipasang memiliki RPM yang sama atau kurang dari RPM mesin gerinda?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_5",
+                    "question": "Apakah karyawan menggunakan jenis batu gerinda yang sesuai dengan pekerjaannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_6",
+                    "question": "Apakah pelindung pada mesin gerinda terpasang dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_7",
+                    "question": "Apakah karyawan telah terlatih dan trampil dalam pekerjaan pengelasan atau pemotongan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_8",
+                    "question": "Apakah pengelasan telah dipasangkan Flash Back Arrestor pada silinder dan stang?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_9",
+                    "question": "Apakah selang botol oksigen dan botol asetelin telah terpasang dengan aman dan kuat? Kondisi masih layak pakai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_10",
+                    "question": "Apakah Penghalang Las atau Welding Screen digunakan? Masih dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_11",
+                    "question": "Apakah peralatan pengelasan (stang, selang, gauges, silinder, kabel listrik, clamp dan leads) dalam kondisi dan berfungsi dengan baik? Penempatannya jauh dari genangan air? Dapat membuat orang tersandung?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_12",
+                    "question": "Apakah karyawan menggunakan pemantik las yang sesuai (bukan korek api atau korek gas) saat memulai pengelasan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_13",
+                    "question": "Apakah konektor pada trafo las telah terpasang dengan aman dan kuat? Sesuai dengan besar tegangannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_14",
+                    "question": "Apakah mesin las telah dipasangkan ground system dengan benar? Apakah kabel negatif dipasang dekat dengan tempat pengelasan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_15",
+                    "question": "Apakah jatuhan kotoran panas dari kegiatan pengelasan telah terkendali? Diberikan pita barikade? Atau dipasangkan selimut tahan api di bawah kegiatan pengelasan?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_n_16",
+                    "question": "Apakah terdapat tabung pemadam api ringan di dekat kegiatan pekerjaan panas? Karyawan mengetahui cara menggunakannya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "O",
+            "category_name": "BERKENDARAAN DENGAN AMAN (VEHICLE SAFETY ROAD)",
+            "data": [
+                {
+                    "criteria": "workplace_o_1",
+                    "question": "Apakah supir kendaraan ringan/mobil atau operator alat berat telah melakukan pemeriksaan awal sebelum mobil atau alat berat dijalankan? Apakah pemeriksaan awal tersebut telah tercatat? Apakah pemeriksaan awal itu termasuk pemeriksaan oli mesin, radiator, oli rem, kemudi, lampu-lampu, dan lainnya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_o_2",
+                    "question": "Apakah supir atau operator telah memiliki SIMPER yang masih berlaku dan sesuai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_o_3",
+                    "question": "Apakah supir atau operator menggunakan sabuk pengaman? Semua penumpangnya menggunakan sabuk pengaman dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_o_4",
+                    "question": "Apakah supir atau operator mematuhi semua aturan dan rambu berlalu lintas?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_o_5",
+                    "question": "Apakah supir atau operator telah mengikatkan barang yang dibawa di belakangnya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_o_6",
+                    "question": "Apakah supir atau operator telah memparkirkan kendaraannya dengan benar? Sesuai dengan rambu parkir?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "P",
+            "category_name": "PENYIMPANAN HIDROKARBON (HYDROCARBON STORAGE)",
+            "data": [
+                {
+                    "criteria": "workplace_p_1",
+                    "question": "Apakah terdapat tempat peyimpanan hidrokarbon diletakan pada tempat yang dilengkapi secondary containment?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_2",
+                    "question": "Secondary containment memiliki kapastas 110% dari volume tangki penyimpanan hidrokarbon",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_3",
+                    "question": "Apakah fasilitas penyimpanan hidrokarbon memiliki Oil Separator yang memadai dan berfungsi dengan baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_4",
+                    "question": "Apakah outlet buangan atau drain dari secondary containment dalam kondisi baik dan selalu tertutup?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_5",
+                    "question": "Oil trap diinspeksi dan dibersihkan secara teratur?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_6",
+                    "question": "Oil trap dilengkapi dengan stick pemeriksaan.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_7",
+                    "question": "Apakah keran atau valve dari sump pit suatu bund wall dalam kondisi tertutup?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_p_8",
+                    "question": "Apakah spill kit tersedia pada tempat penyimpanan hidrokarbon?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "Q",
+            "category_name": "BAHAN BERBAHAYA dan BERACUN (HAZARDOUS SUBSTANCES)",
+            "data": [
+                {
+                    "criteria": "workplace_q_1",
+                    "question": "Apakah pekerjaan menggunakan bahan kimia? Apakah terdapat MSDS yang sesuai dengan bahan kimia yang digunakan di lokasi kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_2",
+                    "question": "Apakah karyawan memahami dan mengerti persyaratan kerja aman dari MSDS tersebut?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_3",
+                    "question": "Apakah karyawan bekerja sesuai dengan persyaratan kerja dari MSDS bahan kimia tersebut?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_4",
+                    "question": "Apakah terdapat label bahan B3 pada tempat penyimpanan atau kontainernya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_5",
+                    "question": "Apakah tempat penyimpanan atau kontainernya dalam kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_6",
+                    "question": "Apakah bahan kimia yang tidak digunakan atau tersisa, telah disimpan dalam container yang masih baik kondisinya?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_7",
+                    "question": "Apakah bahan kimia B3 disimpan pada tempat penyimpanan yang baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_8",
+                    "question": "Apakah tempat penyimpanan bahan B3 memiliki sistem ventilasi yang baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_9",
+                    "question": "Apakah tempat penyimpanan bahan B3 memiliki rambu “Penyimpanan bahan Kimia”",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_q_10",
+                    "question": "Apakah tempat penyimpanan kontainer-kontainer bahan B3 memiliki pemadam api yang sesuai dan MSDS Register?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "R",
+            "category_name": "MANAJEMEN SAMPAH (WASTE MANAGEMENT)",
+            "data": [
+                {
+                    "criteria": "workplace_r_1",
+                    "question": "Apakah terdapat tempat sampah organik dan tempat sampah non-organik? Dalam kondisi dan berfungsi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_r_2",
+                    "question": "Apakah sampah-sampah terpisahkan saat membuangnya pada tempat sampah (tidak bercampur)?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_r_3",
+                    "question": "Apakah tempat sampah dikosongkan secara rutin setiap hari dari lokasi kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_r_4",
+                    "question": "Apakah sampah-sampah besi, kaleng, atau logam lainnya itu dipisahkan pada tempat sampah khusus?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_r_5",
+                    "question": "Apakah sampah-sampah yang belum dikosongkan atau dipindahkan dari lokasi kerja itu telah dikumpulkan atau diletakkan pada jarak yang aman dari lokasi kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "S",
+            "category_name": "GAWAT DARURAT dan P3K (EMERGENCY and FIRST AID)",
+            "data": [
+                {
+                    "criteria": "workplace_s_1",
+                    "question": "Apakah terdapat kotak P3K di lokasi kerja?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_2",
+                    "question": "Apakah ditunjuk karyawan yang bertanggung jawab dalam memberikan P3K dan telah mengikuti pelatihan P3K?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_3",
+                    "question": "Apakah kotak P3K diinspeksi secara rutin?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_4",
+                    "question": "Apakah kotak P3K terdapat lembar registrasi penggunaan kotak P3K? Terisi dengan baik dan memadai?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_5",
+                    "question": "Apakah pemadam api telah diinspeksi dan kondisi baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_6",
+                    "question": "Apakah rambu pemadam api tersedia? Dipasang dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_7",
+                    "question": "Apakah Emergency Layout tersedia? ditempatkan dengan benar?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_8",
+                    "question": "Apakah karyawan mengetahui Tempat Berkumpul terdekat?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "workplace_s_9",
+                    "question": "Apakah Eye and Body Wash Station tersedia? Dalam kondisi dan berfungsi dengan baik?",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        }
+    ],
+    "area-jetty": [
+        {
+            "category_order": "1",
+            "category_name": "JALUR PIPA, HOSE, & FILTER",
+            "data": [
+                {
+                    "criteria": "jetty_1_a",
+                    "question": "Pastikan tidak ada rembesan atau retakan pada pipa",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "jetty_1_b_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan terdapat packing/ gasket"
+                },
+                {
+                    "criteria": "jetty_1_b_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan antar pipa fully bolted dan seragam"
+                },
+                {
+                    "criteria": "jetty_1_b_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan pada sambungan"
+                },
+                {
+                    "criteria": "jetty_1_c_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan handle valve dapat dibuka tutup dengan bebas"
+                },
+                {
+                    "criteria": "jetty_1_c_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan gate valve telah dilumuri grease"
+                },
+                {
+                    "criteria": "jetty_1_c_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan pada gate valve"
+                },
+                {
+                    "criteria": "jetty_1_d_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan terdapat packing / gasket"
+                },
+                {
+                    "criteria": "jetty_1_d_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan hose dengan pipa fully bolted dan seragam"
+                },
+                {
+                    "criteria": "jetty_1_d_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan pada sambungan"
+                },
+                {
+                    "criteria": "jetty_1_d_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan lekukan fleksible hose tidak terlalu bengkok ketika digunakan"
+                },
+                {
+                    "criteria": "jetty_1_e",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan kondisi body tidak penyok atau menggembung"
+                },
+                {
+                    "criteria": "jetty_1_f_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan penutup filter / treiner fully bolted"
+                },
+                {
+                    "criteria": "jetty_1_f_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan minyak pada penutup filter / streiner"
+                },
+                {
+                    "criteria": "jetty_1_g_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan keran dalam keadaan close saat filter sedang dialiri fuel dari kapal"
+                },
+                {
+                    "criteria": "jetty_1_g_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan keran dalam keadaan close dan disegel saat filter sedang tidak digunakan"
+                },
+                {
+                    "criteria": "jetty_1_g_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan minyak pada keran filter / streiner"
+                },
+                {
+                    "criteria": "jetty_1_h",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan penyangga filter kuat dan tegak"
+                },
+                {
+                    "criteria": "jetty_1_i",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan pressure indikator berfungsi dengan baik"
+                },
+                {
+                    "criteria": "jetty_1_j_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan terdapat packing / gasket"
+                },
+                {
+                    "criteria": "jetty_1_j_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan antar pipa fully bolted dan seragam"
+                },
+                {
+                    "criteria": "jetty_1_j_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada rembesan pada blank flange"
+                }
+            ]
+        },
+        {
+            "category_order": "2",
+            "category_name": "AREAL JETTY",
+            "data": [
+                {
+                    "criteria": "jetty_2_a_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Bollard Mooring tidak dalam kondisi tenggelam"
+                },
+                {
+                    "criteria": "jetty_2_a_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan struktur bollard tidak retak dan penyok"
+                },
+                {
+                    "criteria": "jetty_2_a_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan strukturnya tegak dan kuat,"
+                },
+                {
+                    "criteria": "jetty_2_b",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan jembatan Ponton stabil dan tidak terlepas sambungannya"
+                },
+                {
+                    "criteria": "jetty_2_c_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak berlubang dan tidak retak "
+                },
+                {
+                    "criteria": "jetty_2_c_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan lantai ponton tidak penyok dan harus rata"
+                },
+                {
+                    "criteria": "jetty_2_c_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan jembatan ponton rata dan stabil"
+                },
+                {
+                    "criteria": "jetty_2_c_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan lantai jembatan tidak licin"
+                },
+                {
+                    "criteria": "jetty_2_d_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan drum tidak penyok dan tidak bocor"
+                },
+                {
+                    "criteria": "jetty_2_d_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan drum penyangga ponton tidak tenggelam."
+                },
+                {
+                    "criteria": "jetty_2_e_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan jembatan penghubung antara ponton dan bundwall tidak tergenang air"
+                },
+                {
+                    "criteria": "jetty_2_e_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan jembatan penghubung antara ponton dan bundwall stabil dan kuat"
+                },
+                {
+                    "criteria": "jetty_2_e_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan lantai jembatan tidak licin"
+                },
+                {
+                    "criteria": "jetty_2_f",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan di jembatan ponton tidak ada sampah"
+                },
+                {
+                    "criteria": "jetty_2_g",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "APAR dalam keadaan layak operasi ditandai dengan kartu checklist (cek secara periodik pada tgl 1 sd 10 setiap bulannya) dan jarum menunjukkan warna hijau"
+                },
+                {
+                    "criteria": "jetty_2_h",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan permukaan air sungai tidak menunjukkan adanya cemaran minyak yang di tandai warna pelangi di permukaan air sungai"
+                },
+                {
+                    "criteria": "jetty_2_i_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan oil spill boom dalam kondisi tidak robek"
+                },
+                {
+                    "criteria": "jetty_2_i_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan oil spill boom tidak ada bagian yang tenggelam"
+                },
+                {
+                    "criteria": "jetty_2_i_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan oil spill boom terikat kuat dan terpasang dengan benar"
+                },
+                {
+                    "criteria": "jetty_2_j",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Rambu-rambu tidak rusak dan dapat terbaca"
+                },
+                {
+                    "criteria": "jetty_2_k",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan terdapat oil dispersan"
+                },
+                {
+                    "criteria": "jetty_2_l",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Lampu Sorot dapat menyala"
+                }
+            ]
+        },
+        {
+            "category_order": "3",
+            "category_name": "PERAWATAN DAN PERBAIKAN",
+            "data": [
+                {
+                    "criteria": "jetty_3_a_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "P2H Peralatan "
+                },
+                {
+                    "criteria": "jetty_3_a_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Perawatan drainase dan oil trap sesuai jadwal"
+                }
+            ]
+        }
+    ],
+    "area-maintank": [
+        {
+            "category_order": "A",
+            "category_name": "JALUR PIPA",
+            "data": [
+                {
+                    "criteria": "maintank_pipes_1_1",
+                    "question": "Pastikan tidak ada rembesan atau retakan pada pipa",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_2_1",
+                    "question": "Pastikan terdapat packing/ gasket.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_2_2",
+                    "question": "Pastikan sambungan antar pipa fully bolted.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_2_3",
+                    "question": "Pastikan tidak ada rembesan pada sambungan.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_3_1",
+                    "question": "Pastikan U-bolt tidak lepas, drat tidak rusak, tidak dapat diputar dengan tangan.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_3_2",
+                    "question": "Pastikan Mur untuk pengunci harus kuat menahan U-bolt dan tidak berputar ketika ada tekanan atau diputar dengan tangan.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_3_3",
+                    "question": "Pastikan Pondasi tidak retak, hancur dan kuat menahan pipa agar tidak turun).",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_pipes_3_4",
+                    "question": "Pastikan besi penahan (holder) tidak patah, bengkok/tidak kuat menahan beban.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "B",
+            "category_name": "MAINTANK",
+            "data": [
+                {
+                    "criteria": "maintank_1_1",
+                    "question": "Dinding plat tidak ada rembesan, berkarat & penyok.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_1_2",
+                    "question": "Pastikan Keliling maintank bagian bawah tidak mengeluarkan minyak.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_1_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Sambungan antar plat tidak ada rembesan,  & las rata dengan dinding plat."
+                },
+                {
+                    "criteria": "maintank_2_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan segel tidak rusak."
+                },
+                {
+                    "criteria": "maintank_2_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan PSV dengan pipa tidak ada rembesan dan tidak pecah."
+                },
+                {
+                    "criteria": "maintank_2_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tuas sebelum PSV dalam keadaan open jika ada kegiatan."
+                },
+                {
+                    "criteria": "maintank_2_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan pipa PSV Tidak ada retak, rembesan minyak, tidak pecah & berubah bentuk."
+                },
+                {
+                    "criteria": "maintank_3_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan kondisi fisik tidak pecah dan tidak baret."
+                },
+                {
+                    "criteria": "maintank_3_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Flexible Hose harus tidak  menggelembung ditiap sisi."
+                },
+                {
+                    "criteria": "maintank_3_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Baut penghubung flexible hose harus lengkap dan tidak bisa diputar dengan tangan."
+                },
+                {
+                    "criteria": "maintank_4_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Bandul terpasang di maintank dan dapat digerakan naik turun sesuai level."
+                },
+                {
+                    "criteria": "maintank_4_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Tali pengikat bandul tidak rapuh, tidak putus, tidak terlilit & tidak dapat di putus dengan tangan."
+                },
+                {
+                    "criteria": "maintank_4_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Lubang bandul tidak berubah bentuk."
+                },
+                {
+                    "criteria": "maintank_4_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Meter ketinggian volume isi maintank dapat dibaca dengan jelas."
+                },
+                {
+                    "criteria": "maintank_4_5",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Katrol dapat berputar, tidak macet (perlu diberi grease 2 minggu sekali)."
+                },
+                {
+                    "criteria": "maintank_5_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Pipa Hydrant tidak bocor, tidak berkarat, mengalirkan air ketika valve dalam posisi open."
+                },
+                {
+                    "criteria": "maintank_5_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan pipa hydrant tidak ada rembesan & tidak lepas."
+                },
+                {
+                    "criteria": "maintank_6_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Kabel penangkal petir maintank tidak putus dari saluran grounding dan tidak berkarat."
+                },
+                {
+                    "criteria": "maintank_6_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan grounding system tidak digunakan untuk antena, peralatan listrik dan instalasi listrik."
+                },
+                {
+                    "criteria": "maintank_6_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan grounding system dan down conductor tidak memiliki hambatan melebihi 5 Ω."
+                },
+                {
+                    "criteria": "maintank_6_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Kabel grounding tertanam ke tanah, test point dilengkapi box pelindung."
+                },
+                {
+                    "criteria": "maintank_7_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Tanda aliran (panah arah minyak) terlihat jelas"
+                },
+                {
+                    "criteria": "maintank_7_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Drat baut pada gate valve dilumuri grease"
+                },
+                {
+                    "criteria": "maintank_7_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Gate valve tidak mengeluarkan minyak"
+                }
+            ]
+        },
+        {
+            "category_order": "C",
+            "category_name": "ATAP MAINTANK",
+            "data": [
+                {
+                    "criteria": "maintank_roof_1_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Handrail tidak rapuh, tidak patah, tidak retak, & tidak berkarat."
+                },
+                {
+                    "criteria": "maintank_roof_1_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Pijakan tangga tidak rapuh, tidak berlubang, & lengkap tiap pijakan."
+                },
+                {
+                    "criteria": "maintank_roof_1_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan tiap handrail, pijakan tangga, dan penyangga tangga tidak lepas."
+                },
+                {
+                    "criteria": "maintank_roof_2_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan tiap handrail tidak lepas, retak, dan miring."
+                },
+                {
+                    "criteria": "maintank_roof_2_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Handrail tidak rapuh, tidak patah, tidak retak, & tidak berkarat."
+                },
+                {
+                    "criteria": "maintank_roof_3_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan free venting maintank tidak tertutup atau tersumbat."
+                },
+                {
+                    "criteria": "maintank_roof_3_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tampak fisik plat tidak berlubang, tidak rapuh, tidak penyok, tidak retak dan harus datar."
+                },
+                {
+                    "criteria": "maintank_roof_3_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan atap maintank bersih dari ceceran minyak dan majun/ sarung tangan."
+                },
+                {
+                    "criteria": "maintank_roof_3_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan sambungan antar plat tidak ada rembesan & tidak lepas."
+                },
+                {
+                    "criteria": "maintank_roof_4_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Tutup manhole rapat dan baut tidak ada yang lepas."
+                },
+                {
+                    "criteria": "maintank_roof_4_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Sambungan las pada manhole tidak  retak dan tidak bocor."
+                },
+                {
+                    "criteria": "maintank_roof_5_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Tutup tersegel dan terkunci ketika tidak ada aktivitas sounding."
+                },
+                {
+                    "criteria": "maintank_roof_5_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan angka tinggi referensi dan titik pengukuran pada lubang sounding terlihat jelas."
+                },
+                {
+                    "criteria": "maintank_roof_5_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Sambungan las pada tempat sounding tidak  retak dan tidak bocor."
+                }
+            ]
+        },
+        {
+            "category_order": "D",
+            "category_name": "AREA SEKITAR MAINTANK",
+            "data": [
+                {
+                    "criteria": "maintank_area_1_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan kondisi konkrit bundwall tidak berlubang, tidak retak, dan tidak ada genangan air."
+                },
+                {
+                    "criteria": "maintank_area_1_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan di pagar bundwall terdapat daya tampung / kapasitas tumpahan."
+                },
+                {
+                    "criteria": "maintank_area_1_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan terdapat warna perbedaan ketinggian."
+                },
+                {
+                    "criteria": "maintank_area_1_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Warna perbedaan ketinggian terlihat & tidak pudar."
+                },
+                {
+                    "criteria": "maintank_area_2_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan aliran air limbah pada drainase maintank mengalir ke fuel trap."
+                },
+                {
+                    "criteria": "maintank_area_2_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan saluran drainase tidak tertutup tanah maupun sampah."
+                },
+                {
+                    "criteria": "maintank_area_2_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan gate valve drainage dalam bundwall menuju Fuel Trap dalam keadaan berfungsi baik."
+                },
+                {
+                    "criteria": "maintank_area_2_4",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Kondisi konkrit tidak boleh rusak, pastikan minyak tidak meresap ke tanah."
+                },
+                {
+                    "criteria": "maintank_area_3_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan pagar dalam keadaan bersih dan tidak rusak."
+                },
+                {
+                    "criteria": "maintank_area_3_2",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan pagar dalam keadaan bersih dan tidak rusak."
+                },
+                {
+                    "criteria": "maintank_area_3_3",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan pagar tidak dapat diakses."
+                },
+                {
+                    "criteria": "maintank_area_4_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan tidak ada sampah di area maintank."
+                },
+                {
+                    "criteria": "maintank_area_5_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Ada dan tidak bocor."
+                },
+                {
+                    "criteria": "maintank_area_6_1",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ],
+                    "question": "Pastikan Rambu-rambu tidak rusak dan dapat terbaca."
+                },
+                {
+                    "criteria": "maintank_area_7_1",
+                    "question": "Dapat ditutup dengan rapat dan terkunci.",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        },
+        {
+            "category_order": "E",
+            "category_name": "PERAWATAN DAN PERBAIKAN",
+            "data": [
+                {
+                    "criteria": "maintank_maintenance_1_1",
+                    "question": "P2H Peralatan",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "maintank_maintenance_1_2",
+                    "question": "Perawatan drainase dan oil trap sesuai jadwal",
+                    "type": "option",
+                    "option": [
+                        "Ya",
+                        "Tidak",
+                        "N/A"
+                    ]
+                }
+            ]
+        }
+    ],
+    "k3-apar": [
+        {
+            "category_order": "",
+            "category_name": "Inspeksi APAR",
+            "data": [
+                {
+                    "criteria": "tool_id",
+                    "question": "No. ID APAR",
+                    "type": "free-text"
+                },
+                {
+                    "criteria": "tool_date",
+                    "question": "Tanggal Service Tabung Tertera",
+                    "type": "date"
+                },
+                {
+                    "criteria": "isi_apar",
+                    "question": "ISI APAR",
+                    "type": "option",
+                    "option": [
+                        "Powder",
+                        "Co2",
+                        "Water",
+                        "Halon",
+                        "Foam"
+                    ]
+                },
+                {
+                    "criteria": "gol_apar",
+                    "question": "Golongan APAR",
+                    "type": "option",
+                    "option": [
+                        "A",
+                        "B",
+                        "C",
+                        "A+B+C",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "kapasitas_apar",
+                    "question": "Kapasitas APAR",
+                    "type": "option",
+                    "option": [
+                        "1Kg",
+                        "2Kg",
+                        "3Kg",
+                        "4Kg",
+                        "5Kg",
+                        "6Kg",
+                        "7Kg",
+                        "8Kg",
+                        "9Kg",
+                        "10Kg",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "tuas_apar",
+                    "question": "Tuas APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "handle_apar",
+                    "question": "Handle APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "pressure_gauge",
+                    "question": "Pressure Gauge",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Low Pressure",
+                        "Over Pressure"
+                    ]
+                },
+                {
+                    "criteria": "pin_apar",
+                    "question": "Pin APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Terlepas",
+                        "Berkarat",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "hose_apar",
+                    "question": "Hose APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Robek",
+                        "Rusak",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "nozzle_apar",
+                    "question": "Nozzle APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Buntu",
+                        "Pecah",
+                        "Rusak",
+                        "Hilang",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_tabung",
+                    "question": "Kondisi tabung/cylinder APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Penyok",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "cat_tabung",
+                    "question": "Kondisi Cat Tabung APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Warna Pudar",
+                        "Bukan Warna Merah"
+                    ]
+                },
+                {
+                    "criteria": "powder",
+                    "question": "Kondisi Powder APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Beku",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "kip",
+                    "question": "KIP (Kartu Inspeksi Peralatan)",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Belum Diperiksa",
+                        "KIP Hilang",
+                        "KIP Rusak"
+                    ]
+                },
+                {
+                    "criteria": "bracket",
+                    "question": "Bracket APAR",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Tidak ada Bracket",
+                        "Bracket Berkarat"
+                    ]
+                },
+                {
+                    "criteria": "label_penanda",
+                    "question": "Label Penanda Lokasi APAR",
+                    "type": "option",
+                    "option": [
+                        "Ada",
+                        "Tidak Ada"
+                    ]
+                },
+                {
+                    "criteria": "demarkasi",
+                    "question": "Demarkasi APAR",
+                    "type": "option",
+                    "option": [
+                        "Ada Demarkasi",
+                        "Warna Demarkasi Pudar",
+                        "Tidak Ada Demarkasi"
+                    ]
+                },
+                {
+                    "criteria": "kain_pelindung",
+                    "question": "Kain Pelindung APAR (Cover APAR)",
+                    "type": "option",
+                    "option": [
+                        "Ada Pelindung",
+                        "Tidak Ada Pelindung",
+                        "Tidak Perlu Pelindung"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_kain",
+                    "question": "Kondisi Kain Pelindung APAR (Cover APAR)",
+                    "type": "option",
+                    "option": [
+                        "Perlu Penggantian",
+                        "Tidak Perlu Penggantian"
+                    ]
+                },
+                {
+                    "criteria": "penempatan",
+                    "question": "Kondisi Penempatan APAR",
+                    "type": "option",
+                    "option": [
+                        "Mudah Dijangkau",
+                        "Terdapat Penghalang"
+                    ],
+                    "option_2": [
+                        "Penghalang Dipindahkan",
+                        "Penghalang Tidak Dapat Dipindahkan"
+                    ]
+                }
+            ]
+        }
+    ],
+    "k3-apab": [
+        {
+            "category_order": "",
+            "category_name": "Inspeksi APAB",
+            "data": [
+                {
+                    "criteria": "tool_id",
+                    "question": "No. ID APAB",
+                    "type": "free-text"
+                },
+                {
+                    "criteria": "tool_date",
+                    "question": "Tanggal Service Tabung Tertera",
+                    "type": "date"
+                },
+                {
+                    "criteria": "isi_apab",
+                    "question": "ISI APAB",
+                    "type": "option",
+                    "option": [
+                        "Powder",
+                        "CO2",
+                        "Water",
+                        "Halon",
+                        "Foam"
+                    ]
+                },
+                {
+                    "criteria": "gol_apab",
+                    "question": "Golongan APAB",
+                    "type": "option",
+                    "option": [
+                        "A",
+                        "B",
+                        "C",
+                        "A+B+C",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "kapasitas_apab",
+                    "question": "Kapasitas APAB",
+                    "type": "option",
+                    "option": [
+                        "25Kg",
+                        "30Kg",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "tuas_apab",
+                    "question": "Tuas APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "handle_apab",
+                    "question": "Handle APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "pressure_gauge",
+                    "question": "Pressure Gauge",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Low Pressure",
+                        "Over Pressure"
+                    ]
+                },
+                {
+                    "criteria": "pin_apab",
+                    "question": "Pin APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Terlepas",
+                        "Berkarat",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "hose_apab",
+                    "question": "Hose APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Robek",
+                        "Rusak",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "nozzle_apab",
+                    "question": "Nozzle APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Buntu",
+                        "Penyok",
+                        "Rusak",
+                        "Hilang",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_tabung",
+                    "question": "Kondisi tabung/cylinder APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Berkarat",
+                        "Penyok",
+                        "Rusak",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "troli_apab",
+                    "question": "Troli APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Roda Rusak",
+                        "Troli dan Roda Berkarat",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "cat_tabung",
+                    "question": "Kondisi Cat Tabung APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Warna Pudar",
+                        "Bukan Warna Merah"
+                    ]
+                },
+                {
+                    "criteria": "powder",
+                    "question": "Kondisi Powder APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Beku",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "kip",
+                    "question": "KIP (Kartu Inspeksi Peralatan)",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Belum Diperiksa",
+                        "KIP Hilang",
+                        "KIP Rusak"
+                    ]
+                },
+                {
+                    "criteria": "bracket",
+                    "question": "Bracket APAB",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Tidak ada Bracket",
+                        "Bracket Berkarat"
+                    ]
+                },
+                {
+                    "criteria": "label_penanda",
+                    "question": "Label Penanda Lokasi APAB",
+                    "type": "option",
+                    "option": [
+                        "Ada",
+                        "Tidak Ada"
+                    ]
+                },
+                {
+                    "criteria": "demarkasi",
+                    "question": "Demarkasi APAB",
+                    "type": "option",
+                    "option": [
+                        "Ada Demarkasi",
+                        "Warna Demarkasi Pudar",
+                        "Tidak Ada Demarkasi"
+                    ]
+                },
+                {
+                    "criteria": "shelter_apab",
+                    "question": "Shelter APAB",
+                    "type": "option",
+                    "option": [
+                        "Ada",
+                        "Tidak Ada",
+                        "N/A"
+                    ]
+                },
+                {
+                    "criteria": "kain_pelindung",
+                    "question": "Kain Pelindung APAB (Cover APAB)",
+                    "type": "option",
+                    "option": [
+                        "Ada Pelindung",
+                        "Tidak Ada Pelindung",
+                        "Tidak Perlu Pelindung"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_kain",
+                    "question": "Kondisi Kain Pelindung APAB (Cover APAB)",
+                    "type": "option",
+                    "option": [
+                        "Perlu Penggantian",
+                        "Tidak Perlu Penggantian"
+                    ]
+                },
+                {
+                    "criteria": "penempatan",
+                    "question": "Kondisi Penempatan APAB",
+                    "type": "option",
+                    "option": [
+                        "Mudah Dijangkau",
+                        "Terdapat Penghalang"
+                    ],
+                    "option_2": [
+                        "Penghalang Dapat Dipindahkan",
+                        "Penghalang Tidak Dapat Dipindahkan"
+                    ]
+                }
+            ]
+        }
+    ],
+    "k3-hydrant": [
+        {
+            "category_order": "",
+            "category_name": "Inspeksi Hydrant",
+            "data": [
+                {
+                 "criteria": "tool_id",
+                    "question": "No. ID Hydrant",
+                    "type": "free-text"
+                },
+                {
+                    "criteria": "tool_type",
+                    "question": "Tipe Hydrant",
+                    "type": "option",
+                    "option": [
+                        "John Morish",
+                        "Machino",
+                        "Storz",
+                        "Tipe Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "ukuran_coupling",
+                    "question": "Ukuran Coupling",
+                    "type": "option",
+                    "option": [
+                        "1,5 Inch",
+                        "2,5 Inch"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Pecah, Penutup Hilang, Lainnya",
+                        "Penutup Hilang",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "outer_pilar",
+                    "question": "Jumlah Outer Pilar",
+                    "type": "option",
+                    "option": [
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "criteria": "hose_hydrant",
+                    "question": "Jenis Hose Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Rubber",
+                        "Canvas"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Hose Robek",
+                        "coupling diujung pecah",
+                        "seal dalam coupling hose rusak / hilang",
+                        "saat dipasang ke pilar tidak proper",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "ukuran_hose",
+                    "question": "Ukuran Hose",
+                    "type": "option",
+                    "option": [
+                        "1,5 Inch",
+                        "2,5 Inch"
+                    ]
+                },
+                {
+                    "criteria": "type_nozzle",
+                    "question": "Type Nozzle",
+                    "type": "option",
+                    "option": [
+                        "Hydrant Straight Nozzle",
+                        "Variable Head Spray",
+                        "Gun Nozzle",
+                        "Jenis Lainnya"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Kondisi Fisik Rusak",
+                        "Tidak Dapat Tersambung Dengan Hose",
+                        "Tersumbat",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "box_hydrant",
+                    "question": "Box Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Cat Pudar",
+                        "Berkarat",
+                        "Penyok"
+                    ]
+                },
+                {
+                    "criteria": "penempatan",
+                    "question": "Kondisi Penempatan Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Mudah Dijangkau",
+                        "Terdapat Penghalang"
+                    ]
+                },
+                {
+                    "criteria": "kip",
+                    "question": "KIP (Kartu Inspeksi Peralatan)",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Belum Diperiksa",
+                        "KIP Hilang",
+                        "KIP Rusak"
+                    ]
+                },
+                {
+                    "criteria": "label_penanda",
+                    "question": "Label Penanda Lokasi Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Ada",
+                        "Tidak Ada"
+                    ]
+                },
+                {
+                    "criteria": "demarkasi",
+                    "question": "Demarkasi Area Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Ada Demarkasi",
+                        "Warna Demarkasi Pudar",
+                        "Tidak Ada Demarkasi"
+                    ]
+                },
+                {
+                    "criteria": "velve_pipa",
+                    "question": "Kondisi Valve Pipa Air",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Bocor",
+                        "Berkarat",
+                        "Patah"
+                    ]
+                }
+            ]
+        }
+    ],
+    "k3-hose-rail": [
+        {
+            "category_order": "",
+            "category_name": "Inspeksi Hose Rail",
+            "data": [
+                {
+                    "criteria": "tool_id",
+                    "question": "No. ID Hose Rail",
+                    "type": "free-text"
+                },
+                {
+                    "criteria": "tool_type",
+                    "question": "Tipe Hose Rail",
+                    "type": "option",
+                    "option": [
+                        "John Morish",
+                        "Machino",
+                        "Storz",
+                        "Tipe Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "ukuran_coupling",
+                    "question": "Ukuran Coupling",
+                    "type": "option",
+                    "option": [
+                        "1,5 Inch",
+                        "2,5 Inch"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Pecah, Penutup Hilang, Lainnya",
+                        "Penutup Hilang",
+                        "Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "jenis_hose_rail",
+                    "question": "Jenis Hose",
+                    "type": "option",
+                    "option": [
+                        "Rubber",
+                        "Canvas"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Hose Robek",
+                        "Coupling diujung pecah",
+                        "Seal dalam coupling hose rusak / hilang",
+                        "Saat dipasang ke pilar tidak proper",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "ukuran_hose",
+                    "question": "Ukuran Hose",
+                    "type": "option",
+                    "option": [
+                        "1,5 Inch",
+                        "2,5 Inch"
+                    ]
+                },
+                {
+                    "criteria": "type_nozzle",
+                    "question": "Type Nozzle",
+                    "type": "option",
+                    "option": [
+                        "Hydrant Straight Nozzle",
+                        "Variable Head Spray",
+                        "Gun Nozzle",
+                        "Jenis Lainnya"
+                    ],
+                    "option_2": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_3": [
+                        "Kondisi Fisik Rusak",
+                        "Tidak Dapat Tersambung Dengan Hose",
+                        "Tersumbat",
+                        "Hilang"
+                    ]
+                },
+                {
+                    "criteria": "box_hr",
+                    "question": "Box Hydrant",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Cat Pudar",
+                        "Berkarat",
+                        "Penyok"
+                    ]
+                },
+                {
+                    "criteria": "penempatan",
+                    "question": "Kondisi Penempatan Hose Rail",
+                    "type": "option",
+                    "option": [
+                        "Mudah Dijangkau",
+                        "Terdapat Penghalang"
+                    ]
+                },
+                {
+                    "criteria": "kip",
+                    "question": "KIP (Kartu Inspeksi Peralatan)",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Belum Diperiksa",
+                        "KIP Hilang",
+                        "KIP Rusak"
+                    ]
+                },
+                {
+                    "criteria": "label_penanda",
+                    "question": "Label Penanda Lokasi",
+                    "type": "option",
+                    "option": [
+                        "Ada",
+                        "Tidak Ada"
+                    ]
+                },
+                {
+                    "criteria": "demarkasi",
+                    "question": "Demarkasi Area",
+                    "type": "option",
+                    "option": [
+                        "Ada Demarkasi",
+                        "Warna Demarkasi Pudar",
+                        "Tidak Ada Demarkasi"
+                    ]
+                },
+                {
+                    "criteria": "velve_pipa",
+                    "question": "Kondisi Valve Pipa Air",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Bocor",
+                        "Berkarat",
+                        "Patah"
+                    ]
+                }
+            ]
+        }
+    ],
+    "k3-eye-wash": [
+        {
+            "category_order": "",
+            "category_name": "Inspeksi Eye Wash",
+            "data": [
+                {
+                    "criteria": "tool_id",
+                    "question": "No. ID Eye Wash",
+                    "type": "free-text"
+                },
+                {
+                    "criteria": "tool_type",
+                    "question": "Merk Eye Wash",
+                    "type": "option",
+                    "option": [
+                        "Sperian",
+                        "Haws",
+                        "Honeywell",
+                        "Krisbow",
+                        "Merk Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "type_eye_wash",
+                    "question": "Tipe Eye Wash",
+                    "type": "option",
+                    "option": [
+                        "Permanen",
+                        "Portable"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_tangki",
+                    "question": "Kondisi Tangki",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Pecah",
+                        "Penutup Hilang",
+                        "Rusak Lainnya"
+                    ]
+                },
+                {
+                    "criteria": "kondisi_air",
+                    "question": "Kondisi Air Didalam Tangki",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Keruh",
+                        "Bau",
+                        "Kurang",
+                        "Habis/Kosong"
+                    ]
+                },
+                {
+                    "criteria": "pancuran_air",
+                    "question": "Pancuran Air",
+                    "type": "option",
+                    "option": [
+                        "Standard",
+                        "Tidak Standard"
+                    ],
+                    "option_2": [
+                        "Tersumbat"
+                    ]
+                }
+            ]
+        }
+    ]
+}

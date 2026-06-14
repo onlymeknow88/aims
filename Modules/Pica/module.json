@@ -1,0 +1,11 @@
+{
+    "name": "Pica",
+    "alias": "pica",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pica\\Providers\\PicaServiceProvider"
+    ],
+    "files": []
+}

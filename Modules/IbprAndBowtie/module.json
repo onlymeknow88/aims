@@ -1,0 +1,11 @@
+{
+    "name": "IbprAndBowtie",
+    "alias": "ibprandbowtie",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\IbprAndBowtie\\Providers\\IbprAndBowtieServiceProvider"
+    ],
+    "files": []
+}

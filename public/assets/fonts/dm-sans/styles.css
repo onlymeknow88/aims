@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'DMSans-MediumItalic';
+  src: url(./DMSans-MediumItalic.eot);
+  src: url(./DMSans-MediumItalic.eot?#iefix) format('embedded-opentype'),
+       url(./DMSans-MediumItalic.woff) format('woff'),
+       url(./DMSans-MediumItalic.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'DMSans-Regular';
+  src: url(./DMSans-Regular.eot);
+  src: url(./DMSans-Regular.eot?#iefix) format('embedded-opentype'),
+       url(./DMSans-Regular.woff) format('woff'),
+       url(./DMSans-Regular.woff2) format('woff2');
+}

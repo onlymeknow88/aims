@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('audit_implementation_report_detail_key_leading_indicators', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('audit_implementation_report_detail_id');
+            $table->foreign('audit_implementation_report_detail_id','audit_implementation_report_detail_indicators')
+                ->references('id')
+                ->on('audit_implementation_report_details')->cascadeOnDelete();
+            $table->string('key_leading_indicator')->nullable();
+            $table->string('status')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('audit_implementation_report_detail_key_leading_indicators');
+    }
+};

@@ -1,0 +1,11 @@
+{
+    "name": "Kplh",
+    "alias": "kplh",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Kplh\\Providers\\KplhServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+        nginx:
+                container_name: adaro-nginx
+                image: nginx:alpine
+                restart: always
+                ports:
+                        - 8888:80
+                volumes:
+                        - ./docker_conf/nginx:/etc/nginx/conf.d
+                        - .:/usr/src/app
+                links:
+                        - 'core:php-fpm'
+                depends_on:
+                        - 'core'
+        core:
+                container_name: adaro-core
+                build:
+                        context: .
+                restart: always
+                volumes:
+                        - .:/usr/src/app
+                links:
+                        - 'cache:redis'
+                        - 'db:mysql'
+                depends_on:
+                        - 'db'
+                        - 'cache'
+        db:
+                container_name: adaro-db
+                image: mysql:5.7.22
+                restart: always
+                ports:
+                        - 33071:3306
+                volumes:
+                        - ./docker_conf/mysql/my.cnf:/etc/mysql/my.cnf
+                        - ./docker_conf/db_data:/var/lib/mysql
+                environment:
+                        MYSQL_DATABASE: db_adaro
+                        MYSQL_USER: root
+                        MYSQL_PASSWORD: root
+                        MYSQL_ROOT_PASSWORD: root
+                networks:
+                        - app-network
+        cache:
+                container_name: adaro-cache
+                image: redis:6-alpine
+                restart: always
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local

@@ -1,0 +1,11 @@
+{
+    "name": "Sap",
+    "alias": "sap",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Sap\\Providers\\SapServiceProvider"
+    ],
+    "files": []
+}

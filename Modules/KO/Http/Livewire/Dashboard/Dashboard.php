@@ -1,0 +1,332 @@
+<?php
+
+namespace Modules\KO\Http\Livewire\Dashboard;
+
+use App\Enums\CompanyType;
+use App\Enums\KO\KoStatus;
+use App\Models\Company;
+use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Modules\KO\Entities\KoProposal;
+use Modules\KO\Entities\KoSpipCategory;
+use Auth;
+
+class Dashboard extends Component
+{
+    public $limit;
+    public $countData;
+
+    public $itemSelected = [];
+    public $countSelected = 0;
+
+    public $columns = ['Number', 'CCOW', 'Perusahaan', 'Kriteria Perusahaan', 'Area', 'Waktu Komisioning', 'Jadwal Komisioning', 'Komisioning Selanjutnya', 'Periode', 'SPIP Desc', 'Call Sign', 'Status'];
+    public $selectedColumns = [];
+    public $search;
+    public $latestUpdate;
+
+    public $sortType = 'desc';
+    public $sortField = 'created_at';
+
+    public $sortSelected = [];
+    public $sortFieldSelected;
+
+    public $searchNumber;
+
+    public $fieldCcow;
+    public $fieldCompany;
+
+    protected $listeners = [
+        'refreshComponent' => '$refresh',
+        'searchUpdated' => 'searchUpdated',
+    ];
+
+    // public $desc;
+
+    // public function save()
+    // {
+    //     dd($this->desc);
+    // }
+
+    public function mount(): void
+    {
+        $this->selectedColumns = $this->columns;
+
+        $this->latestUpdate = 'Update on ' . Carbon::parse($last->created_at ?? null)->format('F d, Y . H:i A');
+
+        //column search
+        $this->fieldCcow = Company::where('type', CompanyType::Internal()->value)->get();
+        $this->fieldCompany = Company::all();
+
+        $this->countData = $this->getKoProposalsProperty()->count();
+        $this->limit = $this->countData;
+    }
+
+    // BEGIN::SORTING
+    public function sort($type, $field)
+    {
+        $this->sortType = $type;
+        $this->sortField = $field;
+    }
+
+    public function sortCheck($field, $value)
+    {
+        // dd($this->sortSelected);
+
+        $this->sortFieldSelected = $field;
+
+        if (!empty($this->sortSelected[$this->sortFieldSelected])) {
+            if (in_array($value, $this->sortSelected[$this->sortFieldSelected])) {
+                $key = array_search($value, $this->sortSelected[$this->sortFieldSelected]);
+
+                unset($this->sortSelected[$this->sortFieldSelected][$key]);
+                if (empty($this->sortSelected[$this->sortFieldSelected])) {
+                    unset($this->sortSelected[$this->sortFieldSelected]);
+                }
+            } else {
+
+                $this->sortSelected[$this->sortFieldSelected][] = $value;
+            }
+        } else {
+            $this->sortSelected[$this->sortFieldSelected][] = $value;
+        }
+
+        $this->removeSeleced();
+
+        //dd($this->sortSelected);
+    }
+    // END::SORTING
+
+    // BEGIN::SEARCH
+    public function searchUpdated($search)
+    {
+        $this->search = $search;
+    }
+    // END::SEARCH
+
+    // BEGIN::COLUMN
+    public function showColumn($column)
+    {
+        return in_array($column, $this->selectedColumns);
+    }
+
+    public function updated($propertyName, $value)
+    {
+        if ($propertyName == 'selectedColumns') {
+            $this->showColumn($value);
+        }
+
+        if ($propertyName == 'limit') {
+            if ($value > $this->countData) {
+                $this->limit = $this->countData;
+            } else {
+                $this->limit = $value;
+            }
+        }
+    }
+    // END::COLUMN
+
+    public function getKoProposalsProperty(): LengthAwarePaginator
+    {
+        DB::statement("SET SQL_MODE=''");
+        return KoProposal::query()
+            ->where(function ($query) {
+                $query->where('ccow_id', Auth::user()->department->company->id)
+                    ->orWhere('company_id', Auth::user()->department->company->id);
+            })
+            ->whereNot('status', KoStatus::Draft()->value)
+            ->when(!empty($this->sortSelected), function ($query) {
+                $query->where(function ($query) {
+                    $query->when($this->sortFieldSelected == 'company_id', function ($query) {
+                        $query->whereIn('company_id', $this->sortSelected['company_id']);
+                    })
+                        ->when($this->sortFieldSelected == 'ccow_id', function ($query) {
+                            $query->whereIn('ccow_id', $this->sortSelected['ccow_id']);
+                        });
+                });
+            })
+            ->when(!empty($this->searchNumber), function ($query) {
+                $query->where('number', 'like', '%' . $this->searchNumber . '%');
+            })
+            ->search($this->search)
+            ->orderBy($this->sortField, $this->sortType)
+            ->latest()
+            ->paginate($this->limit);
+    }
+
+    public function onSelectedItem($id)
+    {
+        if (in_array($id, $this->itemSelected)) {
+            $key = array_search($id, $this->itemSelected);
+            unset($this->itemSelected[$key]);
+            $this->countSelected--;
+        } else {
+            $this->itemSelected[] = $id;
+            $this->countSelected++;
+        }
+    }
+
+    public function activedInfo()
+    {
+        $this->info = !$this->info;
+    }
+
+    public function removeSeleced()
+    {
+        $this->itemSelected = [];
+        $this->countSelected = 0;
+    }
+
+    public function closeModal()
+    {
+        $this->dispatchBrowserEvent('closeModal');
+    }
+
+    public function getProposalCountProperty() {
+        return KoProposal::query()
+            ->whereNot('status', KoStatus::Draft()->value)
+            ->count();
+    }
+
+    public function getReturnedCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::Returned()->value)
+            ->count();
+    }
+
+    public function getAdminVerificationCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::AdminProposalVerification()->value)
+            ->count();
+    }
+
+    public function getCoordinatorVerificationCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::CoordinatorProposalVerification()->value)
+            ->count();
+    }
+
+    public function getCommissioningCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::Commissioning()->value)
+            ->count();
+    }
+
+    public function getIssueCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::Issue()->value)
+            ->count();
+    }
+
+    public function getCompletedCountProperty() {
+        return KoProposal::query()
+            ->where('status', KoStatus::Completed()->value)
+            ->count();
+    }
+
+    public function getCompletedChartProperty()
+    {
+        $label = new Collection();
+        $value = new Collection();
+        $categories = KoSpipCategory::all();
+        foreach ($categories as $category) {
+            $proposalCount = KoProposal::query()
+                ->where('status', KoStatus::Completed()->value)
+                ->whereHas('koUnit', function ($query) use ($category) {
+                    $query->whereHas('koSpipUnit', function ($query) use ($category) {
+                        $query->whereHas('koSpipType', function ($query) use ($category) {
+                            $query->where('ko_spip_category_id', $category->id);
+                        });
+                    });
+                })->count();
+
+            if ($proposalCount > 0) {
+                $label->push($category->name);
+                $value->push($proposalCount);
+            }
+        }
+
+        $chart = [
+            'idChart' => 'completed',
+            'width' => 300,
+            'height' => 300,
+            'labels' => $label,
+            'datasets' => [[
+                'label' => 'Completed',
+                'data' => $value,
+                'backgroundColor' => [
+                    'rgb(145,186,95)',
+                    'rgb(217,65,65)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                ],
+            ]],
+            'legend' => true,
+            'labelX' => [
+                'display' => false,
+                'color' => 'rgba(0,0,0,0.8)',
+                'beginAtZero' => true,
+            ],
+        ];
+
+        return $chart;
+    }
+
+    public function getIssueChartProperty()
+    {
+        $label = new Collection();
+        $value = new Collection();
+        $categories = KoSpipCategory::all();
+        foreach ($categories as $category) {
+            $proposalCount = KoProposal::query()
+                ->where('status', KoStatus::Issue()->value)
+                ->whereHas('koUnit', function ($query) use ($category) {
+                    $query->whereHas('koSpipUnit', function ($query) use ($category) {
+                        $query->whereHas('koSpipType', function ($query) use ($category) {
+                            $query->where('ko_spip_category_id', $category->id);
+                        });
+                    });
+                })->count();
+
+            if ($proposalCount > 0) {
+                $label->push($category->name);
+                $value->push($proposalCount);
+            }
+        }
+
+        $chart = [
+            'idChart' => 'issue',
+            'width' => 300,
+            'height' => 300,
+            'labels' => $label,
+            'datasets' => [[
+                'label' => '',
+                'data' => $value,
+                'backgroundColor' => [
+                    'rgb(217,65,65)',
+                    'rgb(145,186,95)',
+                    'rgb(255, 205, 86)',
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                ],
+            ]],
+            'legend' => true,
+            'labelX' => [
+                'display' => false,
+                'color' => 'rgba(0,0,0,0.8)',
+                'beginAtZero' => true,
+            ],
+        ];
+
+        return $chart;
+    }
+
+    public function render()
+    {
+        return view('ko::livewire.dashboard.dashboard')
+            ->layout('ko::layouts.app');
+    }
+}

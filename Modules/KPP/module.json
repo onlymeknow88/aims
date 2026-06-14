@@ -1,0 +1,11 @@
+{
+    "name": "KPP",
+    "alias": "kpp",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\KPP\\Providers\\KPPServiceProvider"
+    ],
+    "files": []
+}

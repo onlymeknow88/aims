@@ -1,0 +1,32 @@
+@props(['id', 'error'])
+
+<div id="{{ $id }}" class="input-group input-daterange d-flex gap-2 align-items-center">
+    <input type="text" class="form-control" wire:model='start_date' />
+    {{ $start_date }}
+    <div class="input-group-addon">Sampai</div>
+    <input type="text" class="form-control" wire:model='end_date' />
+</div>
+
+@once
+    @push('styles')
+        <!-- datepicker -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css"
+            rel="stylesheet">
+        </link>
+    @endpush
+@endonce
+
+@once
+    @push('scripts')
+        <!-- datepicker -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    @endpush
+@endonce
+
+@push('scripts')
+    <script type="text/javascript">
+        $('#{{ $id }}.input-daterange input').each(function() {
+            $(this).datepicker('clearDates');
+        });
+    </script>
+@endpush

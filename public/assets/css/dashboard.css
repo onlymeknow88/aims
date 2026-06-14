@@ -1,0 +1,56 @@
+.dashboard-wrapper{
+    background-image: url('/images/bg-auth.png');
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+}
+.dashboard-wrapper .main-content.sidebar-open{
+    width: 100%;
+}
+.dashboard-wrapper .sidebar{
+    background-color: rgba(0, 85, 47, 0.3);
+    border-right-width:0px !important;
+}
+.dashboard-wrapper .sidebar-right ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.dashboard-wrapper .sidebar-right .title-sidebar{
+    font-weight: 600;
+    font-size: 18px;
+    color: #41B8D5;
+    text-align: center;
+    padding: 15px;
+}
+.dashboard-wrapper .sidebar-right ul li a{
+    line-height: 1;
+}
+.dashboard-wrapper .sidebar-right ul li a:hover{
+    font-weight: 400;
+}
+.dashboard-wrapper .sidebar-right img{
+    max-width: 100%;
+    object-fit: cover;
+}
+.dashboard-wrapper .content-sidebar .help-sidebar a{
+    width: calc(350px - 32px);
+}
+.bg-green-op{
+    background-color: rgba(0, 85, 47, 0.3);
+}
+.dashboard-wrapper .content-d .sub-text,
+.dashboard-wrapper .content-d h6 small{
+    font-size: 10px;
+}
+.dashboard-wrapper .content-d h1,
+.dashboard-wrapper .content-d h3,
+.dashboard-wrapper .detail-t h1{
+    font-size: 1.5rem;
+}
+.dashboard-wrapper .content-d .row{
+    margin-bottom: 15px;
+}
+.dashboard-wrapper .progress-wrapper .progress{
+    height: 10px;
+}

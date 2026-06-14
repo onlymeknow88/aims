@@ -1,0 +1,25 @@
+<div class="inner-content">
+
+    <div class="section-content">
+
+        <div class="section-title py-3 px-2">
+            <h4>Kepatuhan</h4>
+        </div><!-- /.section-title -->
+
+        <div class="table-maker">
+
+            <livewire:kpp.obedience.partials.table-maker />
+
+        </div><!-- /.table-maker -->
+
+    </div><!-- /.section-content -->
+
+    <div class="section-footer d-flex justify-content-between">
+        {{-- <div class="update-on opacity-80">Update on Sep 24, 2022 . 15.00 pm</div>
+        <div class="row-data opacity-80">1,000 Document Active</div> --}}
+    </div><!-- /.section-footer -->
+</div>
+
+<script>
+
+</script>

@@ -1,0 +1,11 @@
+{
+    "name": "KO",
+    "alias": "ko",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\KO\\Providers\\KOServiceProvider"
+    ],
+    "files": []
+}
