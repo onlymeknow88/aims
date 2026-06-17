@@ -576,8 +576,7 @@
                                                             $name = $explode[0];
                                                         @endphp
                                                         <li>
-                                                            <a href="{{ asset('storage/jsa/' . $attachment->document_id . '/' . $attachment->file_name) }}"
-                                                                target="_blank" class="d-block">
+                                                            <a href="javascript:void(0)" onclick="event.stopPropagation(); previewBlobFile('{{ $attachment->id }}', '{{ $attachment->file_name }}', 'jsa')" class="d-block">
                                                                 {{ $attachment->file_name }}
                                                             </a>
                                                         </li>

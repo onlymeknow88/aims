@@ -1,8 +1,13 @@
 <div>
-    <div class="modal fade" wire:ignore.self id="modalForm" tabindex="-1" aria-labelledby="modalForm" aria-hidden="true">
+    <div class="modal fade" wire:ignore.self id="modalForm" tabindex="-1" aria-labelledby="modalForm"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form wire:submit.prevent='saveData' wire:ignore.self id="form-category">
+                <form wire:submit.prevent='saveData' wire:ignore.self id="form-category"  x-on:submit="
+        document.getElementById('btn-save-spinner').classList.remove('d-none');
+        document.getElementById('btn-save-label').classList.add('d-none');
+        document.getElementById('btn-save-category').disabled = true;
+    ">
                     <div class="modal-header">
                         <h5 class="modal-title fw-normal" id="exampleModalLabel">@lang('global.add_category')</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -10,15 +15,16 @@
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <label for="module_id" class="form-label">@lang('global.module')</label>
-                            <x-document-system-select-2 wire:model="module_id" error="module_id" id="module_id"
-                                parent="modalForm" placeholder="{{ trans('global.select_module') }}">
+                            <x-document-system-select-2-custom wire:model="module_id" wire:key="select2-module-id"
+                                error="module_id" id="module_id" parent="modalForm"
+                                placeholder="{{ trans('global.select_module') }}">
 
                                 @foreach ($modules as $key => $module)
                                     <option value="{{ $module['id'] }}">{{ $module['index'] }}. {{ $module['name'] }}
                                     </option>
                                 @endforeach
 
-                            </x-document-system-select-2>
+                            </x-document-system-select-2-custom>
                         </div>
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Index</label>
@@ -36,12 +42,18 @@
                             <div class="action-wrapper d-flex align-items-center justify-content-end gap-2">
                                 <button type="button" class="btn btn-outline-secondary"
                                     data-bs-dismiss="modal">Cancel</button>
-                                <button
-                                    class="btn btn-outline-default bg-green d-flex justify-content-center align-item-center text-white position-relative px-4"
-                                    wire:loading.remove wire:target='saveData' type="submit">
-                                    @lang('global.save')
-                                </button>
-                                <x-button-spinner target="saveData" :text="trans('global.processing')"></x-button-spinner>
+                              <button
+    class="btn btn-outline-default bg-green d-flex justify-content-center align-items-center gap-2 text-white position-relative px-4"
+    id="btn-save-category"
+    type="submit">
+    <span id="btn-save-spinner" class="d-none d-flex align-items-center gap-2">
+        <span class="spinner-border spinner-border-sm text-white" role="status"></span>
+        @lang('global.processing')
+    </span>
+    <span id="btn-save-label">
+        @lang('global.save')
+    </span>
+</button>
                             </div>
                         </div>
                     </div>

@@ -122,10 +122,10 @@ class EditProposal extends Component
     public function updatedUnitId()
     {
         $unit = KoUnit::find($this->unit_id);
-        $this->identity_number = $unit->identity_number ?? '-';
-        $this->brand = $unit->koBrand->name ?? '';
-        $this->serial_number = $unit->serial_number ?? '';
-        $this->production_year = $unit->production_year ?? '';
+        $this->identity_number = $unit?->identity_number ?? '-';
+        $this->brand = $unit?->koBrand?->name ?? '';
+        $this->serial_number = $unit?->serial_number ?? '';
+        $this->production_year = $unit?->production_year ?? '';
     }
 
     public function updatedCompanyId()

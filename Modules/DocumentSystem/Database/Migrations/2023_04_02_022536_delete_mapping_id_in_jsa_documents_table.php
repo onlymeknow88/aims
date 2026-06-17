@@ -28,13 +28,25 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('jsa_documents', function (Blueprint $table) {
+
+    Schema::disableForeignKeyConstraints();
+
+    Schema::table('jsa_documents', function (Blueprint $table) {
+        // Hanya add kalau kolom belum ada
+        if (!Schema::hasColumn('jsa_documents', 'mapping_id')) {
             $table->foreignUuid('mapping_id')
+                ->nullable()
                 ->references('id')
                 ->on('document_system_mappings')
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+        }
 
+        if (!Schema::hasColumn('jsa_documents', 'prefix_code')) {
             $table->string('prefix_code')->nullable();
-        });
+        }
+    });
+
+    Schema::enableForeignKeyConstraints();
     }
 };

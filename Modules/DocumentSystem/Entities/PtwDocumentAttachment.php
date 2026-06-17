@@ -20,6 +20,8 @@ class PtwDocumentAttachment extends Model
         'file_type',
         'file_size',
         'path',
+        'blob_url',
+        'blob_response',
         'status',
     ];
 

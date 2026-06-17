@@ -49,11 +49,15 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('jsa_documents', function (Blueprint $table) {
-           $table->dropForeign(['department_id']);
-           $table->dropForeign(['mapping_id']);
-           $table->dropForeign(['user_id']);
-        });
-        Schema::dropIfExists('jsa_documents');
+        // Schema::table('jsa_documents', function (Blueprint $table) {
+        //    $table->dropForeign(['department_id']);
+        //    $table->dropForeign(['mapping_id']);
+        //    $table->dropForeign(['user_id']);
+        // });
+        // Schema::dropIfExists('jsa_documents');
+
+         Schema::disableForeignKeyConstraints();
+    Schema::dropIfExists('jsa_documents');
+    Schema::enableForeignKeyConstraints();
     }
 };

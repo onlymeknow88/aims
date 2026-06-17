@@ -114,9 +114,42 @@ class ReviewDetail extends Component
     {
         $file = public_path($attach->path);
         $text_image = public_path('images/uncontrolled.png'); 
+        $temp_download_file = null;
 
-        // Output PDF with watermark 
-        $path = 'app/document-systems-files/uncontrolled/';
+        // If the file is stored in Blob Storage, download it locally first
+        if (!empty($attach->blob_url)) {
+            $url = $attach->blob_url;
+            if (strpos($url, 'blob.core.windows.net') !== false) {
+                $parsedUrl = parse_url($url);
+                $path = ltrim($parsedUrl['path'] ?? '', '/');
+                $parts = explode('/', $path, 2);
+                if (count($parts) === 2) {
+                    $container = $parts[0];
+                    // Normalize double slashes and decode %20 so Azure SAS API can match the actual filename
+                    $filePath = urldecode(preg_replace('/\/+/', '/', $parts[1]));
+                    $sasResult = GetBlobSasUri($container, $filePath, 15);
+                    if ($sasResult && !empty($sasResult['blobUriSas'])) {
+                        $url = $sasResult['blobUriSas'];
+                    }
+                }
+            }
+            try {
+                $fileContent = file_get_contents($url);
+                if ($fileContent !== false) {
+                    $temp_download_file = storage_path('app/tmp/downloaded_' . uniqid() . '_' . $attach->file_name);
+                    if (!\Illuminate\Support\Facades\File::exists(dirname($temp_download_file))) {
+                        \Illuminate\Support\Facades\File::makeDirectory(dirname($temp_download_file), 0755, true);
+                    }
+                    \Illuminate\Support\Facades\File::put($temp_download_file, $fileContent);
+                    $file = $temp_download_file;
+                }
+            } catch (\Exception $e) {
+                \Log::error("setWaterMark: Failed to download source file from blob: " . $e->getMessage());
+            }
+        }
+
+        // Temp output path sebelum upload ke blob
+        $path = 'app/tmp/document-systems-files/uncontrolled/';
         $storagePath = storage_path($path);
         if (!is_dir($storagePath)) {
             mkdir($storagePath, 0755, true);
@@ -127,38 +160,57 @@ class ReviewDetail extends Component
 
         if (file_exists($file)) {
             try {
-                // Set source PDF file 
-                $pdf = new Fpdi(); 
-                $pagecount = $pdf->setSourceFile($file); 
+                $scriptPath = app_path('Helpers/watermark.py');
+                $cmd = "python " . escapeshellarg($scriptPath) . " " . escapeshellarg($file) . " " . escapeshellarg($fileOutput) . " " . escapeshellarg($text_image) . " review";
+                $outputCmd = [];
+                $returnVar = -1;
+                exec($cmd, $outputCmd, $returnVar);
 
-                // Add watermark image to PDF pages 
-                for ($i = 1; $i <= $pagecount; $i++) { 
-                    $tpl = $pdf->importPage($i); 
-                    $size = $pdf->getTemplateSize($tpl); 
-                    $pdf->addPage($size['orientation'] ?? 'P', [$size['width'], $size['height']]); 
-                    $pdf->useTemplate($tpl, 0, 0, $size['width'], $size['height'], TRUE); 
-                     
-                    //Put the watermark 
-                    $xxx_final = ($size['width'] - 170); 
-                    $yyy_final = ($size['height'] - 200); 
-                    if (file_exists($text_image)) {
-                        $pdf->Image($text_image, $xxx_final, $yyy_final, 0, 0, 'png');
-                    }
-                } 
-                $pdf->Output('F', $fileOutput);
-                $watermark_success = true;
+                if ($returnVar === 0) {
+                    $watermark_success = true;
+                } else {
+                    \Log::warning("Python watermarking script returned error code {$returnVar}. Output: " . implode("\n", $outputCmd));
+                }
             } catch (\Throwable $e) {
-                \Log::warning("Review uncontrolled watermarking failed for file {$attach->file_name}. Falling back to copying original file. Error: " . $e->getMessage());
+                \Log::warning("Python watermarking failed for file {$attach->file_name}. Falling back to copying original file. Error: " . $e->getMessage());
             }
         }
 
+        // Fallback: copy original jika watermark gagal
         if (!$watermark_success) {
-            // Fallback: Copy file directly without watermark
             if (file_exists($file)) {
                 copy($file, $fileOutput);
+                $watermark_success = true;
+            } else {
+                \Log::error("setWaterMark: source file not found for {$attach->file_name}");
             }
         }
 
-        return 'document-systems-files/uncontrolled/' . $attach->file_name;
+        // Hapus file temp download sumber jika ada
+        if ($temp_download_file && file_exists($temp_download_file)) {
+            unlink($temp_download_file);
+        }
+
+        // UPLOAD KE BLOB STORAGE
+        $uncontrolled_path = 'document-systems-files/uncontrolled/' . $attach->file_name;
+        if ($watermark_success && file_exists($fileOutput)) {
+            $directPath = 'document-systems-files/uncontrolled/';
+            $blobResult = uploadToBlobStorage(
+                $attach->file_name,   // filename
+                $fileOutput,          // filePathTemp (local file hasil watermark)
+                $directPath           // folder di blob
+            );
+
+            // Hapus file temp lokal setelah upload
+            unlink($fileOutput);
+
+            if ($blobResult['fileBlobUrl']) {
+                $uncontrolled_path = $blobResult['fileBlobUrl']; // Simpan URL blob langsung ke uncontrolled_file_path
+            } else {
+                \Log::warning("setWaterMark: Blob upload failed for file {$attach->file_name}.");
+            }
+        }
+
+        return $uncontrolled_path;
     }
 }

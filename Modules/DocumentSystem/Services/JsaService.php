@@ -317,33 +317,74 @@ class JsaService
     }
 
     /**
-     * Function to handle Document Upload
+     * Function to handle Document Upload (Local Storage — deprecated, replaced by blob version below)
+     */
+    // public function handle_upload_document($documents, $document_id): bool
+    // {
+    //     for ($b = 0; $b < count($documents); $b++) {
+    //         if (File::exists(public_path('storage/tmp/jsa/' . $documents[$b]['name']))) {
+    //             if (!Storage::disk('public')->exists('jsa/' . $document_id)) {
+    //                 Storage::disk('public')->makeDirectory('jsa/' . $document_id);
+    //             }
+    //
+    //             // File::move(public_path('storage/tmp/jsa/' . $documents[$b]['name']), public_path('storage/jsa/' . $document_id . '/' . $documents[$b]['name']));
+    //
+    //             Storage::disk('public')->move('tmp/jsa/' . $documents[$b]['name'], 'jsa/' . $document_id . '/' . $documents[$b]['name']);
+    //
+    //             $model_document = new JsaDocumentAttachment();
+    //             $model_document->document_id = $document_id;
+    //             $model_document->file_name = $documents[$b]['name'];
+    //             $model_document->file_size = $documents[$b]['size'];
+    //             $model_document->file_type = $documents[$b]['ext'];
+    //             $model_document->path = public_path('storage/jsa/' . $document_id . '/' . $documents[$b]['name']);
+    //             $model_document->save();
+    //
+    //             // File::delete(public_path('storage/tmp/jsa/' . $documents[$b]['name']));
+    //             Storage::disk('public')->delete('tmp/jsa/' . $documents[$b]['name']);
+    //         }
+    //     }
+    //
+    //     return true;
+    // }
+
+    /**
+     * Function to handle Document Upload via Blob Storage
      * @param $documents
      * @param $document_id
-     * @return true
+     * @return bool
      */
     public function handle_upload_document($documents, $document_id): bool
     {
         for ($b = 0; $b < count($documents); $b++) {
-            if (File::exists(public_path('storage/tmp/jsa/' . $documents[$b]['name']))) {
-                if (!Storage::disk('public')->exists('jsa/' . $document_id)) {
-                    Storage::disk('public')->makeDirectory('jsa/' . $document_id);
+            $filePathTemp = public_path('storage/tmp/jsa/' . $documents[$b]['name']);
+
+            if (File::exists($filePathTemp)) {
+                $directPath = 'jsa/' . $document_id . '/';
+
+                $blobResult = uploadToBlobStorage(
+                    $documents[$b]['name'], // filename
+                    $filePathTemp,          // filePathTemp (local tmp file)
+                    $directPath             // direktori di blob
+                );
+
+                // Hapus file tmp lokal setelah upload ke blob
+                if (File::exists($filePathTemp)) {
+                    File::delete($filePathTemp);
                 }
 
-                // File::move(public_path('storage/tmp/jsa/' . $documents[$b]['name']), public_path('storage/jsa/' . $document_id . '/' . $documents[$b]['name']));
-
-                Storage::disk('public')->move('tmp/jsa/' . $documents[$b]['name'], 'jsa/' . $document_id . '/' . $documents[$b]['name']);
+                if (! $blobResult['fileBlobUrl']) {
+                    \Log::warning("JsaService: Blob upload failed for file {$documents[$b]['name']} in document ID {$document_id}.");
+                }
 
                 $model_document = new JsaDocumentAttachment();
-                $model_document->document_id = $document_id;
-                $model_document->file_name = $documents[$b]['name'];
-                $model_document->file_size = $documents[$b]['size'];
-                $model_document->file_type = $documents[$b]['ext'];
-                $model_document->path = public_path('storage/jsa/' . $document_id . '/' . $documents[$b]['name']);
+                $model_document->document_id  = $document_id;
+                $model_document->file_name    = $documents[$b]['name'];
+                $model_document->file_size    = $documents[$b]['size'];
+                $model_document->file_type    = $documents[$b]['ext'];
+                $model_document->path         = $blobResult['fileBlobPathName'] ?? ('jsa/' . $document_id . '/' . $documents[$b]['name']);
+                $model_document->blob_url     = $blobResult['fileBlobUrl'] ?? null;
+                $model_document->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                 $model_document->save();
-
-                // File::delete(public_path('storage/tmp/jsa/' . $documents[$b]['name']));
-                Storage::disk('public')->delete('tmp/jsa/' . $documents[$b]['name']);
             }
         }
 

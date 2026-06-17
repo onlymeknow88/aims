@@ -587,3 +587,83 @@ Tabel penunjang untuk klasifikasi taksonomi dokumen dalam portal AIMS.
 *   `document_system_attachments` (Lampiran Dokumen): `document_id` ➔ `document_system_documents.id` (Many-to-One)
 *   `document_system_invited_people` (Reviewer): `document_id` ➔ `document_system_documents.id` (Many-to-One), `user_id` ➔ `users.id` (Many-to-One)
 *   `document_system_activities` (Log Aktivitas): `document_id` ➔ `document_system_documents.id` (Many-to-One), `user_id` ➔ `users.id` (Many-to-One)
+
+---
+
+## 📌 12. Log Pembaruan Arsitektur & Penyimpanan (Update Log)
+
+### Integrasi Upload & Preview File Komentar Revisi dengan Azure Blob Storage (Juni 2026)
+Melakukan migrasi penyimpanan berkas revisi/komentar pada alur *Return with Comment* dari penyimpanan lokal ke Azure Blob Storage, serta mengintegrasikan modal pratinjau (*preview*) dinamis menggunakan SAS URI.
+
+#### 1. Perubahan Database & Model
+*   **Migration**: `2026_06_15_100000_add_blob_columns_to_activity_attachments_table.php`
+    - Menambahkan kolom `blob_url` (string, nullable) dan `blob_response` (text, nullable) ke tabel `document_system_activities_attachments`.
+*   **Model**: `Modules/DocumentSystem/Entities/ActivityAttachment.php`
+    - Menambahkan `blob_url` dan `blob_response` ke dalam properti `$fillable` agar mendukung mass-assignment.
+
+#### 2. Perubahan Logika Layanan (Services)
+*   **Module Service**: `Modules/DocumentSystem/Services/DocumentSystemService.php`
+    - **Fungsi Diubah**: `return($data)`
+    - Mengintegrasikan helper `uploadToBlobStorage($file, $path)` untuk menyimpan berkas komentar ke Blob Storage dan mengisi data `blob_url` serta `blob_response`. Berkas lokal sementara di direktori `tmp` dihapus secara otomatis.
+*   **App Service**: `app/Services/DocumentSystemService.php`
+    - **Fungsi Diubah**: `return($data)`
+    - Melakukan sinkronisasi perubahan logika yang sama dengan Module Service.
+
+#### 3. Perubahan Pratinjau & Kontroler (Preview & Controller Support)
+*   **Controller**: `Modules/DocumentSystem/Http/Controllers/GeneralController.php`
+    - **Fungsi Diubah**: `getAttachmentSasUri($id, Request $request)` dan `previewAttachment($id, Request $request)`
+    - Menambahkan penanganan `type = 'activity'` untuk memproses model `ActivityAttachment` (mengambil `blob_url` untuk di-generate SAS URI-nya atau di-stream secara inline).
+*   **Livewire Components**: `DetailMaker.php` (Maker), `Detail.php` (JSA), dan `Detail.php` (PTW)
+    - **Fungsi Diubah**: `detailItem($id)`
+    - Jika data lampiran aktivitas memiliki `blob_url`, URL pratinjau akan diarahkan ke route `attachments.preview` dengan parameter `type=activity` serta query parameter `filename` (untuk membawa nama & ekstensi berkas).
+*   **Livewire Blade View**: `Modules/DocumentSystem/Resources/views/livewire/maker/detail-maker.blade.php`
+    - **Script Diubah**: Event Listener `detail-media`
+    - Memperbarui parser javascript agar dapat mendeteksi nama file dan ekstensinya melalui query parameter `filename` jika path URL akhir (`/preview`) tidak menyertakan ekstensi berkas secara langsung. Hal ini memperbaiki masalah pratinjau yang menampilkan pesan *"Preview Tidak Tersedia"*.
+
+---
+
+## 🔄 13. Perintah Reset Database Khusus Modul (Module Database Reset Command)
+
+Berikut adalah panduan perintah untuk melakukan reset database secara spesifik hanya untuk modul **DocumentSystem** tanpa mempengaruhi tabel modul lain di platform AIMS.
+
+### A. Perintah Utama
+
+Jalankan perintah berikut pada terminal di root direktori project:
+
+```bash
+php artisan module:migrate-refresh DocumentSystem --seed
+```
+
+Atau jalankan langkah demi langkah secara terpisah:
+
+1. **Rollback & Reset tabel milik modul:**
+   ```bash
+   php artisan module:migrate-reset DocumentSystem
+   ```
+2. **Migrasi ulang seluruh tabel milik modul:**
+   ```bash
+   php artisan module:migrate DocumentSystem
+   ```
+3. **Mengisi ulang data awal (seeding) untuk modul:**
+   ```bash
+   php artisan module:seed DocumentSystem
+   ```
+
+### B. Detail Proses & Tabel yang Terpengaruh
+
+#### 1. Migrasi Ulang (Migrations)
+Sistem akan memuat seluruh file migrasi di dalam `Modules/DocumentSystem/Database/Migrations/`. Seluruh tabel transaksi dan relasi di bawah ini akan di-drop dan dibuat ulang:
+* **Tabel Dokumen Standar**: `document_system_documents`, `document_system_attachments`, `document_system_invited_people`, `document_system_activities`
+* **Tabel JSA (Job Safety Analysis)**: `jsa_documents`, `jsa_document_attachments`, `jsa_document_people`, `jsa_document_activities`
+* **Tabel PTW (Permit to Work)**: `ptw_documents`, `ptw_document_attachments`, `ptw_document_people`, `ptw_document_activities`
+* **Tabel Master Data**: `document_system_modules`, `document_system_categories`, `document_system_mappings`
+
+#### 2. Seeding Data Awal
+Setelah migrasi sukses, parameter `--seed` memanggil seeder utama `DocumentSystemDatabaseSeeder` yang menjalankan seeder-seeder internal berikut secara berurutan:
+* **`DocumentPermissionSeederTableSeeder`**: Pendaftaran permissions Spatie dengan guard `document-system`.
+* **`DocumentSystemTruncateSeederTableSeeder`**: Memastikan tabel bersih menggunakan perintah truncate dengan mematikan foreign key checks sementara.
+* **`DocumentModuleSeederTableSeeder`**: Pengisian master data modul bawaan (Perencanaan, Organisasi, Implementasi, Dokumentasi) beserta kategori dan pemetaannya.
+* **`DocumentSystemDummySeederTableSeeder`**: Pengisian data dummy awal untuk dokumen standar, JSA, dan PTW demi kebutuhan testing.
+* **`DocumentSystemStatusDummySeeder`**: Konfigurasi data status workflow dokumen.
+
+

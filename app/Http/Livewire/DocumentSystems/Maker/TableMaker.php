@@ -2,10 +2,15 @@
 
 namespace App\Http\Livewire\DocumentSystems\Maker;
 
+use App\Models\DocumentSystem\Attachment;
 use App\Models\DocumentSystem\Document;
 use App\Models\User;
 use App\Services\EmailService;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 use function PHPUnit\Framework\throwException;
@@ -279,6 +284,80 @@ class TableMaker extends Component
                 'icon' => 'error',
                 'text' => env('APP_ENV') == 'local' ? $th->getMessage() . ' ' . $th->getLine() : 'Failed to delete document',
             ]);
+        }
+    }
+
+    public function preview(string $id)
+    {
+        try {
+            $data = Attachment::where('id', $id)->first();
+            if (! $data || ! $data->attachment) {
+                abort(404, 'Attachment not found');
+            }
+
+            $url = $data->attachment;
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
+                if (strpos($url, 'blob.core.windows.net') !== false) {
+                    $parsedUrl = parse_url($url);
+                    $path = ltrim($parsedUrl['path'] ?? '', '/');
+                    $parts = explode('/', $path, 2);
+                    if (count($parts) === 2) {
+                        $container = $parts[0];
+                        // Normalize double slashes and decode %20 so Azure SAS API can match the actual filename
+                        $filePath = urldecode(preg_replace('/\/+/', '/', $parts[1]));
+                        $sasResult = GetBlobSasUri($container, $filePath, 5);
+                        if ($sasResult && ! empty($sasResult['blobUriSas'])) {
+                            $url = $sasResult['blobUriSas'];
+                        }
+                    }
+                }
+            } else {
+                $clean_path = Str::after($url, 'public/');
+                if (Storage::disk('local')->exists($clean_path)) {
+                    $mime = Storage::disk('local')->mimeType($clean_path);
+
+                    return response()->file(Storage::disk('local')->path($clean_path), [
+                        'Content-Type' => $mime,
+                        'Content-Disposition' => 'inline; filename="'.basename($clean_path).'"',
+                    ]);
+                }
+                abort(404, 'Local file not found');
+            }
+
+            // Stream from remote URL
+            $client = new Client;
+            $response = $client->request('GET', $url, [
+                'stream' => true,
+            ]);
+
+            $body = $response->getBody();
+            $contentType = $response->getHeaderLine('Content-Type');
+
+            // If the Content-Type is application/octet-stream or empty, but the URL ends with .pdf, force application/pdf
+            if (empty($contentType) || $contentType === 'application/octet-stream') {
+                $cleanPath = parse_url($url, PHP_URL_PATH);
+                if (strtolower(pathinfo($cleanPath, PATHINFO_EXTENSION)) === 'pdf') {
+                    $contentType = 'application/pdf';
+                }
+            }
+
+            // Clean the filename
+            $filename = basename(parse_url($url, PHP_URL_PATH));
+
+            return response()->stream(function () use ($body) {
+                while (! $body->eof()) {
+                    echo $body->read(1024 * 8);
+                    flush();
+                }
+            }, 200, [
+                'Content-Type' => $contentType,
+                'Content-Disposition' => 'inline; filename="'.$filename.'"',
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Preview error: '.$e->getMessage());
+            abort(500, 'Failed to preview file');
         }
     }
 }

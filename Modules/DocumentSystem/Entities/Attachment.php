@@ -19,6 +19,8 @@ class Attachment extends Model
         'file_size',
         'file_type',
         'path',
+        'blob_url',
+        'blob_response',
         'status',
     ];
 

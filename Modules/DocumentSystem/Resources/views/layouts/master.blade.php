@@ -140,6 +140,92 @@
         })
     </script>
 
+    @include('documentsystem::layouts.partials.preview-modal')
+
+    <script type="text/javascript">
+        function previewBlobFile(id, fileName, type = 'document') {
+            const modal = new bootstrap.Modal(document.getElementById('previewAttachmentModal'));
+            const spinner = document.getElementById('preview-loading-spinner');
+            const pdfContainer = document.getElementById('preview-pdf-container');
+            const pdfIframe = document.getElementById('preview-pdf-iframe');
+            const imgContainer = document.getElementById('preview-image-container');
+            const imgElement = document.getElementById('preview-image-element');
+            const officeContainer = document.getElementById('preview-office-container');
+            const officeIframe = document.getElementById('preview-office-iframe');
+            const fallbackContainer = document.getElementById('preview-fallback-container');
+            const downloadBtn = document.getElementById('preview-download-btn');
+            const titleSpan = document.getElementById('preview-file-name');
+
+            // Set title and show loading/modal
+            titleSpan.innerText = fileName;
+            spinner.classList.remove('d-none');
+            pdfContainer.classList.add('d-none');
+            imgContainer.classList.add('d-none');
+            officeContainer.classList.add('d-none');
+            fallbackContainer.classList.add('d-none');
+            
+            modal.show();
+
+            const routeUrl = "{{ route('document-systems::attachments.sas-uri', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+
+            fetch(routeUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    const url = data.url;
+                    const ext = data.extension;
+
+                    if (ext === 'pdf') {
+                        const previewUrl = "{{ route('document-systems::attachments.preview', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+                        pdfIframe.src = previewUrl;
+                        pdfContainer.classList.remove('d-none');
+                    } else if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                        const previewUrl = "{{ route('document-systems::attachments.preview', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+                        imgElement.src = previewUrl;
+                        imgContainer.classList.remove('d-none');
+                    } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
+                        // Microsoft Office Online viewer
+                        officeIframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+                        officeContainer.classList.remove('d-none');
+                    } else {
+                        downloadBtn.href = url;
+                        fallbackContainer.classList.remove('d-none');
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to preview file:', err);
+                    downloadBtn.href = '#';
+                    fallbackContainer.classList.remove('d-none');
+                })
+                .finally(() => {
+                    spinner.classList.add('d-none');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalEl = document.getElementById('previewAttachmentModal');
+            if (modalEl) {
+                modalEl.addEventListener('hidden.bs.modal', function () {
+                    const pdfIframe = document.getElementById('preview-pdf-iframe');
+                    const officeIframe = document.getElementById('preview-office-iframe');
+                    const imgElement = document.getElementById('preview-image-element');
+                    
+                    if (pdfIframe && pdfIframe.src && pdfIframe.src.startsWith('blob:')) {
+                        URL.revokeObjectURL(pdfIframe.src);
+                    }
+                    
+                    if (pdfIframe) pdfIframe.src = '';
+                    if (officeIframe) officeIframe.src = '';
+                    if (imgElement) imgElement.src = '';
+                });
+            }
+        });
+    </script>
+
     @livewireScripts
     @stack('scripts')
 

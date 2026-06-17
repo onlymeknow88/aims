@@ -381,8 +381,9 @@
                         <div class="files-content d-flex flex-column gap-2">
                             @foreach ($attachments as $item)
                                 <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
+                                    style="cursor: pointer;"
                                     data-bs-toggle="tooltip" data-bs-placement="top"
-                                    wire:click.prevent="detailAttachment('{{ $item->id }}')">
+                                    onclick="previewBlobFile('{{ $item->id }}', '{{ $item->file_name }}', 'document')">
                                     <div class="thumb mb-2">
                                         <img src="{{ $item->icon_file_type }}" alt="pdf">
                                     </div>
@@ -661,7 +662,57 @@
             $('#modalActivity').modal('show');
         });
         window.addEventListener('detail-media', (path) => {
-            window.open(path.detail, '_blank');
+            // Path detail may contain local storage asset path or blob. Open in preview modal if it matches a file extension
+            const url = path.detail;
+            let fileName = url.substring(url.lastIndexOf('/') + 1);
+            let cleanUrl = url.split('?')[0];
+            let ext = cleanUrl.substring(cleanUrl.lastIndexOf('.') + 1).toLowerCase();
+
+            // Extract real filename and extension from query string if available
+            if (url.includes('?')) {
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                if (urlParams.has('filename')) {
+                    fileName = urlParams.get('filename');
+                    ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+                }
+            }
+
+            // Set title and show modal
+            const modal = new bootstrap.Modal(document.getElementById('previewAttachmentModal'));
+            const spinner = document.getElementById('preview-loading-spinner');
+            const pdfContainer = document.getElementById('preview-pdf-container');
+            const pdfIframe = document.getElementById('preview-pdf-iframe');
+            const imgContainer = document.getElementById('preview-image-container');
+            const imgElement = document.getElementById('preview-image-element');
+            const officeContainer = document.getElementById('preview-office-container');
+            const officeIframe = document.getElementById('preview-office-iframe');
+            const fallbackContainer = document.getElementById('preview-fallback-container');
+            const downloadBtn = document.getElementById('preview-download-btn');
+            const titleSpan = document.getElementById('preview-file-name');
+
+            titleSpan.innerText = fileName;
+            spinner.classList.remove('d-none');
+            pdfContainer.classList.add('d-none');
+            imgContainer.classList.add('d-none');
+            officeContainer.classList.add('d-none');
+            fallbackContainer.classList.add('d-none');
+            
+            modal.show();
+
+            if (ext === 'pdf') {
+                pdfIframe.src = url;
+                pdfContainer.classList.remove('d-none');
+            } else if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                imgElement.src = url;
+                imgContainer.classList.remove('d-none');
+            } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
+                officeIframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+                officeContainer.classList.remove('d-none');
+            } else {
+                downloadBtn.href = url;
+                fallbackContainer.classList.remove('d-none');
+            }
+            spinner.classList.add('d-none');
         });
         // window.addEventListener('confirm-rooting-approval', (detail) => {
         //     let type = detail.detail;

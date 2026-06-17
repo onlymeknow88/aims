@@ -1,0 +1,13 @@
+document system
+
+1. Maker -> Submit for review -> ke Approval CRS -> Maker melengkapi -> waiting for review -> dari approval crs ini routing approval -> Maker upload lagi document yg full approve -> Approval CRS ini bisa approve dan return for comment -> ke document active
+2. error watermark saat approve sudah selesai di pdf nya tidak muncul
+
+fieldleaderhsip
+
+1. Company KTT/PJO pisah saja KTT sendiri PJO sendiri (ga jadi)
+2. seharusnya routing approval itu pja dari area manager section itu sendiri (ga jadi)
+
+
+KO
+1. error di brand

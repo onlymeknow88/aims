@@ -24,8 +24,9 @@ class MappingIndex extends Component
 
     // model attributes
     public string $name = '';
-    public string $category_id  = '';
+    public string $category_id = '';
     public string $mapping_index = '';
+    public $editId = null; // ← tambahkan ini
 
     // rules
     protected $rules = [
@@ -36,8 +37,7 @@ class MappingIndex extends Component
 
     public function mount()
     {
-        $categories = Category::all_related_data();
-        $this->categories = $categories;
+        //
     }
 
     public function hydrate()
@@ -67,24 +67,27 @@ class MappingIndex extends Component
      * Function to save new modules
      * @param string name
      */
-    public function saveData($id = null)
+    public function saveData()
     {
-        $validate = $this->validate($this->validationRules($id), [
+        $validate = $this->validate($this->validationRules($this->editId), [
             'name.required' => trans('global.name_required'),
             'mapping_index.required' => trans('global.index_required'),
             'category_id.required' => trans('global.module_required'),
         ]);
 
         try {
-            if ($id) {
-                Mapping::updateData($validate, $id);
+            if ($this->editId) {
+                Mapping::updateData($validate, $this->editId); // ← pakai $this->editId
             } else {
                 Mapping::store($validate);
             }
+
             $this->reset_form();
             $this->dispatchBrowserEvent('close-modal');
 
-            $this->flash('success', 'Success create new module mapping', [
+            $this->flash('success', $this->editId
+                ? 'Success update mapping'
+                : 'Success create new module mapping', [
                 'position' => 'top-end',
                 'timer' => 3000,
                 'toast' => true,
@@ -92,11 +95,12 @@ class MappingIndex extends Component
 
             return redirect()->route('document-systems::master.mapping.index');
         } catch (\Throwable $th) {
-
             return $this->dispatchBrowserEvent('swal', [
                 'icon' => 'warning',
                 'title' => 'Error',
-                'text' => env('APP_ENV') == 'local' ? $th->getMessage() . ' ' . $th->getLine() : trans('global.something_went_wrong'),
+                'text' => env('APP_ENV') == 'local'
+                    ? $th->getMessage() . ' ' . $th->getLine()
+                    : trans('global.something_went_wrong'),
             ]);
         }
     }
@@ -109,6 +113,8 @@ class MappingIndex extends Component
     {
         $this->name = '';
         $this->category_id = '';
+        $this->mapping_index = '';
+        $this->editId = null;
     }
 
     public function getActiveListingsProperty(): LengthAwarePaginator
@@ -146,7 +152,7 @@ class MappingIndex extends Component
             $this->countSelected = 0;
         } else {
             // Select all items
-            $this->selected_rows = $this->activeListings->pluck('id')->map(fn ($id) => (string) $id);
+            $this->selected_rows = $this->activeListings->pluck('id')->map(fn($id) => (string) $id);
             $this->selectAll = true;
             $this->countSelected = $this->activeListings->count();
 
@@ -179,12 +185,11 @@ class MappingIndex extends Component
      */
     public function editMapping($id)
     {
-        $data = Mapping::select('name', 'category_id', 'index')
-            ->with('category:id')
-            ->find($id);
+        $data = Mapping::find($id);
         if ($data) {
+            $this->editId = $id; // ← simpan id di sini
             $this->name = $data->name;
-            $this->category_id = $data->category->id;
+            $this->category_id = $data->category_id;
             $this->mapping_index = implode(' ', explode('_', $data->index));
         }
 
@@ -333,10 +338,19 @@ class MappingIndex extends Component
      */
     public function render()
     {
+        $this->categories = Category::with('module:id,name')
+            ->select('id', 'name', 'index', 'module_id')
+            ->orderBy('index')
+            ->get();
+
+        $categories = $this->categories;
         $mappings = Mapping::with('category:id,name')->orderBy('index', 'asc')->get();
-        return view('documentsystem::livewire.master.mapping-index', compact('mappings'))
+        return view('documentsystem::livewire.master.mapping-index', compact('mappings', 'categories'))
             ->layout('documentsystem::layouts.app');
     }
+
+
+
 
     /**
      * Function to send all type notification in this controller

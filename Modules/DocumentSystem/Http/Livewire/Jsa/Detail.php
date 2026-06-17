@@ -294,7 +294,11 @@ class Detail extends Component
             'activity.document:id'
         ])->find($id);
 
-        $path =  asset('storage/document_systems/' . $data->activity->document->id . '/revision/' . $data->name);
+        if ($data->blob_url) {
+            $path = route('document-systems::attachments.preview', ['id' => $id, 'type' => 'activity', 'filename' => $data->name]);
+        } else {
+            $path =  asset('storage/document_systems/' . $data->activity->document->id . '/revision/' . $data->name);
+        }
         return $this->dispatchBrowserEvent('detail-media', $path);
     }
 

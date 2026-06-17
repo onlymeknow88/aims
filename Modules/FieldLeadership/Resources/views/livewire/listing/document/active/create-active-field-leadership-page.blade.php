@@ -719,6 +719,7 @@
                                     class="row mb-3 form-group required {{ $risk_condition[$loop->index]['repaired'] == true ? '' : 'd-none' }}">
 
                                     <div class="col-sm-12 mb-3">
+                                        {{-- 1 --}}
                                         <label for="">Lampiran Temuan KTA/TTA</label>
                                         <div class="">
                                             <button class="btn btn-outline-upload w-100 position-relative h-128px"
@@ -768,6 +769,7 @@
                                     class="row mb-3 form-group required {{ $risk_condition[$loop->index]['repaired'] != true ? '' : 'd-none' }}">
 
                                     <div class="col-sm-12">
+                                        {{-- 2 --}}
                                         <label for="">Lampiran Temuan KTA/TTA</label>
                                         <div class="">
                                             <button class="btn btn-outline-upload w-100 position-relative h-128px"
@@ -1055,7 +1057,7 @@
         });
 
         $(document).ready(function() {
-            //    
+            //
         });
 
         const Toast = Swal.mixin({

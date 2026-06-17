@@ -4,15 +4,19 @@ namespace Modules\DocumentSystem\Http\Livewire\Master;
 
 use App\Models\Modules;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Livewire\Component;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Modules\DocumentSystem\Entities\Module;
+use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\DocumentSystem\Entities\Module;
+use Modules\DocumentSystem\Imports\ModuleImport as ModuleImportJob;
+use Livewire\WithFileUploads;
 
 class ModuleIndex extends Component
 {
     use LivewireAlert;
+    use WithFileUploads;
 
     // global variables
     public $selected_rows = [];
@@ -23,6 +27,12 @@ class ModuleIndex extends Component
     // model attributes
     public string $name = '';
     public string $module_index = '';
+
+    // ── Import ──────────────────────────────
+    public $importFile = null;
+    public bool $importDone = false;
+    public array $importErrors = [];
+
 
     // rules
     protected array $rules = [
@@ -336,5 +346,42 @@ class ModuleIndex extends Component
             'icon' => $icon,
             'text' => $message,
         ]);
+    }
+
+    public function importModule()
+    {
+        $this->validate([
+            'importFile' => 'required|file|mimes:xlsx,xls,csv|max:2048',
+        ], [
+            'importFile.required' => 'File wajib dipilih.',
+            'importFile.mimes'    => 'Format file harus xlsx, xls, atau csv.',
+        ]);
+
+        $this->importErrors = [];
+        $this->importDone   = false;
+
+        try {
+            $import = new ModuleImportJob();
+            Excel::import($import, $this->importFile->getRealPath());
+
+            foreach ($import->errors() as $error) {
+                $this->importErrors[] = $error->getMessage();
+            }
+
+            $this->importDone = true;
+            $this->importFile = null;
+
+            $this->dispatchBrowserEvent('import-success');
+        } catch (\Throwable $e) {
+            $this->addError('importFile', 'Import gagal: ' . $e->getMessage());
+        }
+    }
+
+    public function resetImport()
+    {
+        $this->importFile   = null;
+        $this->importDone   = false;
+        $this->importErrors = [];
+        $this->resetErrorBag('importFile');
     }
 }

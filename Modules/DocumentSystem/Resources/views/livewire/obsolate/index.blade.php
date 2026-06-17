@@ -728,12 +728,13 @@
                                             <b>
                                                 <ol>
                                                     @foreach ($items->attachments as $attachment)
-                                                        <li>
-                                                            <a href="{{ asset('storage/document_systems/' . $attachment->document_id . '/' . $attachment->file_name) }}"
-                                                                target="_blank" class="d-block">
-                                                                {{ $attachment->file_name }}
-                                                            </a>
-                                                        </li>
+                                                         @if (str_starts_with($attachment->file_name, 'Final-'))
+        <li>
+            <a href="javascript:void(0)" onclick="event.stopPropagation(); previewBlobFile('{{ $attachment->id }}', '{{ $attachment->file_name }}', 'document')" class="d-block">
+                {{ $attachment->file_name }}
+            </a>
+        </li>
+    @endif
                                                     @endforeach
                                                 </ol>
                                             </b>

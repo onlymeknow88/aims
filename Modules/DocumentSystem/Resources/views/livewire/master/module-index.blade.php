@@ -10,6 +10,60 @@
 
     @include('documentsystem::livewire.master.add-module')
 
+    {{-- Modal Import --}}
+    <div class="modal fade" id="modalImport" tabindex="-1" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Module dari Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Pilih File Excel</label>
+                        <input type="file" wire:model="importFile" accept=".xlsx,.xls,.csv"
+                            class="form-control @error('importFile') is-invalid @enderror" />
+                        @error('importFile')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div wire:loading wire:target="importFile" class="text-muted small mt-1">
+                            Mengupload...
+                        </div>
+                    </div>
+
+                    @if ($importDone)
+                        <div class="alert alert-success py-2 small mb-2">✓ Import berhasil!</div>
+                    @endif
+
+                    @if (count($importErrors) > 0)
+                        <div class="alert alert-warning py-2 small">
+                            <strong>Baris yang dilewati:</strong>
+                            <ul class="mb-0 mt-1 ps-3">
+                                @foreach ($importErrors as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <small class="text-muted">
+                        Format kolom Excel: <code>index</code>, <code>name</code>, <code>has_document_number</code>
+                    </small>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" wire:click="importModule" wire:loading.attr="disabled"
+                        wire:target="importModule" class="btn btn-primary">
+                        <span wire:loading.remove wire:target="importModule">Import</span>
+                        <span wire:loading wire:target="importModule">Memproses...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="section-content">
 
         <div class="section-title py-3 px-2">
@@ -27,6 +81,14 @@
                             <img src="{{ asset('images/icons/add-new.svg') }}" alt="image add new">
                         </span>
                         <span class="text-button">Add New</span>
+                    </a>
+
+                    <a data-bs-toggle="modal" data-bs-target="#modalImport" type="button"
+                        class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
+                        <span class="icon d-flex align-items-center">
+                            <img src="{{ asset('images/icons/add-new.svg') }}" alt="image import">
+                        </span>
+                        <span class="text-button">Import</span>
                     </a>
 
                     @if ($countSelected > 0)
@@ -92,7 +154,8 @@
                                         <td class="td-check">
                                             <span class="icon-checked"></span>
                                         </td>
-                                        <td wire:click.prevent='selectTable(`{{ $item['id'] }}`)'>{{ $item['index'] }}
+                                        <td wire:click.prevent='selectTable(`{{ $item['id'] }}`)'>
+                                            {{ $item['index'] }}
                                         </td>
                                         <td wire:click.prevent='selectTable(`{{ $item['id'] }}`)'>
                                             {{ $item['name'] }}
@@ -140,6 +203,10 @@
         </div><!-- /.table-maker -->
 
     </div><!-- /.section-content -->
+
+
+
+
 </div>
 
 @push('scripts')
@@ -185,6 +252,16 @@
                     }
                 },
             });
+        });
+
+        // Reset state import saat modal ditutup
+        $('#modalImport').on('hidden.bs.modal', () => {
+            @this.call('resetImport');
+        });
+
+        // Auto close modal + redirect setelah import sukses
+        window.addEventListener('import-success', () => {
+            $('#modalImport').modal('hide');
         });
 
         // modal event

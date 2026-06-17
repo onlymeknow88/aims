@@ -21,7 +21,7 @@
 
                 <div class="toolbar-left d-flex align-items-center">
 
-                    <a wire:click.prevent="createMapping" data-bs-toggle="modal" data-bs-target="#modalForm" type="button"
+                    <a onclick="openCreateMapping()" type="button"
                         class="button-toolbar d-flex gap-2 align-items-center py-2 px-3 add-new">
                         <span class="icon d-flex align-items-center">
                             <img src="{{ asset('images/icons/add-new.svg') }}" alt="image add new">
@@ -38,20 +38,19 @@
                         </a>
                     @endif
 
-
                     @if ($countSelected == 1)
                         @php
                             $reset = reset($selected_rows);
                         @endphp
-                        <a wire:click="editMapping(`{{ $reset }}`)" type="button" data-bs-toggle="modal"
-                            data-bs-target="#modalForm"
+                        <a onclick="openEditMapping('{{ $reset }}')" type="button"
                             class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
                             <span class="icon d-flex align-items-center"><img
                                     src="{{ asset('images/icons/pencil.png') }}" alt="image delete"></span>
                             <span class="text-button">Edit</span>
                         </a>
                     @endif
-                </div><!-- /.toolbar-left -->
+
+                </div>
 
                 <div class="toolbar-right d-flex align-items-center">
 
@@ -151,6 +150,92 @@
         window.addEventListener('updateModalAttribute', (param) => {
             if (param.detail.type == 'edit') {
                 $('#exampleModalLabel').html("{{ trans('global.edit_module') }}");
+            } else if (param.detail.type == 'create') {
+                $('#exampleModalLabel').html("{{ trans('global.add_category') }}");
+            }
+        });
+
+        window.addEventListener('close-modal', () => {
+            $('#modalForm').modal('hide');
+        });
+
+        window.addEventListener('confirm-delete', (id) => {
+            let uid = id.detail;
+            newSwal.fire({
+                title: 'Are you sure?',
+                text: "{{ trans('global.confirm_delete') }}",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: "{{ trans('global.yes') }}" + ' ' + "{{ trans('global.delete') }}",
+                cancelButtonText: "{{ trans('global.cancel') }}",
+                allowOutsideClick: () => !Swal.isLoading(),
+                preConfirm: function(result) {
+                    if (result) {
+                        return @this.call('submitDelete', uid);
+                    }
+                },
+            });
+        });
+
+        window.addEventListener('confirmBulkDelete', () => {
+            newSwal.fire({
+                title: "{{ trans('global.bulk_confirmation') }}",
+                text: "{{ trans('global.confirm_delete') }}",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: "{{ trans('global.yes') }}" + ' ' + "{{ trans('global.delete') }}",
+                cancelButtonText: "{{ trans('global.cancel') }}",
+                allowOutsideClick: () => !Swal.isLoading(),
+                preConfirm: function(result) {
+                    if (result) {
+                        return @this.call('submitBulkDelete');
+                    }
+                },
+            });
+        });
+
+        $('#modalForm').on('hidden.bs.modal', () => {
+            @this.reset_form();
+            @this.clearErrorBag();
+        });
+
+        $('#modalForm').on('shown.bs.modal', () => {
+            $('#name').focus();
+            window.livewire.emit('select2');
+        });
+
+        window.openCreateMapping = function() {
+            $('#exampleModalLabel').html("{{ trans('global.add_category') }}");
+            $('#modalForm').modal('show');
+        };
+
+        window.openEditMapping = function(id) {
+            $('#exampleModalLabel').html("{{ trans('global.edit_module') }}");
+            @this.call('editMapping', id).then(() => {
+                $('#modalForm').modal('show');
+            });
+        };
+
+        document.getElementById('form-mapping')?.addEventListener('submit', () => {
+            $('#btn-save-spinner').removeClass('d-none');
+            $('#btn-save-label').addClass('d-none');
+            $('#btn-save').prop('disabled', true);
+        });
+
+        // Saat Livewire selesai proses (sukses ATAU validasi gagal) — reset spinner
+        Livewire.hook('message.processed', (message, component) => {
+            $('#btn-save-spinner').addClass('d-none');
+            $('#btn-save-label').removeClass('d-none');
+            $('#btn-save').prop('disabled', false);
+        });
+    </script>
+@endpush
+
+{{-- @push('scripts')
+    <script>
+        window.addEventListener('updateModalAttribute', (param) => {
+            if (param.detail.type == 'edit') {
+                $('#exampleModalLabel').html("{{ trans('global.edit_module') }}");
                 $('#form-mapping').attr('wire:submit.prevent', `saveData('${param.detail.id}')`)
             } else if (param.detail.type == 'create') {
                 $('#form-mapping').attr('wire:submit.prevent', `saveData()`)
@@ -204,4 +289,4 @@
             $('#name').focus();
         });
     </script>
-@endpush
+@endpush --}}

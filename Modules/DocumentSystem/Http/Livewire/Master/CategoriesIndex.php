@@ -38,8 +38,7 @@ class CategoriesIndex extends Component
 
     public function mount()
     {
-        $modules = Module::all();
-        $this->modules = $modules;
+        //
     }
 
     public function onSelectedItem($id)
@@ -194,12 +193,10 @@ class CategoriesIndex extends Component
      */
     public function editCategory($id)
     {
-        $data = Category::select('name', 'module_id', 'index')
-            ->with('module:id,name')
-            ->find($id);
+        $data = Category::find($id);
         if ($data) {
             $this->name = $data->name;
-            $this->module_id = $data->module->id;
+            $this->module_id = $data->module_id;
             $this->category_index = implode(' ', explode('_', $data->index));
         }
 
@@ -334,8 +331,10 @@ class CategoriesIndex extends Component
      */
     public function render()
     {
+       $this->modules = Module::orderBy('index', 'asc')->get();
+        $modules = $this->modules;
         $categories = Category::with('module:id,name')->orderBy('index', 'asc')->get();
-        return view('documentsystem::livewire.master.categories-index', compact('categories'))
+        return view('documentsystem::livewire.master.categories-index', compact('categories', 'modules'))
             ->layout('documentsystem::layouts.app');
     }
 

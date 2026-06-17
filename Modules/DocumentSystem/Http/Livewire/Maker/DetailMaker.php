@@ -249,7 +249,14 @@ class DetailMaker extends Component
             'activity.document:id'
         ])->find($id);
 
-        $path =  Storage::disk('public')->url('document_systems/' . $data->activity->document->id . '/revision/' . $data->name);
+        if ($data->blob_url) {
+            // Use the existing SAS URI route with type=activity
+            $path = route('document-systems::attachments.preview', ['id' => $id, 'type' => 'activity', 'filename' => $data->name]);
+        } else {
+            // Fallback to local storage for legacy data
+            $path = Storage::disk('public')->url('document_systems/' . $data->activity->document->id . '/revision/' . $data->name);
+        }
+
         return $this->dispatchBrowserEvent('detail-media', $path);
     }
 
@@ -258,10 +265,7 @@ class DetailMaker extends Component
      */
     public function detailAttachment($id)
     {
-        $data = Attachment::select('file_name', 'document_id')
-            ->find($id);
-        // $path = asset('storage/document_systems/' . $data->document_id . '/' . $data->file_name);
-        $path = Storage::disk('public')->url('document_systems/' . $data->document_id . '/' . $data->file_name);
+        $path = route('document-systems::attachments.preview', ['id' => $id, 'type' => 'document']);
         return $this->dispatchBrowserEvent('detail-media', $path);
     }
 

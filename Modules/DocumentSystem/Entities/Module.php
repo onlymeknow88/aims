@@ -15,6 +15,8 @@ class Module extends Model
 
     protected $table = 'document_system_modules';
 
+    protected $guarded = [];
+
     public function categories(): HasMany
     {
         return $this->hasMany(ModuleCategory::class, 'module_id', 'id');

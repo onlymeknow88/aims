@@ -16,12 +16,12 @@
             <h4>@lang('global.categories')</h4>
         </div><!-- /.section-title -->
 
-        <div class="table-maker">
+        <div class="table-maker" x-data="{ info: false }">
             <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2 sticky-top">
 
                 <div class="toolbar-left d-flex align-items-center">
 
-                    <a wire:click.prevent="createCategory" data-bs-toggle="modal" data-bs-target="#modalForm" type="button"
+                    <a onclick="openCreateCategory()" type="button"
                         class="button-toolbar d-flex gap-2 align-items-center py-2 px-3 add-new">
                         <span class="icon d-flex align-items-center">
                             <img src="{{ asset('images/icons/add-new.svg') }}" alt="image add new">
@@ -42,8 +42,7 @@
                         @php
                             $reset = reset($itemSelected);
                         @endphp
-                        <a wire:click="editCategory(`{{ $reset }}`)" type="button" data-bs-toggle="modal"
-                            data-bs-target="#modalForm"
+                        <a onclick="openEditCategory('{{ $reset }}')" type="button"
                             class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
                             <span class="icon d-flex align-items-center"><img
                                     src="{{ asset('images/icons/pencil.png') }}" alt="image delete"></span>
@@ -202,6 +201,36 @@
         $('#modalForm').on('shown.bs.modal', () => {
             // set focus to name field
             $('#name').focus();
+             window.livewire.emit('select2');
         });
+
+        // Open create modal: dispatch event directly in JS, no Livewire round-trip needed
+        window.openCreateCategory = function() {
+            $('#modalForm').modal('show');
+            window.dispatchEvent(new CustomEvent('updateModalAttribute', {
+                detail: { type: 'create' }
+            }));
+        };
+
+        // Open edit modal: show modal first, then call Livewire editCategory
+        window.openEditCategory = function(id) {
+            // Open the modal immediately
+            $('#modalForm').modal('show');
+            // Call editCategory after modal is visible to avoid spinner on open
+            @this.call('editCategory', id);
+        };
+
+        // Tampilkan spinner hanya saat saveData
+Livewire.hook('message.processed', (message, component) => {
+    $('#btn-save-spinner').addClass('d-none');
+    $('#btn-save-label').removeClass('d-none');
+    $('#btn-save-category').prop('disabled', false);
+});
+
+window.addEventListener('livewire:response', () => {
+    $('#btn-save-spinner').addClass('d-none');
+    $('#btn-save-label').removeClass('d-none');
+    $('#btn-save-category').removeAttr('disabled');
+});
     </script>
 @endpush

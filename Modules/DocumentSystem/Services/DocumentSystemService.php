@@ -89,24 +89,58 @@ class DocumentSystemService
             $model->save();
         }
 
-        // handle document
+        // handle document (Local Storage — deprecated, replaced by blob version below)
+        // for ($b = 0; $b < count($documents); $b++) {
+        //     if (File::exists(public_path('storage/tmp/document_systems/' . $documents[$b]['name']))) {
+        //         if (!Storage::disk('public')->exists('document_systems/' . $document->id)) {
+        //             Storage::disk('public')->makeDirectory('document_systems/' . $document->id);
+        //         }
+        //
+        //         Storage::disk('public')->move('tmp/document_systems/' . $documents[$b]['name'], 'document_systems/' . $document->id . '/' . $documents[$b]['name']);
+        //
+        //         $model_document = new Attachment();
+        //         $model_document->document_id = $document->id;
+        //         $model_document->file_name = $documents[$b]['name'];
+        //         $model_document->file_size = $documents[$b]['size'];
+        //         $model_document->file_type = $documents[$b]['ext'];
+        //         $model_document->path = public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']);
+        //         $model_document->save();
+        //
+        //         Storage::disk('public')->delete('tmp/document_systems/' . $documents[$b]['name']);
+        //     }
+        // }
+
+        // handle document via Blob Storage
         for ($b = 0; $b < count($documents); $b++) {
-            if (File::exists(public_path('storage/tmp/document_systems/' . $documents[$b]['name']))) {
-                if (!Storage::disk('public')->exists('document_systems/' . $document->id)) {
-                    Storage::disk('public')->makeDirectory('document_systems/' . $document->id);
+            $filePathTemp = public_path('storage/tmp/document_systems/' . $documents[$b]['name']);
+
+            if (File::exists($filePathTemp)) {
+                $directPath = 'document_systems/' . $document->id . '/';
+
+                $blobResult = uploadToBlobStorage(
+                    $documents[$b]['name'], // filename
+                    $filePathTemp,          // filePathTemp (local tmp file)
+                    $directPath             // direktori di blob
+                );
+
+                // Hapus file tmp lokal setelah upload ke blob
+                if (File::exists($filePathTemp)) {
+                    File::delete($filePathTemp);
                 }
 
-                Storage::disk('public')->move('tmp/document_systems/' . $documents[$b]['name'], 'document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                if (! $blobResult['fileBlobUrl']) {
+                    \Log::warning("DocumentSystemService::store: Blob upload failed for file {$documents[$b]['name']} in document ID {$document->id}.");
+                }
 
                 $model_document = new Attachment();
-                $model_document->document_id = $document->id;
-                $model_document->file_name = $documents[$b]['name'];
-                $model_document->file_size = $documents[$b]['size'];
-                $model_document->file_type = $documents[$b]['ext'];
-                $model_document->path = public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                $model_document->document_id   = $document->id;
+                $model_document->file_name     = $documents[$b]['name'];
+                $model_document->file_size     = $documents[$b]['size'];
+                $model_document->file_type     = $documents[$b]['ext'];
+                $model_document->path          = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                $model_document->blob_url      = $blobResult['fileBlobUrl'] ?? null;
+                $model_document->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                 $model_document->save();
-
-                Storage::disk('public')->delete('tmp/document_systems/' . $documents[$b]['name']);
             }
         }
 
@@ -207,25 +241,60 @@ class DocumentSystemService
                 }
             }
 
+            // handle document upload (Local Storage — deprecated, replaced by blob version below)
+            // for ($b = 0; $b < count($documents); $b++) {
+            //     if (File::exists(public_path('storage/tmp/document_systems/' . $documents[$b]['name']))) {
+            //         if (!Storage::disk('public')->exists('document_systems/' . $document->id)) {
+            //             Storage::disk('public')->makeDirectory('document_systems/' . $document->id);
+            //         }
+            //
+            //         // File::move(public_path('storage/tmp/document_systems/' . $documents[$b]['name']), public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']));
+            //
+            //         Storage::disk('public')->move('tmp/document_systems/' . $documents[$b]['name'], 'document_systems/' . $document->id . '/' . $documents[$b]['name']);
+            //
+            //         $model_document = new Attachment();
+            //         $model_document->document_id = $document->id;
+            //         $model_document->file_name = $documents[$b]['name'];
+            //         $model_document->file_size = $documents[$b]['size'];
+            //         $model_document->file_type = $documents[$b]['ext'];
+            //         $model_document->path = public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']);
+            //         $model_document->save();
+            //
+            //         Storage::disk('public')->delete('tmp/document_systems/' . $documents[$b]['name']);
+            //     }
+            // }
+
+            // handle document upload via Blob Storage
             for ($b = 0; $b < count($documents); $b++) {
-                if (File::exists(public_path('storage/tmp/document_systems/' . $documents[$b]['name']))) {
-                    if (!Storage::disk('public')->exists('document_systems/' . $document->id)) {
-                        Storage::disk('public')->makeDirectory('document_systems/' . $document->id);
+                $filePathTemp = public_path('storage/tmp/document_systems/' . $documents[$b]['name']);
+
+                if (File::exists($filePathTemp)) {
+                    $directPath = 'document_systems/' . $document->id . '/';
+
+                    $blobResult = uploadToBlobStorage(
+                        $documents[$b]['name'], // filename
+                        $filePathTemp,          // filePathTemp (local tmp file)
+                        $directPath             // direktori di blob
+                    );
+
+                    // Hapus file tmp lokal setelah upload ke blob
+                    if (File::exists($filePathTemp)) {
+                        File::delete($filePathTemp);
                     }
 
-                    // File::move(public_path('storage/tmp/document_systems/' . $documents[$b]['name']), public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']));
-
-                    Storage::disk('public')->move('tmp/document_systems/' . $documents[$b]['name'], 'document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                    if (! $blobResult['fileBlobUrl']) {
+                        \Log::warning("DocumentSystemService::update: Blob upload failed for file {$documents[$b]['name']} in document ID {$document->id}.");
+                    }
 
                     $model_document = new Attachment();
-                    $model_document->document_id = $document->id;
-                    $model_document->file_name = $documents[$b]['name'];
-                    $model_document->file_size = $documents[$b]['size'];
-                    $model_document->file_type = $documents[$b]['ext'];
-                    $model_document->path = public_path('storage/document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                    $model_document->document_id   = $document->id;
+                    $model_document->file_name     = $documents[$b]['name'];
+                    $model_document->file_size     = $documents[$b]['size'];
+                    $model_document->file_type     = $documents[$b]['ext'];
+                    $model_document->path          = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $document->id . '/' . $documents[$b]['name']);
+                    $model_document->blob_url      = $blobResult['fileBlobUrl'] ?? null;
+                    $model_document->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                     $model_document->save();
-
-                    Storage::disk('public')->delete('tmp/document_systems/' . $documents[$b]['name']);
                 }
             }
         }
@@ -354,16 +423,243 @@ class DocumentSystemService
     }
     */
 
+ /**
+     * Function to handle document upload when maker submit for rooting approval BlobStorage
+     */
+    /*
+//     public function handle_document_rooting_approval($files, $id, $add_watermark)
+// {
+//     // Normalize files array
+//     $normalizedFiles = [];
+//     foreach ($files as $fileItem) {
+//         $normalizedFiles[] = [
+//             'id'        => $fileItem['id'] ?? null,
+//             'file_name' => $fileItem['file_name'] ?? $fileItem['name'] ?? null,
+//             'file_size' => $fileItem['file_size'] ?? $fileItem['size'] ?? 0,
+//             'file_type' => $fileItem['file_type'] ?? $fileItem['ext'] ?? null,
+//         ];
+//     }
+//     $files = $normalizedFiles;
+
+//     // Update status current attachment to inactive
+//     Attachment::where('document_id', $id)->update(['status' => false]);
+
+//     $document = Document::find($id);
+
+//     for ($a = 0; $a < count($files); $a++) {
+
+//         // Determine source file path
+//         if (isset($files[$a]['id'])) {
+//             $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+//         } else {
+//             $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+//         }
+
+//         $text_image = public_path('images/watermark.png');
+
+//         // Determine output filename
+//         if ($add_watermark) {
+//             if (strpos($files[$a]['file_name'], 'Final-') === 0) {
+//                 $final_filename = $files[$a]['file_name'];
+//             } else {
+//                 $final_filename = 'Final-' . $files[$a]['file_name'];
+//             }
+//         } else {
+//             $final_filename = $files[$a]['file_name'];
+//         }
+
+//         // Temp output path (local storage sementara sebelum upload ke blob)
+//         $output_file = storage_path('app/tmp/document_systems/' . $id . '/' . $final_filename);
+
+//         // Ensure destination directory exists
+//         $destination_dir = dirname($output_file);
+//         if (!File::exists($destination_dir)) {
+//             File::makeDirectory($destination_dir, 0755, true);
+//         }
+
+//         $watermark_success = false;
+//         $already_watermarked = ($add_watermark && strpos($files[$a]['file_name'], 'Final-') === 0);
+
+//         // ============================================================
+//         // WATERMARK PROCESS (DomPDF)
+//         // ============================================================
+//         if ($already_watermarked) {
+//             if (File::exists($file)) {
+//                 if ($file !== $output_file) {
+//                     File::copy($file, $output_file);
+//                 }
+//                 $watermark_success = true;
+//             }
+//         } else {
+//             if (File::exists($file)) {
+//                 try {
+//                     $orientation = $this->detect_pdf_orientation($file);
+//                     $data = [
+//                         'watermark' => $text_image,
+//                     ];
+
+//                     $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('document_system_final.final_pdf', $data)
+//                         ->setPaper('a4', $orientation);
+
+//                     $pdf->save($output_file);
+//                     $watermark_success = true;
+//                 } catch (\Throwable $e) {
+//                     \Log::warning("DomPDF generation failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
+//                 }
+//             }
+//         }
+
+//         // Fallback: copy original jika watermark gagal
+//         if (!$watermark_success) {
+//             if (File::exists($file)) {
+//                 File::copy($file, $output_file);
+//             } else {
+//                 return $files[$a]['file_name'] . ' file not exist';
+//             }
+//         }
+
+//         // ============================================================
+//         // UPLOAD KE BLOB STORAGE
+//         // ============================================================
+//         $directPath = 'document_systems/' . $id . '/';
+
+//         $blobResult = uploadToBlobStorage(
+//             $final_filename,           // filename
+//             $output_file,              // filePathTemp (local file result watermark)
+//             $directPath                // direktori di blob
+//         );
+
+//         // Hapus file temp lokal setelah upload
+//         if (File::exists($output_file)) {
+//             File::delete($output_file);
+//         }
+
+//         // Jika upload blob gagal, log warning tapi tetap lanjut
+//         if (!$blobResult['fileBlobUrl']) {
+//             \Log::warning("Blob upload failed for file {$final_filename} in document ID {$id}.");
+//         }
+
+//         // ============================================================
+//         // SIMPAN ATTACHMENT KE DATABASE
+//         // ============================================================
+//         $model_document = new Attachment();
+//         $model_document->document_id    = $id;
+//         $model_document->file_name      = $final_filename;
+//         $model_document->file_size      = $files[$a]['file_size'];
+//         $model_document->file_type      = $files[$a]['file_type'];
+//         $model_document->path           = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $id . '/' . $final_filename);
+//         $model_document->blob_url       = $blobResult['fileBlobUrl'] ?? null;
+//         $model_document->blob_response  = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
+//         $model_document->status         = true;
+//         $model_document->save();
+//     }
+// }
+
+    /**
+     * Function to handle document upload when maker submit for rooting approval (Local Storage — deprecated)
+     */
+    // public function handle_document_rooting_approval($files, $id, $add_watermark)
+    // {
+    //     // Normalize files array to ensure consistent keys (supporting both database columns and request inputs)
+    //     $normalizedFiles = [];
+    //     foreach ($files as $fileItem) {
+    //         $normalizedFiles[] = [
+    //             'id' => $fileItem['id'] ?? null,
+    //             'file_name' => $fileItem['file_name'] ?? $fileItem['name'] ?? null,
+    //             'file_size' => $fileItem['file_size'] ?? $fileItem['size'] ?? 0,
+    //             'file_type' => $fileItem['file_type'] ?? $fileItem['ext'] ?? null,
+    //         ];
+    //     }
+    //     $files = $normalizedFiles;
+    //
+    //     // update status current attachment to inactive
+    //     Attachment::where('document_id', $id)->update(['status' => false]);
+    //
+    //     $document = Document::find($id);
+    //
+    //     // add watermark to file request and move to desire folder
+    //     for ($a = 0; $a < count($files); $a++) {
+    //         if (isset($files[$a]['id'])) {
+    //             $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+    //         } else {
+    //             $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+    //         }
+    //         $text_image  = public_path('images/watermark.png');
+    //
+    //         if ($add_watermark) {
+    //             if (strpos($files[$a]['file_name'], 'Final-') === 0) {
+    //                 $final_filename = $files[$a]['file_name'];
+    //             } else {
+    //                 $final_filename = 'Final-' . $files[$a]['file_name'];
+    //             }
+    //         } else {
+    //             $final_filename = $files[$a]['file_name'];
+    //         }
+    //         $output_file = storage_path('app/public/' . 'document_systems/' . $id . '/' . $final_filename);
+    //
+    //         // Ensure destination directory exists
+    //         $destination_dir = dirname($output_file);
+    //         if (!File::exists($destination_dir)) {
+    //             File::makeDirectory($destination_dir, 0755, true);
+    //         }
+    //
+    //         $watermark_success = false;
+    //         $already_watermarked = ($add_watermark && strpos($files[$a]['file_name'], 'Final-') === 0);
+    //
+    //         if ($already_watermarked) {
+    //             if (File::exists($file)) {
+    //                 if ($file !== $output_file) {
+    //                     File::copy($file, $output_file);
+    //                 }
+    //                 $watermark_success = true;
+    //             }
+    //         } else {
+    //             if (File::exists($file)) {
+    //                 try {
+    //                     $orientation = $this->detect_pdf_orientation($file);
+    //                     $data = ['watermark' => $text_image];
+    //                     $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('document_system_final.final_pdf', $data)->setPaper('a4', $orientation);
+    //                     $pdf->save($output_file);
+    //                     $watermark_success = true;
+    //                 } catch (\Throwable $e) {
+    //                     \Log::warning("DomPDF generation failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
+    //                 }
+    //             }
+    //         }
+    //
+    //         if (!$watermark_success) {
+    //             if (File::exists($file)) {
+    //                 File::copy($file, $output_file);
+    //             } else {
+    //                 return $files[$a]['file_name'] . ' file not exist';
+    //             }
+    //         }
+    //
+    //         $model_document = new Attachment();
+    //         $model_document->document_id = $id;
+    //         $model_document->file_name = $final_filename;
+    //         $model_document->file_size = $files[$a]['file_size'];
+    //         $model_document->file_type = $files[$a]['file_type'];
+    //         $model_document->path = public_path('storage/document_systems/' . $id . '/' . $final_filename);
+    //         $model_document->status = true;
+    //         $model_document->save();
+    //     }
+    // }
+
+    /**
+     * Function to handle document upload when maker submit for rooting approval via Blob Storage
+     */
     public function handle_document_rooting_approval($files, $id, $add_watermark)
     {
         // Normalize files array to ensure consistent keys (supporting both database columns and request inputs)
         $normalizedFiles = [];
         foreach ($files as $fileItem) {
             $normalizedFiles[] = [
-                'id' => $fileItem['id'] ?? null,
+                'id'        => $fileItem['id'] ?? null,
                 'file_name' => $fileItem['file_name'] ?? $fileItem['name'] ?? null,
                 'file_size' => $fileItem['file_size'] ?? $fileItem['size'] ?? 0,
                 'file_type' => $fileItem['file_type'] ?? $fileItem['ext'] ?? null,
+                'blob_url'  => $fileItem['blob_url'] ?? null,
             ];
         }
         $files = $normalizedFiles;
@@ -374,12 +670,55 @@ class DocumentSystemService
 
         $document = Document::find($id);
 
-        // add watermark to file request and move to desire folder
+        // add watermark to file request, then upload to blob storage
         for ($a = 0; $a < count($files); $a++) {
-            if (isset($files[$a]['id'])) {
-                $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+            $temp_download_file = null;
+            if (!empty($files[$a]['blob_url'])) {
+                $url = $files[$a]['blob_url'];
+                if (strpos($url, 'blob.core.windows.net') !== false) {
+                    $parsedUrl = parse_url($url);
+                    $path = ltrim($parsedUrl['path'] ?? '', '/');
+                    $parts = explode('/', $path, 2);
+                    if (count($parts) === 2) {
+                        $container = $parts[0];
+                        // Normalize double slashes and decode %20 so Azure SAS API can match the actual filename
+                        $filePath = urldecode(preg_replace('/\/+/', '/', $parts[1]));
+                        $sasResult = GetBlobSasUri($container, $filePath, 15);
+                        if ($sasResult && !empty($sasResult['blobUriSas'])) {
+                            $url = $sasResult['blobUriSas'];
+                        }
+                    }
+                }
+                try {
+                    $fileContent = file_get_contents($url);
+                    if ($fileContent !== false) {
+                        $temp_download_file = storage_path('app/tmp/downloaded_' . uniqid() . '_' . $files[$a]['file_name']);
+                        if (!File::exists(dirname($temp_download_file))) {
+                            File::makeDirectory(dirname($temp_download_file), 0755, true);
+                        }
+                        File::put($temp_download_file, $fileContent);
+                        $file = $temp_download_file;
+                    } else {
+                        if (isset($files[$a]['id'])) {
+                            $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+                        } else {
+                            $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error("handle_document_rooting_approval: Failed to download source file from blob: " . $e->getMessage());
+                    if (isset($files[$a]['id'])) {
+                        $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+                    } else {
+                        $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+                    }
+                }
             } else {
-                $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+                if (isset($files[$a]['id'])) {
+                    $file = public_path('storage/document_systems/' . $id . '/' . $files[$a]['file_name']);
+                } else {
+                    $file = public_path('storage/tmp/document_systems/' . $files[$a]['file_name']);
+                }
             }
             $text_image  = public_path('images/watermark.png');
 
@@ -392,7 +731,9 @@ class DocumentSystemService
             } else {
                 $final_filename = $files[$a]['file_name'];
             }
-            $output_file = storage_path('app/public/' . 'document_systems/' . $id . '/' . $final_filename);
+
+            // Temp output path (local storage sementara sebelum upload ke blob)
+            $output_file = storage_path('app/tmp/document_systems/' . $id . '/' . $final_filename);
 
             // Ensure destination directory exists
             $destination_dir = dirname($output_file);
@@ -400,31 +741,25 @@ class DocumentSystemService
                 File::makeDirectory($destination_dir, 0755, true);
             }
 
-            $watermark_success = false;
-            $already_watermarked = ($add_watermark && strpos($files[$a]['file_name'], 'Final-') === 0);
 
-            if ($already_watermarked) {
-                if (File::exists($file)) {
-                    if ($file !== $output_file) {
-                        File::copy($file, $output_file);
-                    }
-                    $watermark_success = true;
-                }
-            } else {
+            $watermark_success = false;
+
+            if ($add_watermark) {
                 if (File::exists($file)) {
                     try {
-                        $orientation = $this->detect_pdf_orientation($file);
-                        $data = [
-                            'watermark'  => $text_image,
-                        ];
+                        $scriptPath = app_path('Helpers/watermark.py');
+                        $cmd = "python " . escapeshellarg($scriptPath) . " " . escapeshellarg($file) . " " . escapeshellarg($output_file) . " " . escapeshellarg($text_image) . " rooting";
+                        $outputCmd = [];
+                        $returnVar = -1;
+                        exec($cmd, $outputCmd, $returnVar);
 
-                        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('document_system_final.final_pdf', $data)
-                            ->setPaper('a4', $orientation);
-
-                        $pdf->save($output_file);
-                        $watermark_success = true;
+                        if ($returnVar === 0) {
+                            $watermark_success = true;
+                        } else {
+                            \Log::warning("Python watermarking script returned error code {$returnVar}. Output: " . implode("\n", $outputCmd));
+                        }
                     } catch (\Throwable $e) {
-                        \Log::warning("DomPDF generation failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
+                        \Log::warning("Python watermarking failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
                     }
                 }
             }
@@ -434,17 +769,50 @@ class DocumentSystemService
                 if (File::exists($file)) {
                     File::copy($file, $output_file);
                 } else {
+                    if ($temp_download_file && File::exists($temp_download_file)) {
+                        File::delete($temp_download_file);
+                    }
                     return $files[$a]['file_name'] . ' file not exist';
                 }
             }
 
+            if ($temp_download_file && File::exists($temp_download_file)) {
+                File::delete($temp_download_file);
+            }
+
+            // ============================================================
+            // UPLOAD KE BLOB STORAGE
+            // ============================================================
+            $directPath = 'document_systems/' . $id . '/';
+
+            $blobResult = uploadToBlobStorage(
+                $final_filename,   // filename
+                $output_file,      // filePathTemp (local file hasil watermark)
+                $directPath        // folder di blob
+            );
+
+            // Hapus file temp lokal setelah upload ke blob
+            if (File::exists($output_file)) {
+                File::delete($output_file);
+            }
+
+            // Log warning jika blob upload gagal
+            if (!$blobResult['fileBlobUrl']) {
+                \Log::warning("handle_document_rooting_approval: Blob upload failed for file {$final_filename} in document ID {$id}.");
+            }
+
+            // ============================================================
+            // SIMPAN ATTACHMENT KE DATABASE
+            // ============================================================
             $model_document = new Attachment();
-            $model_document->document_id = $id;
-            $model_document->file_name = $final_filename;
-            $model_document->file_size = $files[$a]['file_size'];
-            $model_document->file_type = $files[$a]['file_type'];
-            $model_document->path = public_path('storage/document_systems/' . $id . '/' . $final_filename);
-            $model_document->status = true;
+            $model_document->document_id   = $id;
+            $model_document->file_name     = $final_filename;
+            $model_document->file_size     = $files[$a]['file_size'];
+            $model_document->file_type     = $files[$a]['file_type'];
+            $model_document->path          = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $id . '/' . $final_filename);
+            $model_document->blob_url      = $blobResult['fileBlobUrl'] ?? null;
+            $model_document->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
+            $model_document->status        = true;
             $model_document->save();
         }
     }
@@ -595,18 +963,43 @@ class DocumentSystemService
         $activity->save();
 
         $files = $data['proofs'];
+        $directPath = 'document_systems/' . $data['id'] . '/revision/';
+
         for ($a = 0; $a < count($files); $a++) {
+            $filePathTemp = public_path('storage/tmp/document_systems/' . $files[$a]['name']);
+
+            $blobResult = [
+                'fileBlobUrl' => null,
+                'fileBlobPathName' => null,
+                'blobResponse' => null,
+            ];
+
+            if (File::exists($filePathTemp)) {
+                $blobResult = uploadToBlobStorage(
+                    $files[$a]['name'],
+                    $filePathTemp,
+                    $directPath
+                );
+
+                // Hapus file tmp lokal setelah upload ke blob
+                if (File::exists($filePathTemp)) {
+                    File::delete($filePathTemp);
+                }
+
+                if (! $blobResult['fileBlobUrl']) {
+                    \Log::warning("DocumentSystemService::return: Blob upload failed for file {$files[$a]['name']} in document ID {$data['id']}.");
+                }
+            }
+
             $model = new ActivityAttachment();
             $model->activity_id = $activity->id;
-            $model->path = asset('storage/document_systems/' . $data['id'] . '/revision/' . $files[$a]['name']);
+            $model->path = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $data['id'] . '/revision/' . $files[$a]['name']);
             $model->file_size = $files[$a]['size'];
             $model->file_type = $files[$a]['ext'];
             $model->name = $files[$a]['name'];
+            $model->blob_url = $blobResult['fileBlobUrl'] ?? null;
+            $model->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
             $model->save();
-        }
-
-        if (count($files) > 0) {
-            $upload = $this->move_file($files, 'document_systems/' . $data['id'] . '/revision');
         }
     }
 
@@ -638,16 +1031,8 @@ class DocumentSystemService
 
         $files = $data->attachments->toArray();
         if (count($files) > 0) {
-            $needs_watermark = false;
-            foreach ($files as $file) {
-                if (strpos($file['file_name'], 'Final-') !== 0) {
-                    $needs_watermark = true;
-                    break;
-                }
-            }
-            if ($needs_watermark) {
-                $this->handle_document_rooting_approval($files, $id, true);
-            }
+            // Always apply watermark on Final Approve for all attachments
+            $this->handle_document_rooting_approval($files, $id, true);
         }
         $data->status = Document::ACTIVE;
         $data->save();

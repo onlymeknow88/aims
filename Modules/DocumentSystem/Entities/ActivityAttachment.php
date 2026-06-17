@@ -22,6 +22,8 @@ class ActivityAttachment extends Model
         'file_size',
         'file_type',
         'name',
+        'blob_url',
+        'blob_response',
     ];
 
     /**

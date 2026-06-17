@@ -185,45 +185,41 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($ko_proposal->koUnit->koSpipUnit->koCommisioningHeaders as $key => $header)
-                                            <tr style="border-left:1px solid #dddddd;">
-                                                <td>{{$header->number}}.</td>
-                                                <td colspan="5"><b>DOKUMEN KENDARAAN</b></td>
-                                            </tr>
-                                                @foreach($header->koCommisioningFields as $key => $field)
+                                                @foreach($ko_proposal->koUnit->koSpipUnit->koCommisioningHeaders as $key => $header)
                                                 <tr style="border-left:1px solid #dddddd;">
-                                                    <td>{{$field->number}}.</td>
-                                                    <td style="white-space: normal">
-                                                        @php
-                                                            echo $field->question;
-                                                        @endphp
-                                                    </td>
-                                                    <td>
-                                                        <select wire:model="commissionings.{{ $field->id }}.condition" placeholder="select Kondisi" class="form-select w-100 select2" required>
-                                                            <option value="">--Select--</option>
-                                                            <option value="Baik">Baik</option>
-                                                            <option value="Gagal">Gagal</option>
-                                                            <option value="N/A">N/A</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        @if(isset($this->commissionings[$field->id]['condition']))
-                                                            @if($this->commissionings[$field->id]['condition'] == 'Gagal')
-                                                                <x-inputs.textarea type="text" id="commissionings.{{ $field->id }}.note" wire:model="commissionings.{{ $field->id }}.note" placeholder="keterangan" class="form-control" :error="'commissionings.{{ $field->id }}.note'" required></x-inputs.textarea>
-                                                            @endif
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if(isset($this->commissionings[$field->id]['condition']))
-                                                            @if($this->commissionings[$field->id]['condition'] == 'Gagal')
-                                                                <x-inputs.file type="file" wire:model="commissionings.{{ $field->id }}.attachments" multiple id="commissionings.{{ $field->id }}.attachments" :error="'commissionings.{{ $field->id }}.attachments'" required></x-inputs.file>
-                                                            @endif
-                                                        @endif
-                                                    </td>
-                                                    <td>{{$field->hazard_code}}</td>
+                                                    <td>{{$header->number}}.</td>
+                                                    <td colspan="5"><b>DOKUMEN KENDARAAN</b></td>
                                                 </tr>
+                                                    @foreach($header->koCommisioningFields as $key => $field)
+                                                    <tr style="border-left:1px solid #dddddd;" x-data="{ condition: '{{ $this->commissionings[$field->id]['condition'] ?? '' }}' }">
+                                                        <td>{{$field->number}}.</td>
+                                                        <td style="white-space: normal">
+                                                            @php
+                                                                echo $field->question;
+                                                            @endphp
+                                                        </td>
+                                                        <td>
+                                                            <select x-model="condition" wire:model.defer="commissionings.{{ $field->id }}.condition" placeholder="select Kondisi" class="form-select w-100" required>
+                                                                <option value="">--Select--</option>
+                                                                <option value="Baik">Baik</option>
+                                                                <option value="Gagal">Gagal</option>
+                                                                <option value="N/A">N/A</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div x-show="condition == 'Gagal'" x-cloak>
+                                                                <x-inputs.textarea type="text" id="commissionings.{{ $field->id }}.note" wire:model.defer="commissionings.{{ $field->id }}.note" placeholder="keterangan" class="form-control" :error="'commissionings.{{ $field->id }}.note'" ::required="condition == 'Gagal'"></x-inputs.textarea>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div x-show="condition == 'Gagal'" x-cloak>
+                                                                <x-inputs.file type="file" wire:model="commissionings.{{ $field->id }}.attachments" multiple id="commissionings.{{ $field->id }}.attachments" :error="'commissionings.{{ $field->id }}.attachments'" ::required="condition == 'Gagal'"></x-inputs.file>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{$field->hazard_code}}</td>
+                                                    </tr>
+                                                    @endforeach
                                                 @endforeach
-                                            @endforeach
 
                                         </tbody>
                                     </table>

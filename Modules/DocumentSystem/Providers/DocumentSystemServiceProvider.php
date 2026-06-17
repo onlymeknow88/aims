@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\DocumentSystem\Http\Livewire\Login;
 use Modules\DocumentSystem\View\Components\Select2;
-use Modules\DocumentSystem\View\Components\Select2DocType;
 use Modules\DocumentSystem\View\Components\Select2Avatar;
+use Modules\DocumentSystem\View\Components\Select2Custom;
+use Modules\DocumentSystem\View\Components\Select2DocType;
 use Modules\DocumentSystem\View\Components\Select2Multiple;
 use Modules\DocumentSystem\View\Layouts\App;
 use Modules\DocumentSystem\View\Layouts\Base;
@@ -43,6 +44,7 @@ class DocumentSystemServiceProvider extends ServiceProvider
         Blade::component('document-system-select-2-doctype', Select2DocType::class);
         Blade::component('document-system-select-2-avatar', Select2Avatar::class);
         Blade::component('document-system-select-2-multiple', Select2Multiple::class);
+        Blade::component('document-system-select-2-custom', Select2Custom::class);
     }
 
     /**

@@ -450,18 +450,19 @@ class DocumentSystemService
             } else {
                 if (File::exists($file)) {
                     try {
-                        $orientation = $this->detect_pdf_orientation($file);
-                        $data = [
-                            'watermark'  => $text_image,
-                        ];
+                        $scriptPath = app_path('Helpers/watermark.py');
+                        $cmd = "python " . escapeshellarg($scriptPath) . " " . escapeshellarg($file) . " " . escapeshellarg($output_file) . " " . escapeshellarg($text_image) . " rooting";
+                        $outputCmd = [];
+                        $returnVar = -1;
+                        exec($cmd, $outputCmd, $returnVar);
 
-                        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('scratch.test_watermark', $data)
-                            ->setPaper('a4', $orientation);
-
-                        $pdf->save($output_file);
-                        $watermark_success = true;
+                        if ($returnVar === 0) {
+                            $watermark_success = true;
+                        } else {
+                            \Log::warning("Python watermarking script returned error code {$returnVar}. Output: " . implode("\n", $outputCmd));
+                        }
                     } catch (\Throwable $e) {
-                        \Log::warning("DomPDF generation failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
+                        \Log::warning("Python watermarking failed for file {$files[$a]['file_name']} in document ID {$id}. Falling back to copying original file. Error: " . $e->getMessage());
                     }
                 }
             }
@@ -631,17 +632,44 @@ class DocumentSystemService
         $activity->save();
 
         $files = $data['proofs'];
+        $directPath = 'document_systems/' . $data['id'] . '/revision/';
+
         for ($a = 0; $a < count($files); $a++) {
+            $filePathTemp = public_path('storage/tmp/document_systems/' . $files[$a]['name']);
+
+            $blobResult = [
+                'fileBlobUrl' => null,
+                'fileBlobPathName' => null,
+                'blobResponse' => null,
+            ];
+
+            if (File::exists($filePathTemp)) {
+                $blobResult = uploadToBlobStorage(
+                    $files[$a]['name'],
+                    $filePathTemp,
+                    $directPath
+                );
+
+                // Hapus file tmp lokal setelah upload ke blob
+                if (File::exists($filePathTemp)) {
+                    File::delete($filePathTemp);
+                }
+
+                if (! $blobResult['fileBlobUrl']) {
+                    \Log::warning("DocumentSystemService::return: Blob upload failed for file {$files[$a]['name']} in document ID {$data['id']}.");
+                }
+            }
+
             $model = new ActivityAttachment();
             $model->activity_id = $activity->id;
-            $model->path = asset('storage/document_systems/' . $data['id'] . '/revision/' . $files[$a]['name']);
+            $model->path = $blobResult['fileBlobPathName'] ?? ('document_systems/' . $data['id'] . '/revision/' . $files[$a]['name']);
             $model->file_size = $files[$a]['size'];
             $model->file_type = $files[$a]['ext'];
             $model->name = $files[$a]['name'];
+            $model->blob_url = $blobResult['fileBlobUrl'] ?? null;
+            $model->blob_response = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
             $model->save();
         }
-
-        $upload = $this->move_file($files, 'document_systems/' . $data['id'] . '/revision');
     }
 
     /**

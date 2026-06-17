@@ -52,6 +52,8 @@ Route::middleware('auth:document-system')->group(function () {
 
     Route::post('autocomplete-peoples', [GeneralController::class, 'invitedPeopleList'])->name('invited_people_list');
     Route::post('autocomplete-sop', [GeneralController::class, 'autocompleteSop'])->name('autocomplete_sop');
+    Route::get('attachments/{id}/sas', [GeneralController::class, 'getAttachmentSasUri'])->name('attachments.sas-uri');
+    Route::get('attachments/{id}/preview', [GeneralController::class, 'previewAttachment'])->name('attachments.preview');
     Route::get('export', [TableMaker::class, 'export'])->name('document-systems.export');
     Route::get('obsolate', Index::class)->name('document-systems.obsolate');
     Route::get('draft', DraftIndex::class)->name('document-systems.draft');

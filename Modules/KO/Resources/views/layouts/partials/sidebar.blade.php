@@ -179,6 +179,44 @@
             </ul>
         </li>
 
+        @if(auth()->user()->hasAnyPermission(['KO - Admin Commissioning Verification','KO - Coordinator Commissioning Verification']))
+        <li class="item-sidebar">
+            <a class="link-sidebar text-decoration-none dropdown {{ request()->routeIs('ko::commissioning-verification*') ? '' : 'collapsed' }} {{ (new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') + (new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') > 0 ? 'is-notif' : '' }}"
+                data-bs-toggle="collapse" href="#commissioningVerification" role="button" aria-expanded="false"
+                aria-controls="subSidebarMaster">
+                Verifikasi Komisioning
+            </a>
+            <ul class="collapse sub-menu {{ request()->routeIs('ko::commissioning-verification*') ? 'show' : '' }}" id="commissioningVerification">
+                @can('KO - Admin Commissioning Verification')
+                <li class="item-sidebar">
+                    <a href="{{ route('ko::commissioning-verification.admin.index') }}"
+                        class="link-sidebar text-decoration-none d-flex justify-content-between align-items-center {{ request()->routeIs('ko::commissioning-verification.admin.index') ? 'active' : '' }}">
+                        Commissioner
+                        @if((new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') > 0)
+                            <span class="badge rounded-pill bg-danger pull-right">
+                                {{ (new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
+                @endcan
+                @can('KO - Coordinator Commissioning Verification')
+                <li class="item-sidebar">
+                    <a href="{{ route('ko::commissioning-verification.coordinator.index') }}"
+                        class="link-sidebar text-decoration-none d-flex justify-content-between align-items-center {{ request()->routeIs('ko::commissioning-verification.coordinator.index') ? 'active' : '' }}">
+                        Coordinator
+                        @if((new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') > 0)
+                            <span class="badge rounded-pill bg-danger pull-right">
+                                {{ (new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
+                @endcan
+            </ul>
+        </li>
+        @endif
+
         @if(auth()->user()->hasAnyPermission(['KO - Request Temporary QR','KO - QR Request Verification','KO - Print Temporary QR']))
         <li class="item-sidebar">
             <a class="link-sidebar text-decoration-none dropdown {{ request()->routeIs('ko::request-qr*') ? '' : 'collapsed' }} {{ (new \App\Helpers\KoHelper)->qrRequestTotal() > 0 ? 'is-notif' : '' }}"
@@ -292,43 +330,7 @@
         </li>
         @endif
 
-        @if(auth()->user()->hasAnyPermission(['KO - Admin Commissioning Verification','KO - Coordinator Commissioning Verification']))
-        <li class="item-sidebar">
-            <a class="link-sidebar text-decoration-none dropdown {{ request()->routeIs('ko::commissioning-verification*') ? '' : 'collapsed' }} {{ (new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') + (new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') > 0 ? 'is-notif' : '' }}"
-                data-bs-toggle="collapse" href="#commissioningVerification" role="button" aria-expanded="false"
-                aria-controls="subSidebarMaster">
-                Verifikasi Komisioning
-            </a>
-            <ul class="collapse sub-menu {{ request()->routeIs('ko::commissioning-verification*') ? 'show' : '' }}" id="commissioningVerification">
-                @can('KO - Admin Commissioning Verification')
-                <li class="item-sidebar">
-                    <a href="{{ route('ko::commissioning-verification.admin.index') }}"
-                        class="link-sidebar text-decoration-none d-flex justify-content-between align-items-center {{ request()->routeIs('ko::commissioning-verification.admin.index') ? 'active' : '' }}">
-                        Commissioner
-                        @if((new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') > 0)
-                            <span class="badge rounded-pill bg-danger pull-right">
-                                {{ (new \App\Helpers\KoHelper)->proposalTotal('CommissionerCommissioningVerification') }}
-                            </span>
-                        @endif
-                    </a>
-                </li>
-                @endcan
-                @can('KO - Coordinator Commissioning Verification')
-                <li class="item-sidebar">
-                    <a href="{{ route('ko::commissioning-verification.coordinator.index') }}"
-                        class="link-sidebar text-decoration-none d-flex justify-content-between align-items-center {{ request()->routeIs('ko::commissioning-verification.coordinator.index') ? 'active' : '' }}">
-                        Coordinator
-                        @if((new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') > 0)
-                            <span class="badge rounded-pill bg-danger pull-right">
-                                {{ (new \App\Helpers\KoHelper)->proposalTotal('CoordinatorCommissioningVerification') }}
-                            </span>
-                        @endif
-                    </a>
-                </li>
-                @endcan
-            </ul>
-        </li>
-        @endif
+
 
         @can('KO - Print QR')
         <li class="item-sidebar">

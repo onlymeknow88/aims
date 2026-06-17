@@ -207,3 +207,32 @@ Dokumen ini mencatat seluruh perbaikan kutu (bug fixes) yang diidentifikasi dan 
        * **Mapping Chain**: `module_id` $\rightarrow$ `category_id` $\rightarrow$ `mapping_id`.
        * **Invited People**: `company_id` $\rightarrow$ `listEmployee` (di-reset dan dikunci jika Company kosong, kemudian dibuka kembali secara visual dan dipolusi isinya di event handler JS `employeeDataUpdated` ketika data terisi).
 
+---
+
+### 15. Attempt to read property "koBrand" on null di updatedUnitId() (Modul KO)
+* **Status**: ✅ Fixed
+* **File Terkait**:
+  * `Modules/KO/Http/Livewire/Ko/CreateProposal.php`
+  * `Modules/KO/Http/Livewire/Ko/Draft/EditProposal.php`
+  * `Modules/KO/Http/Livewire/Ko/Returned/EditProposal.php`
+* **Masalah**: Ketika pengguna mengubah atau mengosongkan pilihan Unit (`unit_id`), aplikasi melempar error `Attempt to read property "koBrand" on null`.
+* **Root Cause**: Method `updatedUnitId()` memanggil `KoUnit::find($this->unit_id)` tanpa memeriksa apakah hasilnya `null`. Jika `$unit_id` kosong, `$unit` bernilai `null` dan memicu error saat mengakses relasi `$unit->koBrand`. Selain itu, variabel penampung di `CreateProposal.php` dideklarasikan dengan tipe data strict `string` (misal: `public string $brand`), sehingga jika relasi atau nilai properti bernilai `null`, Laravel/PHP akan melempar `TypeError`.
+* **Perbaikan**: Menggunakan null-safe operator (`?->`) dan operator null coalescing (`??`) untuk memberikan nilai default berupa string kosong (`''`) atau strip (`'-'`) jika unit atau relasi `koBrand` bernilai `null`.
+
+---
+
+### 16. Keterlambatan Respons / Lag Saat Mengubah Dropdown Kondisi Komisioning (Modul KO)
+* **Status**: ✅ Fixed
+* **File Terkait**:
+  * `Modules/KO/Resources/views/livewire/commissioning/create-commissioning.blade.php`
+  * `Modules/KO/Resources/views/livewire/commissioning/edit-commissioning.blade.php`
+* **Masalah**: Mengubah dropdown pilihan kondisi komisioning ("Baik", "Gagal", "N/A") terasa lambat (lag/delay) dan memicu kedipan/freeze pada halaman.
+* **Root Cause**:
+  1. Penggunaan `wire:model` langsung pada elemen select memicu request AJAX ke server setiap kali user mengubah pilihan kondisi untuk melakukan sinkronisasi instan.
+  2. Adanya conditional rendering menggunakan `@if` Blade untuk menampilkan textarea keterangan/note dan input file attachment saat kondisi bernilai "Gagal" memaksa server merender ulang seluruh baris tabel yang sangat banyak di setiap AJAX request.
+  3. Keberadaan class `select2` yang tidak terinisialisasi secara fungsional di dropdown kondisi menyebabkan overhead parsing pada DOM.
+* **Perbaikan**:
+  1. Mengubah binding select box kondisi dari `wire:model` menjadi `wire:model.defer` untuk menunda sinkronisasi ke server hingga tombol submit ditekan.
+  2. Menghapus class `select2` agar dropdown dirender sebagai HTML select bawaan yang super cepat.
+  3. Mengimplementasikan komponen **Alpine.js** (`x-data`, `x-show`, `x-cloak`) pada tingkat baris (`<tr>`) untuk menyembunyikan/menampilkan textarea note dan input file attachment secara instan di sisi klien (0ms delay).
+  4. Menggunakan sintaks double-colon `::required="condition == 'Gagal'"` agar browser hanya memvalidasi input note/file jika kondisi bernilai "Gagal" (visible).

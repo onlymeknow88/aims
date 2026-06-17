@@ -18,7 +18,7 @@
             left: 50%;
             width: 150mm;
             opacity: 0.2;
-            transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+            /* transform: translateX(-50%) translateY(-50%) rotate(-45deg); */
         }
     </style>
 </head>
