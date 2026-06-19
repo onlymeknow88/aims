@@ -8,8 +8,15 @@
         <div class="table-demo position-relative">
 
             <div x-data="{ 
-                itemSelected: @entangle('itemSelected'), 
+                itemSelected: @entangle('itemSelected').defer, 
                 info: @entangle('info'),
+                selectAll: @entangle('selectAll').defer,
+                init() {
+                    window.addEventListener('pica-sync-selection', (e) => {
+                        this.itemSelected = e.detail.ids ?? [];
+                        this.selectAll = e.detail.selectAll ?? false;
+                    });
+                },
                 toggleItem(id) {
                     id = String(id);
                     let current = [...this.itemSelected];
@@ -69,7 +76,7 @@
                         <a href="#" type="button"
                             x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
                             class="button-toolbar gap-2 align-items-center py-2 px-3"
-                            wire:click="removeSeleced()">
+                            @click.prevent="itemSelected = []; selectAll = false;">
                             <span class="icon d-flex align-items-center"><img
                                     src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
                             <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
@@ -124,10 +131,17 @@
 
                         <table class="table" style="height: fit-content">
                             <thead>
-                                <tr @if ($selectAll) class="selected" @else class="tr" @endif>
-                                    <th class="sticky-top" wire:click="toggleSelectAll">
-                                        <span class="icon-checked"></span>
-                                    </th>
+                                <tr :class="selectAll ? 'selected' : 'tr'">
+                                     <th class="sticky-top" @click="
+                                         selectAll = !selectAll;
+                                         if (selectAll) {
+                                             itemSelected = Array.from(document.querySelectorAll('tbody tr[wire\\:key]')).map(tr => tr.getAttribute('wire:key').replace('crs-pica-row-', ''));
+                                         } else {
+                                             itemSelected = [];
+                                         }
+                                     ">
+                                         <span class="icon-checked" :class="selectAll ? 'selected' : ''"></span>
+                                     </th>
                                     @if (in_array('Identity ID', $selectedColumns))
                                         <th>
                                             <div class="column-sort d-flex justify-content-between">
@@ -660,7 +674,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($this->activeListings as $itemIndex => $items)
-                                    <tr wire:key="{{ $itemIndex }}"
+                                    <tr wire:key="crs-pica-row-{{ $items->id }}"
                                         @click="toggleItem('{{ $items->id }}')"
                                         :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : 'tr'"
                                         style="cursor: pointer;">

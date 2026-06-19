@@ -7,7 +7,21 @@
 
         <div class="table-demo position-relative">
 
-            <div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+            <div x-data="{ 
+                itemSelected: @entangle('itemSelected').defer, 
+                info: @entangle('info'),
+                toggleItem(id) {
+                    id = String(id);
+                    let current = [...this.itemSelected];
+                    let idx = current.indexOf(id);
+                    if (idx > -1) {
+                        current.splice(idx, 1);
+                    } else {
+                        current.push(id);
+                    }
+                    this.itemSelected = current;
+                }
+            }">
                 <!-- /.toolsbar-tables -->
 
                 <div class="table-content table-responsive position-relative">
@@ -164,8 +178,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($this->activeListings as $itemIndex => $items)
-                                    <tr wire:key="{{ $itemIndex }}"
-                                        wire:click="onSelectedItem('{{ $items->id }}')">
+                                    <tr wire:key="fl-row-{{ $items->id }}"
+                                        @click="toggleItem('{{ $items->id }}')"
+                                        :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : 'tr'"
+                                        style="cursor: pointer;">
                                         @if (in_array('Company', $selectedColumns))
                                             <td>
                                                 <a href="{{ route('field-leadership::listing.active.detail', $items->id) }}"

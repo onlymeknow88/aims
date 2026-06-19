@@ -309,6 +309,12 @@ class DraftPage extends Component
 
             $this->itemSelected = $this->itemSelected->toArray();
         }
+
+        // Emit event to sync selectAll state instantly to Alpine
+        $this->dispatchBrowserEvent('pica-sync-selection', [
+            'ids' => array_values($this->itemSelected),
+            'selectAll' => $this->selectAll,
+        ]);
     }
 
     public function activedInfo()

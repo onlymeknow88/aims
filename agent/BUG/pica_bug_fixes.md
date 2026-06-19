@@ -227,19 +227,91 @@ Dengan menjalankan seeder di atas, relasi di database dibersihkan (`syncPermissi
 
 ---
 
-### 6. Delay/Lag Munculnya Tombol Aksi (Export, Edit, Delete) Setelah Checkbox Dipilih
+### 7. Mengeliminasi HTTP/Fetch Requests dan Delay Pemilihan Baris (Deferred Entanglement)
 * **Status**: ✅ Fixed
 * **File Terkait**:
   * `Modules/Pica/Resources/views/livewire/listing/active-document/active-document-page.blade.php`
   * `Modules/Pica/Resources/views/livewire/listing/draft/draft-page.blade.php`
   * `Modules/Pica/Resources/views/livewire/listing/return-document/return-document-page.blade.php`
   * `Modules/Pica/Resources/views/livewire/listing/crs/crs-page.blade.php`
-* **Masalah**: Ketika menekan checkbox baris (*row checkbox selection*), tombol **Export**, **Edit**, **Delete**, dan teks jumlah baris terpilih mengalami delay/lag (sekitar 100-500ms) sebelum akhirnya muncul di layar.
-* **Root Cause**: Visibilitas tombol aksi dikontrol secara server-side menggunakan kondisional Blade `@if ($countSelected > 0)`. Hal ini memaksa halaman web menunggu siklus request/response (hydration) dari Livewire selesai sebelum DOM diperbarui.
-* **Perbaikan**: Mengalihkan penanganan visibilitas tombol sepenuhnya ke client-side menggunakan Alpine.js melalui binding `x-show="itemSelected.length > 0"` dan `x-text` untuk visualisasi jumlah pilihan yang instan (0ms delay):
-  * **Export/Delete**: Diganti dari `@if ($countSelected > 0)` menjadi `<a href="#" x-show="itemSelected.length > 0" ...>`
-  * **Edit**: Diganti dari `@if ($countSelected == 1)` menjadi `<a x-bind:href="'{{ route(...) }}'.replace('ID_PLACEHOLDER', itemSelected[0])" x-show="itemSelected.length == 1" ...>`
-  * **Row Selected**: Diganti dari `{{ $countSelected }} Row Selected` menjadi `<span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>`
+* **Masalah**: Setiap kali memilih baris tabel atau menekan tombol *Select All*, sistem selalu melakukan HTTP fetch/XHR request ke server yang memakan waktu hingga >1 detik. Ini mengakibatkan visual delay (lag) yang mengganggu bagi pengguna.
+* **Root Cause**:
+  1. Penggunaan `@entangle('itemSelected')` dan `@entangle('selectAll')` secara langsung membuat setiap perubahan array data di sisi client langsung disinkronkan ke server secara reaktif (menghasilkan request HTTP instan).
+  2. Terdapat pemanggilan `$wire.call('toggleSelectAll')` pada event `@click` di header (`<th>`), yang memaksa Livewire mengirimkan request tambahan ke backend PHP untuk memperbarui data yang sebenarnya sudah diisi secara lokal oleh Alpine.js.
+  3. Tombol pembersih seleksi (`removeSeleced`) memicu event `wire:click="removeSeleced()"` yang juga melakukan request ke server.
+
+* **Script Perbaikan (Perbandingan Sebelum & Sesudah)**:
+
+  ```diff
+  <!-- 1. Perubahan Inisialisasi State di Alpine.js (x-data) -->
+  - itemSelected: @entangle('itemSelected'),
+  - selectAll: @entangle('selectAll'),
+  + // Menggunakan .defer agar sinkronisasi data ditunda hingga request Livewire berikutnya dipicu
+  + itemSelected: @entangle('itemSelected').defer,
+  + selectAll: @entangle('selectAll').defer,
+
+  <!-- 2. Perubahan pada Header Click (Select All) -->
+  - <th class="sticky-top" @click="
+  -      selectAll = !selectAll;
+  -      if (selectAll) {
+  -          itemSelected = Array.from(document.querySelectorAll('tbody tr[wire\\:key]')).map(tr => tr.getAttribute('wire:key').replace('active-pica-row-', ''));
+  -      } else {
+  -          itemSelected = [];
+  -      }
+  -      $wire.call('toggleSelectAll');
+  -  ">
+  + <th class="sticky-top" @click="
+  +      selectAll = !selectAll;
+  +      if (selectAll) {
+  +          // Membaca ID secara instan dari DOM sisi klien
+  +          itemSelected = Array.from(document.querySelectorAll('tbody tr[wire\\:key]')).map(tr => tr.getAttribute('wire:key').replace('active-pica-row-', ''));
+  +      } else {
+  +          itemSelected = [];
+  +      }
+  +      // DIHAPUS: $wire.call('toggleSelectAll') ditiadakan agar tidak menembak XHR/fetch ke server
+  +  ">
+
+  <!-- 3. Perubahan pada Tombol Batalkan / Bersihkan Pilihan ("X Row Selected") -->
+  - <a href="#" type="button"
+  -     x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+  -     class="button-toolbar gap-2 align-items-center py-2 px-3"
+  -     wire:click="removeSeleced()">
+  + <a href="#" type="button"
+  +     x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+  +     class="button-toolbar gap-2 align-items-center py-2 px-3"
+  +     // Mengosongkan data selection di sisi klien secara instan tanpa memanggil backend
+  +     @click.prevent="itemSelected = []; selectAll = false;">
+  ```
+
+* **Dampak Perbaikan (Impacts)**:
+  * **0ms Latency (Instant UI Response)**: Proses pewarnaan baris (`selected` class) dan pemutakhiran counter pilihan ("X Row Selected") kini terjadi seketika secara lokal di sisi browser tanpa menunggu siklus kirim-terima data dari server PHP.
+  * **Eliminasi Network Requests**: Menghemat bandwidth dan mengurangi beban database query di server. Tidak ada lagi request AJAX (XHR fetch) beruntun ke `/livewire/message/pica.listing.active-document.*` hanya karena pengguna memilih atau membatalkan pilihan dokumen.
+  * **Sinkronisasi Otomatis Terintegrasi (Deferred Sync)**: Saat pengguna melakukan tindakan nyata (seperti mengklik tombol **Export** atau **Delete**), Livewire akan secara otomatis mengirimkan state `itemSelected` yang tertunda (*deferred*) di dalam request yang sama. Aksi backend tetap berjalan dengan data pilihan terbaru yang valid.
+
+---
+
+### 8. Perbaikan Deferred Entanglement pada Modul DocumentSystem
+* **Status**: ✅ Fixed
+* **File Terkait**:
+  * `Modules/DocumentSystem/Resources/views/livewire/review/table-approval.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/ptw/active.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/on-going/table-on-going.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/obsolate/index.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/maker/table-maker.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/draft/index.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/jsa/draft.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/jsa/obsolate.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/jsa/active.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/approval/table-approval.blade.php`
+  * `Modules/DocumentSystem/Resources/views/livewire/active-document/table-maker.blade.php`
+* **Masalah**: Mirip dengan modul PICA, pemilihan baris tabel, checkbox list, dan aksi select-all pada sub-modul DocumentSystem sebelumnya memicu request HTTP/fetch AJAX instan untuk setiap klik, menyebabkan delay visual (lag) dan peningkatan beban server yang tidak perlu.
+* **Perbaikan**: 
+  1. Mengubah inisialisasi state `@entangle('itemSelected')` dan `@entangle('selectAll')` menjadi `@entangle(...).defer`.
+  2. Mengimplementasikan fungsi pembantu Alpine `toggleItem(id)` di dalam scope `x-data` komponen untuk memodifikasi array selection secara lokal di sisi klien.
+  3. Memperbarui `wire:key` di baris `<tr>` ke format unik (`row-{{ $id }}`) dan mengikat kelas dinamis `:class` serta aksi `@click` langsung ke script lokal.
+  4. Menambahkan `@click.stop` pada semua tautan (`<a>`), checkbox internal, dan tombol di dalam baris agar navigasi detail dokumen atau interaksi elemen anak tidak memicu event pemilihan baris.
+  5. Mengubah tombol reset seleksi dan checkbox *Select All* di header untuk mereset dan memetakan ID secara langsung di memori browser tanpa XHR request.
+* **Dampak**: Respon UI instan (0ms latency), bebas dari network fetch requests pada interaksi dasar tabel, dan state pilihan tetap tersinkron secara aman dan efisien saat aksi utama (seperti ekspor/delete) dijalankan.
 
 
 

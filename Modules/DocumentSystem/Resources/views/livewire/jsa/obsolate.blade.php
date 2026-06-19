@@ -40,7 +40,28 @@
 
         <div class="table-maker">
 
-            <div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+            <div x-data="{ 
+                itemSelected: @entangle('itemSelected').defer, 
+                info: @entangle('info'),
+                selectAll: @entangle('selectAll').defer,
+                init() {
+                    window.addEventListener('documentsystem-sync-selection', (e) => {
+                        this.itemSelected = e.detail.ids ?? [];
+                        this.selectAll = e.detail.selectAll ?? false;
+                    });
+                },
+                toggleItem(id) {
+                    id = String(id);
+                    let current = [...this.itemSelected];
+                    let idx = current.indexOf(id);
+                    if (idx > -1) {
+                        current.splice(idx, 1);
+                    } else {
+                        current.push(id);
+                    }
+                    this.itemSelected = current;
+                }
+            }">
 
                 <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2 sticky-top">
 
@@ -69,15 +90,14 @@
 
                     <div class="toolbar-right d-flex align-items-center">
 
-                        @if ($countSelected > 0)
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="removeSeleced()">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">{{ $countSelected }} Row Selected</span>
-                            </a>
-                        @endif
+                        <a href="#" type="button"
+                            x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3"
+                            @click.prevent="itemSelected = []; selectAll = false;">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                            <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
+                        </a>
 
                         <div class="column-sort d-flex justify-content-between">
                             <a class="button-toolbar d-flex gap-2 align-items-center py-2 px-3" type="button"
@@ -116,8 +136,15 @@
 
                         <table class="table overflow-auto" x-data="unCheck">
                             <thead>
-                                <tr @if ($selectAll) class="selected" @else class="tr" @endif>
-                                    <th class="sticky-top" wire:click="toggleSelectAll">
+                                <tr :class="selectAll ? 'selected' : 'tr'">
+                                    <th class="sticky-top" @click="
+                                        selectAll = !selectAll;
+                                        if (selectAll) {
+                                            itemSelected = Array.from(document.querySelectorAll('tbody tr[wire\\:key]')).map(tr => tr.getAttribute('wire:key').replace('row-', ''));
+                                        } else {
+                                            itemSelected = [];
+                                        }
+                                    ">
                                         <span class="icon-checked"></span>
                                     </th>
                                     @if (in_array('Company', $selectedColumns))
@@ -524,37 +551,37 @@
                             </thead>
                             <tbody>
                                 @foreach ($this->listings as $itemIndex => $items)
-                                    <tr wire:key="{{ $itemIndex }}"
-                                        wire:click="onSelectedItem('{{ $items->id }}')"
-                                        @if (in_array($items->id, $itemSelected)) class="selected" @else class="tr" @endif>
+                                    <tr wire:key="row-{{ $items->id }}"
+                                        @click="toggleItem('{{ $items->id }}')"
+                                        :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : 'tr'">
                                         <td class="td-check">
-                                            <span class="icon-checked"></span>
+                                            <span class="icon-checked" :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : ''"></span>
                                         </td>
                                         <td class="title">
-                                            <a
+                                            <a @click.stop
                                                 href="{{ route('document-systems::jsa.detail', ['id' => $items->id, 'type' => 'active-document']) }}">
                                                 {{ $items->department->company->company_name }}
                                             </a>
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->department->name }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             <span>
                                                 <img src="{{ asset('images/icons/user.png') }}" alt="">
                                             </span>
                                             {{ $items->user->name ?? '-' }}
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->title }}
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->document_number }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->revision == '' ? 0 : $items->revision }}.0
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->detail_location }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ date('d F Y', strtotime($items->doc_created)) }}
                                         </td>
                                         <td>
@@ -566,7 +593,7 @@
                                                             $name = $explode[0];
                                                         @endphp
                                                         <li>
-                                                            <a href="{{ asset('storage/jsa/' . $attachment->document_id . '/' . $attachment->file_name) }}"
+                                                            <a @click.stop href="{{ asset('storage/jsa/' . $attachment->document_id . '/' . $attachment->file_name) }}"
                                                                 target="_blank" class="d-block">
                                                                 {{ $attachment->file_name }}
                                                             </a>
@@ -575,7 +602,7 @@
                                                 </ol>
                                             </b>
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             <span>{!! $items->status_badge !!}</span>
                                         </td>
                                     </tr>

@@ -45,7 +45,28 @@
 
         <div class="table-maker">
 
-            <div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+            <div x-data="{ 
+                itemSelected: @entangle('itemSelected').defer, 
+                info: @entangle('info'),
+                selectAll: @entangle('selectAll').defer,
+                init() {
+                    window.addEventListener('documentsystem-sync-selection', (e) => {
+                        this.itemSelected = e.detail.ids ?? [];
+                        this.selectAll = e.detail.selectAll ?? false;
+                    });
+                },
+                toggleItem(id) {
+                    id = String(id);
+                    let current = [...this.itemSelected];
+                    let idx = current.indexOf(id);
+                    if (idx > -1) {
+                        current.splice(idx, 1);
+                    } else {
+                        current.push(id);
+                    }
+                    this.itemSelected = current;
+                }
+            }">
 
                 <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2 sticky-top">
 
@@ -61,38 +82,39 @@
                             </a>
                         @endif
 
-                        @if ($countSelected > 0)
-                            @if (auth()->user()->can('Document System - Export PTW'))
-                                <a type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                    wire:click.prevent="export">
-                                    <span class="icon d-flex align-items-center"><img
-                                            src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
-                                    <span class="text-button">Export</span>
-                                </a>
-                            @endif
+                        @if (auth()->user()->can('Document System - Export PTW'))
+                            <a type="button" 
+                                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                                class="button-toolbar gap-2 align-items-center py-2 px-3"
+                                wire:click.prevent="export">
+                                <span class="icon d-flex align-items-center"><img
+                                        src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
+                                <span class="text-button">Export</span>
+                            </a>
+                        @endif
 
-                            @if (auth()->user()->can('Document System - Delete PTW'))
-                                <a type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                    wire:click.prevent="confirmDelete">
-                                    <span class="icon d-flex align-items-center"><img
-                                            src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                    <span class="text-button">Delete</span>
-                                </a>
-                            @endif
+                        @if (auth()->user()->can('Document System - Delete PTW'))
+                            <a type="button" 
+                                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                                class="button-toolbar gap-2 align-items-center py-2 px-3"
+                                wire:click.prevent="confirmDelete">
+                                <span class="icon d-flex align-items-center"><img
+                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                                <span class="text-button">Delete</span>
+                            </a>
                         @endif
                     </div><!-- /.toolbar-left -->
 
                     <div class="toolbar-right d-flex align-items-center">
 
-                        @if ($countSelected > 0)
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="removeSeleced()">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">{{ $countSelected }} Row Selected</span>
-                            </a>
-                        @endif
+                        <a href="#" type="button"
+                            x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3"
+                            @click.prevent="itemSelected = []; selectAll = false;">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                            <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
+                        </a>
 
 
                         <div class="column-sort d-flex justify-content-between">
@@ -132,8 +154,15 @@
 
                         <table class="table overflow-auto" x-data="unCheck">
                             <thead>
-                                <tr @if ($selectAll) class="selected" @else class="tr" @endif>
-                                    <th class="sticky-top" wire:click="toggleSelectAll">
+                                <tr :class="selectAll ? 'selected' : 'tr'">
+                                    <th class="sticky-top" @click="
+                                        selectAll = !selectAll;
+                                        if (selectAll) {
+                                            itemSelected = Array.from(document.querySelectorAll('tbody tr[wire\\:key]')).map(tr => tr.getAttribute('wire:key').replace('row-', ''));
+                                        } else {
+                                            itemSelected = [];
+                                        }
+                                    ">
                                         <span class="icon-checked"></span>
                                     </th>
                                     @if (in_array('Company', $selectedColumns))
@@ -154,11 +183,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('company_id')"
-                                                                    wire:click="removeItemFilter('company_id')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('company_id')"
+                                                                     wire:click="removeItemFilter('company_id')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div
@@ -201,11 +230,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('department_id')"
-                                                                    wire:click="removeItemFilter('department_id')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('department_id')"
+                                                                     wire:click="removeItemFilter('department_id')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div
@@ -248,11 +277,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('pic')"
-                                                                    wire:click="removeItemFilter('pic')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('pic')"
+                                                                     wire:click="removeItemFilter('pic')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -296,11 +325,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('title')"
-                                                                    wire:click="removeItemFilter('title')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('title')"
+                                                                     wire:click="removeItemFilter('title')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -343,11 +372,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('id_document')"
-                                                                    wire:click="removeItemFilter('id_document')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('id_document')"
+                                                                     wire:click="removeItemFilter('id_document')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -391,11 +420,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('detail_location')"
-                                                                    wire:click="removeItemFilter('detail_location')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('detail_location')"
+                                                                     wire:click="removeItemFilter('detail_location')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -439,11 +468,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('active_at')"
-                                                                    wire:click="removeItemFilter('active_at')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('active_at')"
+                                                                     wire:click="removeItemFilter('active_at')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -492,11 +521,11 @@
                                                         <div class="dropdown-content p-3 d-flex gap-3 flex-column">
 
                                                             <div class="pilih-all d-flex gap-2">
-                                                                <a href="#" class="fw-normal text-green"
-                                                                    x-on:click="selectAllCheckboxes('inactive_at')"
-                                                                    wire:click="removeItemFilter('inactive_at')">
-                                                                    Hapus Filter
-                                                                </a>
+                                                                 <a href="#" class="fw-normal text-green"
+                                                                     x-on:click="selectAllCheckboxes('inactive_at')"
+                                                                     wire:click="removeItemFilter('inactive_at')">
+                                                                     Hapus Filter
+                                                                 </a>
                                                             </div>
 
                                                             <div class="sort-search">
@@ -545,37 +574,37 @@
                             </thead>
                             <tbody>
                                 @foreach ($this->listings as $itemIndex => $items)
-                                    <tr wire:key="{{ $itemIndex }}"
-                                        wire:click="onSelectedItem('{{ $items->id }}')"
-                                        @if (in_array($items->id, $itemSelected)) class="selected" @else class="tr" @endif>
+                                    <tr wire:key="row-{{ $items->id }}"
+                                        @click="toggleItem('{{ $items->id }}')"
+                                        :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : 'tr'"
+                                        style="cursor: pointer;">
                                         <td class="td-check">
-                                            <span class="icon-checked"></span>
+                                            <span class="icon-checked" :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : ''"></span>
                                         </td>
                                         <td class="title">
                                             <a
-                                                href="{{ route('document-systems::ptw.detail', ['id' => $items->id, 'type' => 'active-document']) }}">
+                                                href="{{ route('document-systems::ptw.detail', ['id' => $items->id, 'type' => 'active-document']) }}" @click.stop>
                                                 {{ $items->department->company->company_name }}
                                             </a>
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->department->name }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             <span>
                                                 <img src="{{ asset('images/icons/user.png') }}" alt="">
                                             </span>
                                             {{ $items->user->name }}
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->title }}
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->document_number }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ $items->detail_location }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             {{ date('d F Y', strtotime($items->doc_created)) }}</td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
-                                            {{-- {{ dd($items->inactive_at) }} --}}
+                                        <td>
                                             {{ !empty($items->inactive_at) ? date('d F Y', strtotime($items->inactive_at)) : '-' }}
                                         </td>
                                         <td>
@@ -587,7 +616,7 @@
                                                             $name = $explode[0];
                                                         @endphp
                                                         <li>
-                                                            <a href="javascript:void(0)" onclick="event.stopPropagation(); previewBlobFile('{{ $attachment->id }}', '{{ $attachment->file_name }}', 'ptw')" class="d-block">
+                                                            <a href="javascript:void(0)" onclick="event.stopPropagation(); previewBlobFile('{{ $attachment->id }}', '{{ $attachment->file_name }}', 'ptw')" class="d-block" @click.stop>
                                                                 {{ $attachment->file_name }}
                                                             </a>
                                                         </li>
@@ -595,7 +624,7 @@
                                                 </ol>
                                             </b>
                                         </td>
-                                        <td wire:click.prevent="onSelectedItem('{{ $items->id }}')">
+                                        <td>
                                             <span>{!! $items->status_badge !!}</span>
                                         </td>
                                     </tr>

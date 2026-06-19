@@ -113,7 +113,8 @@
                             <div class="col-sm-8">
 
                                 <x-document-system-select-2 id="company_id" placeholder="Select Company"
-                                    :error="'company_id'" wire:model="company_id" data-child="department_id,listEmployee">
+                                    :error="'company_id'" wire:model="company_id"
+                                    data-child="department_id,listEmployee">
 
                                     @foreach ($companies as $key => $company)
                                         <option value="{{ $company['id'] }}">{{ $company['company_name'] }}</option>
@@ -130,12 +131,8 @@
                             <label for="department_id" class="col-sm-4 col-form-label">Department</label>
 
                             <div class="col-sm-8">
-                                <x-document-system-select-2
-                                    id="department_id"
-                                    placeholder="Select Department"
-                                    error="department_id"
-                                    wire:model="department_id"
-                                    data-child="pic"
+                                <x-document-system-select-2 id="department_id" placeholder="Select Department"
+                                    error="department_id" wire:model="department_id" data-child="pic"
                                     :disabled="empty($company_id)">
 
                                     @foreach ($departments as $department)
@@ -146,18 +143,16 @@
 
                                 </x-document-system-select-2>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-sm btn-link text-info"
+                                <button type="button" class="btn btn-sm btn-link text-info"
                                     wire:click="toggleDepartmentHelp">
                                     <i class="fas fa-info-circle"></i> Info
                                 </button>
 
                                 @if ($showDepartmentHelp)
-                                    <div
-                                        class="position-absolute mt-2 p-3 bg-white border rounded shadow-sm"
+                                    <div class="position-absolute mt-2 p-3 bg-white border rounded shadow-sm"
                                         style="z-index: 1000; max-width: 320px;">
-                                        Hanya department yang sudah memiliki <b>Codes</b> pada bagian Admin yang akan muncul dalam daftar pilihan.
+                                        Hanya department yang sudah memiliki <b>Codes</b> pada bagian Admin yang akan muncul
+                                        dalam daftar pilihan.
                                     </div>
                                 @endif
                             </div>
@@ -170,8 +165,8 @@
 
                             <div class="col-sm-8">
 
-                                <x-document-system-select-2 id="pic" placeholder="Select Penanggung Jawab"
-                                    error="pic" wire:model.defer="pic" :disabled="empty($department_id)">
+                                <x-document-system-select-2 id="pic" placeholder="Select Penanggung Jawab" error="pic"
+                                    wire:model.defer="pic" :disabled="empty($department_id)">
 
                                     @foreach ($pics as $key => $itemPj)
                                         <option class="d-flex gap-2 align-items-center" value="{{ $itemPj['id'] }}">
@@ -204,7 +199,8 @@
 
                                     @foreach ($modules as $key => $module)
                                         <option value="{{ $module['id'] }}">{{ $module['index'] }}.
-                                            {{ $module['name'] }}</option>
+                                            {{ $module['name'] }}
+                                        </option>
                                     @endforeach
 
                                 </x-document-system-select-2>
@@ -220,11 +216,13 @@
                             <div class="col-sm-8">
 
                                 <x-document-system-select-2 id="category_id" placeholder="Select Category Module"
-                                    wire:model="category_id" error="category_id" data-child="mapping_id" :disabled="empty($module_id)">
+                                    wire:model="category_id" error="category_id" data-child="mapping_id"
+                                    :disabled="empty($module_id)">
 
                                     @foreach ($categories as $key => $category)
                                         <option value="{{ $category['id'] }}">{{ $category['index'] }}.
-                                            {{ $category['name'] }}</option>
+                                            {{ $category['name'] }}
+                                        </option>
                                     @endforeach
 
                                 </x-document-system-select-2>
@@ -281,7 +279,8 @@
 
                         <div class="mb-3 row form-group {{ $showDocumentType ? '' : 'd-none' }}">
 
-                            <label for="document_type" class="col-sm-4 col-form-label">@lang('global.document_type')</label>
+                            <label for="document_type"
+                                class="col-sm-4 col-form-label">@lang('global.document_type')</label>
 
                             <div class="col-sm-8">
                                 <x-document-system-select-2 id="document_type" placeholder="Choose document"
@@ -309,8 +308,8 @@
                                         <span
                                             class="input-group-text document-prefix @error('sop_number') is-invalid @enderror"
                                             id="basic-addon1">{{ $template_form }}</span>
-                                        <input type="text" id="sop_number1" x-ref="input_1"
-                                            @blur="focus1 = false" @focus="focus1 = true"
+                                        <input type="text" id="sop_number1" x-ref="input_1" @blur="focus1 = false"
+                                            @focus="focus1 = true"
                                             class="form-control autocomplete-sop @error('sop_number') is-invalid @enderror"
                                             wire:model.defer="sop_number" autocomplete="off" placeholder="Number"
                                             aria-describedby="basic-addon1">
@@ -337,7 +336,8 @@
                             x-show="document_type == {{ \Modules\DocumentSystem\Entities\Document::WIN_DOC_TYPE }} || document_type == {{ \Modules\DocumentSystem\Entities\Document::FORM_DOC_TYPE }}  ? true : false"
                             class="mb-3 row form-group {{ $document_type == \Modules\DocumentSystem\Entities\Document::WIN_DOC_TYPE || $document_type == \Modules\DocumentSystem\Entities\Document::FORM_DOC_TYPE ? '' : 'd-none' }}">
 
-                            <label for="select_sop_number" class="col-sm-4 col-form-label">@lang('global.sop_number')</label>
+                            <label for="select_sop_number"
+                                class="col-sm-4 col-form-label">@lang('global.sop_number')</label>
 
                             <div class="col-sm-8">
                                 <x-document-system-select-2 id="select_sop_number" placeholder="Choose document"
@@ -366,8 +366,8 @@
                                 </label>
 
                                 <div class="col-sm-8">
-                                    <x-document-system-select-2-doctype id="category_number"
-                                        placeholder="Choose document" wire:model="category_number">
+                                    <x-document-system-select-2-doctype id="category_number" placeholder="Choose document"
+                                        wire:model="category_number">
 
                                         <option value="WIN">Working Instruction</option>
                                         <option value="FORM">FORM</option>
@@ -391,8 +391,8 @@
                                                 <input type="text"
                                                     class="form-control autocomplete-sop @error('win_number') is-invalid @enderror"
                                                     id="win_number" wire:model.defer="win_number" placeholder="Number"
-                                                    aria-describedby="basic-addon2" x-ref="input_1"
-                                                    @blur="focus1 = false" @focus="focus1 = true">
+                                                    aria-describedby="basic-addon2" x-ref="input_1" @blur="focus1 = false"
+                                                    @focus="focus1 = true">
                                             </div>
                                             @error('win_number')
                                                 <div class="invalid-feedback">
@@ -422,8 +422,8 @@
                                                 <input type="text"
                                                     class="form-control autocomplete-sop @error('form_number') is-invalid @enderror"
                                                     id="form_number" wire:model.defer="form_number" placeholder="Number"
-                                                    aria-describedby="basic-addon3" x-ref="input_1"
-                                                    @blur="focus1 = false" @focus="focus1 = true">
+                                                    aria-describedby="basic-addon3" x-ref="input_1" @blur="focus1 = false"
+                                                    @focus="focus1 = true">
                                             </div>
                                             @error('form_number')
                                                 <div class="invalid-feedback">
@@ -506,7 +506,8 @@
                             <label for="doc_created" class="col-sm-4 col-form-label">Date of Create Document</label>
 
                             <div class="col-sm-8">
-                                <x-inputs.datepicker wire:model.defer="doc_created" id="doc_created" :error="'doc_created'" />
+                                <x-inputs.datepicker wire:model.defer="doc_created" id="doc_created"
+                                    :error="'doc_created'" />
                             </div>
 
                         </div><!-- /.form-group -->
@@ -539,14 +540,13 @@
                         <div class="mb-3 row form-group d-flex gap-3 flex-wrap">
                             @if ($invitedPeople)
                                 {{-- @foreach ($invitedPeople as $key => $people)
-                                    <div
-                                        class="list-people position-relative px-3 py-2 border rounded w-auto d-flex gap-2 align-items-center">
-                                        <span class="opacity-80">{{ $people }}</span>
-                                        <button class="btn-closed"><img src="{{ asset('/images/icons/delete.png') }}"
-                                                wire:click.prevent="removeInvited('{{ $people }}')"
-                                                alt="">
-                                        </button>
-                                    </div>
+                                <div
+                                    class="list-people position-relative px-3 py-2 border rounded w-auto d-flex gap-2 align-items-center">
+                                    <span class="opacity-80">{{ $people }}</span>
+                                    <button class="btn-closed"><img src="{{ asset('/images/icons/delete.png') }}"
+                                            wire:click.prevent="removeInvited('{{ $people }}')" alt="">
+                                    </button>
+                                </div>
                                 @endforeach --}}
                                 <div class="form-group mt-2">
                                     <div class="form-check form-switch">
@@ -654,8 +654,7 @@
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" wire:click.prevent="saveData(1)"
-                                            class="dropdown-item">
+                                        <button type="button" wire:click.prevent="saveData(1)" class="dropdown-item">
                                             @lang('global.submit_for_review')
                                         </button>
                                     </li>
@@ -681,8 +680,7 @@
         <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
         <!--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />-->
         <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />-->
-        <link href="{{ asset('assets/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
-            rel="stylesheet" />
+        <link href="{{ asset('assets/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" />
     @endpush
 @endonce
 
@@ -699,7 +697,7 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // company_id select2 is initialized by the x-document-system-select-2 component.
 
             $('#listEmployee').select2({
@@ -707,13 +705,13 @@
                 closeOnSelect: false
             });
 
-            $('#listEmployee').on('change', function(e) {
+            $('#listEmployee').on('change', function (e) {
                 var data = $(this).select2("val");
                 @this.set('invitedPeople', data, true);
             });
 
             // update data model Livewire ketika nilai pada dropdown berubah
-            Livewire.on('employeeDataUpdated', function(listEmployee) {
+            Livewire.on('employeeDataUpdated', function (listEmployee) {
                 var $listEmployeeSelect = $('#listEmployee');
 
                 // Get currently selected values from Livewire state to preserve selection
@@ -724,7 +722,7 @@
                 $listEmployeeSelect.empty();
 
                 // Add new options
-                $.each(listEmployee, function(index, employee) {
+                $.each(listEmployee, function (index, employee) {
                     var isSelected = selectedIds.includes(employee.id.toString());
                     var newOption = new Option(employee.email, employee.id, isSelected, isSelected);
                     $listEmployeeSelect.append(newOption);
@@ -761,7 +759,7 @@
         });
 
         // window.addEventListener('showDocumentTypes', () => {
-        $('#module_id').on('change', function(e) {
+        $('#module_id').on('change', function (e) {
             @this.call('showDocumentTypes', $(this).val());
         });
         // });
@@ -796,13 +794,13 @@
             uploadTmpFile(form);
         }
 
-        $('#select').on('click', function(e) {
+        $('#select').on('click', function (e) {
             e.preventDefault();
 
             $('#file').click();
         })
 
-        $('#file').on('change', function(e) {
+        $('#file').on('change', function (e) {
             e.preventDefault();
             let input = this;
             let form = new FormData();
@@ -821,17 +819,17 @@
                 },
                 url: "{{ route('document-systems::maker.files') }}",
                 data: data,
-                success: function(res) {
+                success: function (res) {
                     @this.createdFiles(res);
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log('err', err);
                 }
             })
         }
         // end::custom dropbox
         window.Livewire.on('summernote', () => {
-            $('.summernote').each(function(i, e) {
+            $('.summernote').each(function (i, e) {
                 const id = $(e).attr('id')
                 $(e).summernote({
                     height: 300,
@@ -842,9 +840,9 @@
                         ['para', ['ul', 'ol', 'paragraph']],
                     ],
                     callbacks: {
-                        onChange: function(contents, $editable) {
+                        onChange: function (contents, $editable) {
                             @this.
-                            set(id, contents);
+                                set(id, contents);
                         }
                     },
                 })

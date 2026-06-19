@@ -1,7 +1,21 @@
 {{-- @component('document-systems', ['notif' => 1])
 
 @endcomponent --}}
-<div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+<div x-data="{ 
+    itemSelected: @entangle('itemSelected').defer, 
+    info: @entangle('info'),
+    toggleItem(id) {
+        id = parseInt(id) || id;
+        let current = [...this.itemSelected];
+        let idx = current.indexOf(id);
+        if (idx > -1) {
+            current.splice(idx, 1);
+        } else {
+            current.push(id);
+        }
+        this.itemSelected = current;
+    }
+}">
 
     <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2">
 
@@ -14,33 +28,37 @@
                 </span>
                 <span class="text-button">Add New</span>
             </a>
-            @if ($countSelected > 0)
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                    <span class="icon d-flex align-items-center">
-                        <img src="{{ asset('images/icons/export-top.svg') }}" alt="image export">
-                    </span>
-                    <span class="text-button">Export</span>
-                </a>
+            
+            <a href="#" type="button" 
+                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                class="button-toolbar gap-2 align-items-center py-2 px-3">
+                <span class="icon d-flex align-items-center">
+                    <img src="{{ asset('images/icons/export-top.svg') }}" alt="image export">
+                </span>
+                <span class="text-button">Export</span>
+            </a>
 
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                    <span class="icon d-flex align-items-center">
-                        <img src="{{ asset('images/icons/delete.png') }}" alt="image delete">
-                    </span>
-                    <span class="text-button">Delete</span>
-                </a>
-            @endif
+            <a href="#" type="button" 
+                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                class="button-toolbar gap-2 align-items-center py-2 px-3">
+                <span class="icon d-flex align-items-center">
+                    <img src="{{ asset('images/icons/delete.png') }}" alt="image delete">
+                </span>
+                <span class="text-button">Delete</span>
+            </a>
         </div><!-- /.toolbar-left -->
 
         <div class="toolbar-right d-flex align-items-center">
 
-            @if ($countSelected > 0)
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                    <span class="icon d-flex align-items-center">
-                        <img src="{{ asset('images/icons/delete.png') }}" alt="image delete">
-                    </span>
-                    <span class="text-button">{{ $countSelected }} Row Selected</span>
-                </a>
-            @endif
+            <a href="#" type="button" 
+                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                class="button-toolbar gap-2 align-items-center py-2 px-3"
+                @click.prevent="itemSelected = [];">
+                <span class="icon d-flex align-items-center">
+                    <img src="{{ asset('images/icons/delete.png') }}" alt="image delete">
+                </span>
+                <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
+            </a>
 
             {{-- <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
                 <span class="icon d-flex align-items-center">
@@ -116,13 +134,17 @@
             </thead>
             <tbody>
                 @foreach ($document as $itemIndex => $item)
-                    <tr wire:key="{{ $itemIndex }}" wire:click="onSelectedItem({{ $item->id }})">
+                    <tr wire:key="row-{{ $item->id }}" 
+                        @click="toggleItem({{ $item->id }})"
+                        :class="itemSelected.includes({{ $item->id }}) ? 'selected' : 'tr'"
+                        style="cursor: pointer;">
                         <td>
-                            <input class=" form-check-input" name="selected" type="checkbox"
-                                value="{{ $item->id }}" id="selected" x-model="itemSelected">
+                            <input class="form-check-input" name="selected" type="checkbox"
+                                :checked="itemSelected.includes({{ $item->id }})"
+                                @click.stop="toggleItem({{ $item->id }})">
                         </td>
                         <td scope="row">
-                            <a href="{{ route('document-systems::active-document.detail', ['id' => $item->id]) }}">
+                            <a @click.stop href="{{ route('document-systems::active-document.detail', ['id' => $item->id]) }}">
                                 {{ $item->title }}
                             </a>
                         </td>

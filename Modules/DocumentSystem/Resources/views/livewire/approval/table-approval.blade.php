@@ -1,28 +1,42 @@
-<div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+<div x-data="{ 
+    itemSelected: @entangle('itemSelected').defer, 
+    info: @entangle('info'),
+    toggleItem(id) {
+        id = parseInt(id) || id;
+        let current = [...this.itemSelected];
+        let idx = current.indexOf(id);
+        if (idx > -1) {
+            current.splice(idx, 1);
+        } else {
+            current.push(id);
+        }
+        this.itemSelected = current;
+    }
+}">
 
     <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2 sticky-top">
 
         <div class="toolbar-left d-flex align-items-center">
 
-            @if ($countSelected > 0)
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                    <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/export-top.svg') }}"
-                            alt="image export"></span>
-                    <span class="text-button">Export</span>
-                </a>
-            @endif
+            <a href="#" type="button" 
+                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                class="button-toolbar gap-2 align-items-center py-2 px-3">
+                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/export-top.svg') }}"
+                        alt="image export"></span>
+                <span class="text-button">Export</span>
+            </a>
         </div><!-- /.toolbar-left -->
 
         <div class="toolbar-right d-flex align-items-center">
 
-            @if ($countSelected > 0)
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                    wire:click="removeSeleced()">
-                    <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/delete.png') }}"
-                            alt="image delete"></span>
-                    <span class="text-button">{{ $countSelected }} Row Selected</span>
-                </a>
-            @endif
+            <a href="#" type="button" 
+                x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                class="button-toolbar gap-2 align-items-center py-2 px-3"
+                @click.prevent="itemSelected = [];">
+                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/delete.png') }}"
+                        alt="image delete"></span>
+                <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
+            </a>
 
             <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
                 <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/sort.png') }}"
@@ -64,16 +78,14 @@
                 </thead>
                 <tbody>
                     @foreach ($dataTables as $itemIndex => $items)
-                        <tr wire:key="{{ $itemIndex }}" wire:click="onSelectedItem({{ $items['id'] }})"">
+                        <tr wire:key="row-{{ $items->id }}" 
+                            @click="toggleItem({{ $items->id }})"
+                            :class="itemSelected.includes({{ $items->id }}) ? 'selected' : 'tr'"
+                            style="cursor: pointer;">
                             <td class="td-check">
-                                @if (in_array($items->id, $itemSelected))
-                                    <span class="icon-checked selected"></span>
-                                @else
-                                    <span class="icon-checked"></span>
-                                @endif
-
+                                <span class="icon-checked" :class="itemSelected.includes({{ $items->id }}) ? 'selected' : ''"></span>
                             </td>
-                            <td><a
+                            <td><a @click.stop
                                     href="{{ route('detail-approval', ['id' => $items['id']]) }}">{{ $items['title'] }}</a>
                             </td>
                             <td>{{ $items['Created'] }}</td>

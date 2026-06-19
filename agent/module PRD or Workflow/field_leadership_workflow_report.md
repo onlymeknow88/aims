@@ -77,14 +77,140 @@ We have created a dedicated Laravel Seeder [FieldLeadershipWorkflowSeeder.php](f
 2.  `FL-MAC-130626-FADJRI-02`: **Awaiting Approval** (Visible in Rahmad's KTT Approval queue).
 3.  `FL-MAC-130626-FADJRI-03`: **Approved & Closed** (Archived/Closed case).
 
-### How to Run the Seeder
-To run this seeder and populate your database, execute the following command:
-```powershell
-php artisan db:seed --class="Modules\FieldLeadership\Database\Seeders\FieldLeadershipWorkflowSeeder"
+---
+
+## 4. PICA Integration Workflow
+
+When a **Field Leadership** document is approved by the Approver (KTT) or processed by the PJA, the system automatically creates follow-up actions in the **PICA (Corrective Action)** module.
+
+### How PICA Data is Created (Script Details)
+
+Inside the approval logic (for example, in [DetailRequestApprovalPage.php](file:///c:/laragon/www/aims/Modules/FieldLeadership/Http/Livewire/Listing/Approval/DetailRequestApprovalPage.php#L141-L192)), the system iterates through each hazard/risk finding (`FieldLeadershipRisk`):
+
+```php
+foreach ($this->field->risks as $key => $value) {
+    // 1. Create a PicaDocument record representing the corrective action task
+    $picaDocument = $value->pica()->create([
+        'identity_id' => $this->generateIdentityId($this->field->created_at), // Generates FL[mY]-FL[increment_number]
+        'source' => PicaSource::FieldLeadership,
+        'type' => $this->field->type,
+        'date' => Carbon::parse($this->field->date)->format('Y-m-d'),
+        'ccow_id' => $this->field->ccow_id,
+        'company_id' => $this->field->company_id,
+        'section_id' => $this->field->section_id,
+        'location_id' => $this->field->area_location_id,
+        'location_detail' => $this->field->detail_location,
+        'company_detail' => $this->field->detail_company,
+        'pja_id' => $this->field->pja_id,
+        'pjo_id' => $this->field->pjo_id,
+        'auditor' => auth()->user()->name,
+        'non_compliance_root_cause' => $this->field->non_compliance_root,
+        'corrective_action' => $value['action'],
+        'target_settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
+        'settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
+        'requested' => PicaStatus::NewRequest,
+        'published' => PicaStatus::Publish,
+        'status' => $this->field->status,
+    ]);
+
+    // 2. Create the Pica polymorphic record to link the task back to the Field Leadership risk source
+    $picaDocument->pica()->create([
+        'source' => PicaSource::FieldLeadership,
+        'source_id' => $value->id,
+        'picaable_id' => $picaDocument->id,
+        'picaable_type' => FieldLeadershipRisk::class,
+    ]);
+
+    // 3. Clone files associated with the risk over to picaFiles
+    foreach ($value->files as $key => $file) {
+        $picaDocument->picaFiles()->create([
+            'file' => $file->file,
+            'size' => $file->size,
+            'type' => FieldLeadershipType::RiskFinding
+        ]);
+    }
+
+    // 4. Record initial workflow activity history
+    $picaDocument->activities()->create([
+        'description' => 'New Request',
+        'user_id' => Auth::user()->id,
+    ]);
+}
 ```
 
-### How to Run the Programmatic Simulation
-To run the end-to-end workflow simulation programmatically and view the resulting logs:
-```powershell
-php scratch/test_query.php
+### Visual Workflow Flowchart
+
+```mermaid
+graph TD
+    A[Maker: Submit FL Document] --> B[PJA: Review & Forward]
+    B --> C[KTT: Approve & Close FL]
+    C -->|Trigger PICA Auto-Creation| D[Create PicaDocument]
+    D --> E[Set source: PicaSource::FieldLeadership]
+    D --> F[Morph to: FieldLeadershipRisk]
+    D --> G[Set status: OnReviewPja]
+    D --> H[Create PicaActivity Log]
+```
+
+---
+
+## 5. ERD Database Diagram (Field Leadership to PICA)
+
+Berikut adalah visualisasi hubungan database (*Entity Relationship Diagram*) antara entitas **Field Leadership** dan entitas **PICA** menggunakan format Mermaid.js:
+
+```mermaid
+erDiagram
+    field_leaderships ||--o{ field_leadership_risks : "has many findings"
+    field_leaderships {
+        uuid id PK
+        string number
+        date date
+        uuid company_id FK
+        uuid pja_id FK
+        string status
+        string requested
+    }
+
+    field_leadership_risks ||--o| pica_documents : "associated with (pica_id)"
+    field_leadership_risks ||--o| picas : "morphOne picaable"
+    field_leadership_risks {
+        uuid id PK
+        uuid fl_id FK
+        uuid pica_id FK "nullable (linked to pica_documents)"
+        string action
+        date due_date
+    }
+
+    pica_documents ||--o{ picas : "morphs relation"
+    pica_documents ||--o{ pica_files : "has many files"
+    pica_documents ||--o{ pica_activities : "has many activities"
+    pica_documents {
+        uuid id PK
+        string identity_id "FL[mY]-FL[num]"
+        string source "PicaSource::FieldLeadership"
+        string type
+        string status
+        uuid company_id FK
+        uuid section_id FK
+        uuid pja_id FK
+    }
+
+    picas {
+        uuid id PK
+        string source "PicaSource::FieldLeadership"
+        uuid source_id "FK (field_leadership_risks.id)"
+        uuid picaable_id "FK (pica_documents.id)"
+        string picaable_type "Modules\\Pica\\Entities\\PicaDocument"
+    }
+
+    pica_files {
+        uuid id PK
+        uuid pica_id FK
+        string file
+    }
+
+    pica_activities {
+        uuid id PK
+        uuid pica_id FK
+        string description
+    }
 ```
