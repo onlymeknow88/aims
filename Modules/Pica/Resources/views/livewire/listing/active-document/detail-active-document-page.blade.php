@@ -257,6 +257,59 @@
 
             </div><!-- /.section-Attachment -->
 
+            @if (in_array($pica->status, [\App\Enums\Pica\PicaStatus::OnReviewPja, \App\Enums\Pica\PicaStatus::Open, \App\Enums\Pica\PicaStatus::Overdue]))
+                @if (auth()->user()->id == ($pica->pja->user_id ?? null) || auth()->user()->can('Pica - Field Leadership Approve Document'))
+                    <div class="footer-action mb-2">
+                        <div class="action-wrapper d-flex align-items-center justify-content-end gap-2">
+                            <div class="button-document">
+                                <button
+                                    class="dropdown-toggle btn btn-outline-default bg-green d-flex justify-content-center align-item-center text-white position-relative px-4"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Checking Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#CorrectiveAction"
+                                            class="dropdown-item" href="#">
+                                            Corrective Action
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
+            @if ($pica->status == \App\Enums\Pica\PicaStatus::OnReviewCrs)
+                @if (auth()->user()->can('Pica - Field Leadership Approve Document'))
+                    <div class="footer-action mb-2">
+                        <div class="action-wrapper d-flex align-items-center justify-content-end gap-2">
+                            <div class="button-document">
+                                <button
+                                    class="dropdown-toggle btn btn-outline-default bg-green d-flex justify-content-center align-item-center text-white position-relative px-4"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Approval Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button type="button" wire:click="action" class="dropdown-item" href="#">
+                                            Case Close
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#ReturnWithComment"
+                                            class="dropdown-item" href="#">
+                                            Return with comment
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
         </div><!-- /.section-content -->
 
         <div class="detail-right border-start border-1">

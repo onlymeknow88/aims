@@ -94,9 +94,10 @@ class DetailActiveDocumentPage extends Component
             ]);
         }
 
-        // $this->field->update([
-        //     'status' => $status == 'return' ?  FieldLeadershipType::Open : FieldLeadershipType::OnReviewPica,
-        // ]);
+        $this->pica->update([
+            'status' => $status == 'return' ? PicaStatus::Open : PicaStatus::OnReviewCrs,
+            'requested' => $status == 'return' ? PicaStatus::ReturnDocument : PicaStatus::RequestedCrs,
+        ]);
 
         DB::commit();
 

@@ -451,7 +451,7 @@
 
         <div class="row-data opacity-80 d-flex gap-2 align-items-center">
             <span class="input-limit w-100px">
-                <x-inputs.text wire:model="limit" id="limit" placeholder="0" value="{{ $limit }}"
+                <x-inputs.text wire:model.defer="limit" id="limit" placeholder="0" value="{{ $limit }}"
                     :error="'limit'" />
             </span>
             <span>{!! __('of') !!}</span>

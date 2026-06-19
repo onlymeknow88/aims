@@ -44,7 +44,7 @@
                                 Criteria Company
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="criteria" id="criteria" placeholder="Kriteria Perusahaan"
+                                <x-inputs.text wire:model.defer="criteria" id="criteria" placeholder="Kriteria Perusahaan"
                                     :error="'criteria'" disabled />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -72,7 +72,7 @@
                                 Submission
                             </label>
                             <div class="col-lg-8 col-md-12">
-                                <x-inputs.text wire:model="submission" id="submission" placeholder="Pengajuan"
+                                <x-inputs.text wire:model.defer="submission" id="submission" placeholder="Pengajuan"
                                     :error="'submission'" />
                             </div>
                         </div><!-- /.form-group penajuan -->
@@ -82,7 +82,7 @@
                                 Number PJO
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="number_pjo" id="number_pjo" placeholder="Number PJO"
+                                <x-inputs.text wire:model.defer="number_pjo" id="number_pjo" placeholder="Number PJO"
                                     :error="'number_pjo'" disabled />
                             </div>
                         </div><!-- /.form-group Number PJO -->
@@ -92,7 +92,7 @@
                                 Name
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="name" id="name" placeholder="Name" :error="'name'" />
+                                <x-inputs.text wire:model.defer="name" id="name" placeholder="Name" :error="'name'" />
                             </div>
                         </div><!-- /.form-group Name -->
 
@@ -101,7 +101,7 @@
                                 Date of Birth
                             </label>
                             <div class="col-8">
-                                <x-inputs.datepicker wire:model="date_of_birth" id="date_of_birth" :error="'date_of_birth'"
+                                <x-inputs.datepicker wire:model.defer="date_of_birth" id="date_of_birth" :error="'date_of_birth'"
                                     placeholder="Select Date" />
                             </div>
                         </div><!-- /.form-group date -->
@@ -111,7 +111,7 @@
                                 Phone Number
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="phone" id="phone" placeholder="Phone Number"
+                                <x-inputs.text wire:model.defer="phone" id="phone" placeholder="Phone Number"
                                     :error="'phone'" />
                             </div>
                         </div><!-- /.form-group Phone Number -->
@@ -121,7 +121,7 @@
                                 Email
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="email" id="email" placeholder="Email"
+                                <x-inputs.text wire:model.defer="email" id="email" placeholder="Email"
                                     :error="'email'" />
                             </div>
                         </div><!-- /.form-group Email -->
@@ -139,7 +139,7 @@
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
                                     <input type="file" name="" id=""
-                                        wire:model="temporaryFile.competency_file" accept=".pdf, .png, .jpeg, .jpg"
+                                        wire:model.defer="temporaryFile.competency_file" accept=".pdf, .png, .jpeg, .jpg"
                                         multiple />
 
                                 </button>
@@ -182,7 +182,7 @@
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
                                     <input type="file" name="" id=""
-                                        wire:model="temporaryFile.other_file" accept=".pdf, .png, .jpeg, .jpg"
+                                        wire:model.defer="temporaryFile.other_file" accept=".pdf, .png, .jpeg, .jpg"
                                         multiple />
 
                                 </button>
@@ -233,7 +233,7 @@
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
                                     <input type="file" name="" id=""
-                                        wire:model="temporaryFile.cv_file" accept=".pdf, .png, .jpeg, .jpg"
+                                        wire:model.defer="temporaryFile.cv_file" accept=".pdf, .png, .jpeg, .jpg"
                                         multiple />
 
                                 </button>
@@ -276,7 +276,7 @@
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
                                     <input type="file" name="" id=""
-                                        wire:model="temporaryFile.appoinment_file" accept=".pdf, .png, .jpeg, .jpg"
+                                        wire:model.defer="temporaryFile.appoinment_file" accept=".pdf, .png, .jpeg, .jpg"
                                         multiple />
 
                                 </button>
@@ -319,7 +319,7 @@
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
                                     <input type="file" name="" id=""
-                                        wire:model="temporaryFile.organizational_file"
+                                        wire:model.defer="temporaryFile.organizational_file"
                                         accept=".pdf, .png, .jpeg, .jpg" multiple />
 
                                 </button>
@@ -394,7 +394,7 @@
                                 Tanggal Pengajuan Evaluasi
                             </label>
                             <div class="col-8">
-                                <x-inputs.datepicker wire:model="date_submission" id="date_submission"
+                                <x-inputs.datepicker wire:model.defer="date_submission" id="date_submission"
                                     :error="'date_submission'" placeholder="Select Date" />
                             </div>
                         </div><!-- /.form-group date -->
@@ -424,7 +424,7 @@
                                     Comment
                                 </label>
                                 <div class="col-sm-12">
-                                    <x-inputs.texteditor-custom wire:model="comment" id="comment" model="comment"
+                                    <x-inputs.texteditor-custom wire:model.defer="comment" id="comment" model="comment"
                                         :error="'comment'" />
                                 </div>
 

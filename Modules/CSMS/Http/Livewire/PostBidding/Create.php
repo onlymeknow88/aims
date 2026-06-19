@@ -325,8 +325,12 @@ class Create extends Component
                 $file_name = "" . $name . ".$extension";
 
                 $path = 'csms/post-bidding/questionnaire/' . $post_bidding->id;
-                $full_path = Storage::disk('public')->putFileAs($path, $this->questionnaire_file[0], $file_name);
+                
+                $filename = $file_name;
+                $filePathTemp = $this->questionnaire_file[0]->getRealPath();
+                $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
 
+                $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
                 $this->questionnaire['questionnaire_file'] = $full_path;
             } else {
                 $this->questionnaire['questionnaire_file'] = null;
@@ -358,9 +362,18 @@ class Create extends Component
                 foreach ($this->{'files_data_' . $value['id']} as $key => $file) {
                     $path = 'csms/post-bidding/attachments/' . $post_bidding->id;
 
-                    $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                    $filename = $file['name'];
+                    $filePathTemp = $file['file']->getRealPath();
+                    $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                    $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                    $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                    $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
+
                     $x = $checklist->files()->create([
                         'file' => $full_path,
+                        'blob_url' => $blobUrl,
+                        'blob_response' => $blobResponse,
                         'size' => $file['size'],
                         'name' => $file['name'],
                         'type' => $file['extension']

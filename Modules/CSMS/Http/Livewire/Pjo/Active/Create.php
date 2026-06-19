@@ -280,11 +280,19 @@ class Create extends Component
                 if (!empty($this->files['competency_file'])) {
                     foreach ($this->files['competency_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/competency_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'competency_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -295,11 +303,19 @@ class Create extends Component
                 if (!empty($this->files['other_file'])) {
                     foreach ($this->files['other_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/other_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'other_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -310,11 +326,19 @@ class Create extends Component
                 if (!empty($this->files['cv_file'])) {
                     foreach ($this->files['cv_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/cv_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'cv_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -325,11 +349,19 @@ class Create extends Component
                 if (!empty($this->files['appoinment_file'])) {
                     foreach ($this->files['appoinment_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/appoinment_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'appoinment_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -340,11 +372,19 @@ class Create extends Component
                 if (!empty($this->files['organizational_file'])) {
                     foreach ($this->files['organizational_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/organizational_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'organizational_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -355,11 +395,19 @@ class Create extends Component
                 if (!empty($this->files['administration_file'])) {
                     foreach ($this->files['administration_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/administration_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'administration_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -370,11 +418,19 @@ class Create extends Component
                 if (!empty($this->files['commitment_file'])) {
                     foreach ($this->files['commitment_file'] as $file) {
                         $path = 'csms/' . $pjo->id . '/commitment_file/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'commitment_file',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],
@@ -385,11 +441,19 @@ class Create extends Component
                 if (!empty($this->files['approval_letter'])) {
                     foreach ($this->files['approval_letter'] as $file) {
                         $path = 'csms/' . $pjo->id . '/approval_letter/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'approval_letter',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],

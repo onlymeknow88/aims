@@ -16,6 +16,12 @@
                     }
                     return '#';
                 },
+                init() {
+                    // Sync Alpine selectedIds setiap kali PHP toggleSelectAll dipanggil
+                    window.addEventListener('fl-sync-selection', (e) => {
+                        this.selectedIds = e.detail.ids ?? [];
+                    });
+                },
                 toggleRow(id) {
                     const idx = this.selectedIds.indexOf(id);
                     if (idx === -1) {

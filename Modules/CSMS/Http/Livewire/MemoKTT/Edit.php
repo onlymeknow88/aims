@@ -142,13 +142,24 @@ class Edit extends Component
                 foreach ($this->files as $key => $file) {
                     if (!is_object($file['file'])) {
                         $full_path = $file['file'];
+                        $blobUrl = null;
+                        $blobResponse = null;
                     } else {
                         $path = 'csms/memo-ktt/' . $this->memo->id;
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                     }
 
                     $this->memo->files()->create([
                         'file' => $full_path,
+                        'blob_url' => $blobUrl,
+                        'blob_response' => $blobResponse,
                         'size' => $file['size'],
                     ]);
                 }

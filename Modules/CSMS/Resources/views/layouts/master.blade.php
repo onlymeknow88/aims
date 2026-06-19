@@ -140,6 +140,140 @@
         })
     </script>
 
+    @include('csms::layouts.partials.preview-modal')
+
+    <script type="text/javascript">
+        function previewBlobFile(id, fileName, type = 'checklist', field = null, path = null) {
+            const modal = new bootstrap.Modal(document.getElementById('previewAttachmentModal'));
+            const spinner = document.getElementById('preview-loading-spinner');
+            const pdfContainer = document.getElementById('preview-pdf-container');
+            const pdfIframe = document.getElementById('preview-pdf-iframe');
+            const imgContainer = document.getElementById('preview-image-container');
+            const imgElement = document.getElementById('preview-image-element');
+            const officeContainer = document.getElementById('preview-office-container');
+            const officeIframe = document.getElementById('preview-office-iframe');
+            const fallbackContainer = document.getElementById('preview-fallback-container');
+            const downloadBtn = document.getElementById('preview-download-btn');
+            const titleSpan = document.getElementById('preview-file-name');
+
+            titleSpan.innerText = fileName;
+            spinner.classList.remove('d-none');
+            pdfContainer.classList.add('d-none');
+            imgContainer.classList.add('d-none');
+            officeContainer.classList.add('d-none');
+            fallbackContainer.classList.add('d-none');
+
+            modal.show();
+
+            let routeUrl = "{{ route('csms::files.sas-uri', ['id' => ':id']) }}".replace(':id', id || 0) + '?type=' + type;
+            if (field) {
+                routeUrl += '&field=' + field;
+            }
+            if (path) {
+                routeUrl += '&path=' + encodeURIComponent(path);
+            }
+
+            fetch(routeUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    const url = data.url;
+                    const ext = data.extension;
+
+                    if (ext === 'pdf') {
+                        let previewUrl = "{{ route('csms::files.preview', ['id' => ':id']) }}".replace(':id', id || 0) + '?type=' + type;
+                        if (field) previewUrl += '&field=' + field;
+                        if (path) previewUrl += '&path=' + encodeURIComponent(path);
+                        pdfIframe.src = previewUrl;
+                        pdfContainer.classList.remove('d-none');
+                    } else if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                        let previewUrl = "{{ route('csms::files.preview', ['id' => ':id']) }}".replace(':id', id || 0) + '?type=' + type;
+                        if (field) previewUrl += '&field=' + field;
+                        if (path) previewUrl += '&path=' + encodeURIComponent(path);
+                        imgElement.src = previewUrl;
+                        imgContainer.classList.remove('d-none');
+                    } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
+                        officeIframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+                        officeContainer.classList.remove('d-none');
+                    } else {
+                        downloadBtn.href = url;
+                        fallbackContainer.classList.remove('d-none');
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to preview file:', err);
+                    downloadBtn.href = '#';
+                    fallbackContainer.classList.remove('d-none');
+                })
+                .finally(() => {
+                    spinner.classList.add('d-none');
+                });
+        }
+
+        function initPreviewScript() {
+            const modalEl = document.getElementById('previewAttachmentModal');
+            if (modalEl) {
+                modalEl.addEventListener('hidden.bs.modal', function () {
+                    const pdfIframe = document.getElementById('preview-pdf-iframe');
+                    const officeIframe = document.getElementById('preview-office-iframe');
+                    const imgElement = document.getElementById('preview-image-element');
+
+                    if (pdfIframe) pdfIframe.src = '';
+                    if (officeIframe) officeIframe.src = '';
+                    if (imgElement) imgElement.src = '';
+                });
+            }
+
+            // Global Interception for previewable files in CSMS module
+            document.addEventListener('click', function(e) {
+                const anchor = e.target.closest('a');
+                if (!anchor) return;
+                
+                const href = anchor.getAttribute('href');
+                if (!href) return;
+                
+                const urlLower = href.toLowerCase();
+                const previewableExtensions = ['.pdf', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.docx', '.doc', '.xlsx', '.xls', '.pptx', '.ppt'];
+                const isPreviewable = previewableExtensions.some(ext => urlLower.includes(ext));
+                
+                if (!isPreviewable) return;
+                
+                const isAzureBlob = href.includes('blob.core.windows.net');
+                const isStorageFile = href.includes('/storage/') || href.includes('storage/');
+                const hasCsmsAttributes = anchor.hasAttribute('data-id') || anchor.classList.contains('previewable') || anchor.hasAttribute('data-preview');
+                
+                if (isAzureBlob || isStorageFile || hasCsmsAttributes) {
+                    e.preventDefault();
+                    
+                    let fileName = 'Document';
+                    try {
+                        const urlObj = new URL(href, window.location.origin);
+                        const pathParts = urlObj.pathname.split('/');
+                        fileName = decodeURIComponent(pathParts[pathParts.length - 1]);
+                    } catch (err) {
+                        const parts = href.split('/');
+                        fileName = decodeURIComponent(parts[parts.length - 1]);
+                    }
+                    
+                    const fileId = anchor.getAttribute('data-id') || null;
+                    const fileType = anchor.getAttribute('data-type') || 'checklist';
+                    
+                    previewBlobFile(fileId, fileName, fileType, null, href);
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPreviewScript);
+        } else {
+            initPreviewScript();
+        }
+    </script>
+
     @livewireScripts
     @stack('scripts')
 

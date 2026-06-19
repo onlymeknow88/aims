@@ -285,11 +285,10 @@ class ReturnDocumentPage extends Component
         if (in_array($id, $this->itemSelected)) {
             $key = array_search($id, $this->itemSelected);
             unset($this->itemSelected[$key]);
-            //array_merge($this->itemSelected, array($this->itemSelected[$key]));
+            $this->itemSelected = array_values($this->itemSelected);
             $this->countSelected--;
         } else {
             $this->itemSelected[] = $id;
-            ///array_push($this->itemSelected, $id);
             $this->countSelected++;
         }
     }

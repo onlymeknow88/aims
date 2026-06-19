@@ -431,11 +431,19 @@ class Edit extends Component
                 if (!empty($this->files['approval_letter'])) {
                     foreach ($this->files['approval_letter'] as $file) {
                         $path = 'csms/' . $pjo->id . '/approval_letter/';
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $pjo->files()->create([
                             'type' => 'approval_letter',
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'name' => $file['name'],
                             'size' => $file['size'],
                             'extension' => $file['extension'],

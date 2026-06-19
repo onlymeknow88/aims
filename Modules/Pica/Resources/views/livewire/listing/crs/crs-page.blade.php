@@ -7,7 +7,21 @@
 
         <div class="table-demo position-relative">
 
-            <div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+            <div x-data="{ 
+                itemSelected: @entangle('itemSelected'), 
+                info: @entangle('info'),
+                toggleItem(id) {
+                    id = String(id);
+                    let current = [...this.itemSelected];
+                    let idx = current.indexOf(id);
+                    if (idx > -1) {
+                        current.splice(idx, 1);
+                    } else {
+                        current.push(id);
+                    }
+                    this.itemSelected = current;
+                }
+            }">
 
                 <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2">
 
@@ -22,46 +36,44 @@
                             <span class="text-button">Add New</span> --}}
                         </a>
 
-                        @if ($countSelected > 0)
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="exportExcel()">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
-                                <span class="text-button">Export</span>
-                            </a>
+                        <a href="#" type="button"
+                            x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3"
+                            wire:click="exportExcel()">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
+                            <span class="text-button">Export</span>
+                        </a>
 
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="$emit('remove-item')">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">Delete</span>
-                            </a>
-                        @endif
+                        <a href="#" type="button"
+                            x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3"
+                            wire:click="$emit('remove-item')">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                            <span class="text-button">Delete</span>
+                        </a>
 
-
-                        @if ($countSelected == 1)
-                            <a href="{{ route('pica::listing.active-document.edit', $itemSelected) }}" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/pencil.png') }}" alt="image delete"></span>
-                                <span class="text-button">Edit</span>
-                            </a>
-                        @endif
+                        <a x-bind:href="'{{ route('pica::listing.active-document.edit', 'ID_PLACEHOLDER') }}'.replace('ID_PLACEHOLDER', itemSelected[0])"
+                            type="button"
+                            x-bind:class="itemSelected.length == 1 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/pencil.png') }}" alt="image edit"></span>
+                            <span class="text-button">Edit</span>
+                        </a>
                     </div><!-- /.toolbar-left -->
 
                     <div class="toolbar-right d-flex align-items-center">
 
-                        @if ($countSelected > 0)
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="removeSeleced()">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">{{ $countSelected }} Row Selected</span>
-                            </a>
-                        @endif
+                        <a href="#" type="button"
+                            x-bind:class="itemSelected.length > 0 ? 'd-flex' : 'd-none'"
+                            class="button-toolbar gap-2 align-items-center py-2 px-3"
+                            wire:click="removeSeleced()">
+                            <span class="icon d-flex align-items-center"><img
+                                    src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                            <span class="text-button" x-text="itemSelected.length + ' Row Selected'"></span>
+                        </a>
 
                         <div class="column-sort d-flex justify-content-between">
                             <a class="button-toolbar d-flex gap-2 align-items-center py-2 px-3" type="button"
@@ -649,16 +661,11 @@
                             <tbody>
                                 @foreach ($this->activeListings as $itemIndex => $items)
                                     <tr wire:key="{{ $itemIndex }}"
-                                        wire:click="onSelectedItem('{{ $items->id }}')"
-                                        @if (in_array($items->id, $itemSelected)) class="selected" @else class="tr" @endif>
+                                        @click="toggleItem('{{ $items->id }}')"
+                                        :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : 'tr'"
+                                        style="cursor: pointer;">
                                         <td class="td-check">
-                                            <span class="icon-checked"></span>
-                                        </td>
-                                        @if (in_array($items->id, $itemSelected))
-                                            <span class="icon-checked selected"></span>
-                                        @else
-                                            <span class="icon-checked"></span>
-                                        @endif
+                                            <span class="icon-checked" :class="itemSelected.includes('{{ $items->id }}') ? 'selected' : ''"></span>
                                         </td>
                                         @if (in_array('Identity ID', $selectedColumns))
                                             <td>

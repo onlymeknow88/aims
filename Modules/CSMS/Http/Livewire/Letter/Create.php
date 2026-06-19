@@ -110,10 +110,19 @@ class Create extends Component
 
             foreach ($this->files as $key => $file) {
                 $path = 'csms/letter/' . $letter->id;
-                $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                
+                $filename = $file['name'];
+                $filePathTemp = $file['file']->getRealPath();
+                $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                 $letter->files()->create([
                     'file' => $full_path,
+                    'blob_url' => $blobUrl,
+                    'blob_response' => $blobResponse,
                     'size' => $file['size'],
                 ]);
             }

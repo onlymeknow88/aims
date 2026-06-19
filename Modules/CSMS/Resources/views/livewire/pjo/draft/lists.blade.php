@@ -75,7 +75,7 @@
                                             @foreach ($columns as $column)
                                                 <div class="form-check">
                                                     <input class="form-check-input rounded-circle" type="checkbox"
-                                                        id="flexCheckDefault" wire:model="selectedColumns"
+                                                        id="flexCheckDefault" wire:model.defer="selectedColumns"
                                                         value="{{ $column }}">
                                                     <label class="form-check-label fw-normal" for="flexCheckDefault">
                                                         {{ $column }}
@@ -451,7 +451,7 @@
                                                                         class="sort sort-desc fw-normal d-block text-center">
                                                                         Dari
                                                                     </span>
-                                                                    <x-inputs.datepicker wire:model="startDate"
+                                                                    <x-inputs.datepicker wire:model.defer="startDate"
                                                                         id="startDate" :error="'startDate'"
                                                                         placeholder="Select Date" />
 
@@ -459,7 +459,7 @@
                                                                         class="sort sort-desc fw-normal d-block text-center mt-2">
                                                                         Sampai
                                                                     </span>
-                                                                    <x-inputs.datepicker wire:model="endDate"
+                                                                    <x-inputs.datepicker wire:model.defer="endDate"
                                                                         id="endDate" :error="'endDate'"
                                                                         placeholder="Select Date" />
 
@@ -676,7 +676,7 @@
 
             <div class="row-data opacity-80 d-flex gap-2 align-items-center">
                 <span class="input-limit w-100px">
-                    <x-inputs.text wire:model="limit" id="limit" placeholder="0" value="{{ $limit }}"
+                    <x-inputs.text wire:model.defer="limit" id="limit" placeholder="0" value="{{ $limit }}"
                         :error="'limit'" />
                 </span>
                 <span>{!! __('of') !!}</span>

@@ -29,7 +29,7 @@
                                 Term
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="term" id="term" placeholder="Istilah"
+                                <x-inputs.text wire:model.defer="term" id="term" placeholder="Istilah"
                                     :error="'term'" />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -39,7 +39,7 @@
                                 Definition
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="definition" id="definition" placeholder="Definisi"
+                                <x-inputs.text wire:model.defer="definition" id="definition" placeholder="Definisi"
                                     :error="'definition'" />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -49,7 +49,7 @@
                                 Reference
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="reference" id="reference" placeholder="Referensi"
+                                <x-inputs.text wire:model.defer="reference" id="reference" placeholder="Referensi"
                                     :error="'reference'" />
                             </div>
                         </div><!-- /.form-group criteria -->

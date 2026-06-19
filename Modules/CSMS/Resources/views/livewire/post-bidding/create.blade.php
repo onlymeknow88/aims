@@ -78,7 +78,7 @@
                                     <label for="company_name" class="col col-form-label">Nama Perusahaan *<br>(Penulisan
                                         Perusahaan Sesuai Akta Perusahaan)</label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="company_name" id="company_name" placeholder=""
+                                        <x-inputs.text wire:model.defer="company_name" id="company_name" placeholder=""
                                             :error="'company_name'" disabled />
                                     </div>
                                 </div><!-- /.form-group company_name -->
@@ -87,9 +87,9 @@
                                     <label for="address" class="col col-form-label">Alamat Perusahaan *</label>
                                     <div class="col-6">
 
-                                        <x-inputs.textarea wire:model="address" id="addresss" placeholder=""
+                                        <x-inputs.textarea wire:model.defer="address" id="addresss" placeholder=""
                                             :error="'addresss'" disabled />
-                                        {{-- <x-kplh-texteditor wire:model="address" id="address" value="{{ $address }}"
+                                        {{-- <x-kplh-texteditor wire:model.defer="address" id="address" value="{{ $address }}"
                                             placeholder="Alamat Perusahaan" :error="'address'" /> --}}
                                     </div>
                                 </div><!-- /.form-group address -->
@@ -98,9 +98,9 @@
                                     <label for="company_site" class="col col-form-label">Site Perusahaan *</label>
                                     <div class="col-6">
 
-                                        <x-inputs.textarea wire:model="company_site" id="company_sites" placeholder=""
+                                        <x-inputs.textarea wire:model.defer="company_site" id="company_sites" placeholder=""
                                             :error="'company_sites'" disabled />
-                                        {{-- <x-kplh-texteditor wire:model="company_site" id="company_site"
+                                        {{-- <x-kplh-texteditor wire:model.defer="company_site" id="company_site"
                                             placeholder="Site Perusahaan" :error="'company_site'" /> --}}
                                     </div>
                                 </div><!-- /.form-group company_site -->
@@ -110,7 +110,7 @@
                                         Badan Usaha
                                         *</label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="license_number" id="license_number" placeholder=""
+                                        <x-inputs.text wire:model.defer="license_number" id="license_number" placeholder=""
                                             :error="'license_number'" disabled />
                                     </div>
                                 </div><!-- /.form-group license_number -->
@@ -160,7 +160,7 @@
                                         <a href="#" style="color: #00552f">Singkatan Nama Perusahaan (Max 5
                                             Huruf)</a></label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="company_nickname" id="company_nickname"
+                                        <x-inputs.text wire:model.defer="company_nickname" id="company_nickname"
                                             placeholder="Contoh: Maruwai Coal > MAC" :error="'company_nickname'" maxlength="5" />
                                     </div>
                                 </div><!-- /.form-group company_nickname -->
@@ -172,7 +172,7 @@
                                             Dari Instansi
                                             Terkait)</a></label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="scope_of_business" id="scope_of_business"
+                                        <x-inputs.text wire:model.defer="scope_of_business" id="scope_of_business"
                                             placeholder="" :error="'scope_of_business'" />
                                     </div>
                                 </div><!-- /.form-group scope_of_business -->
@@ -181,18 +181,18 @@
                                     <label for="contract_period" class="col-lg-6 col-md-12 col-form-label"><a
                                             href="#" style="color: #00552f">Periode Kontrak</a></label>
                                     <div class="col-lg-6 col-md-12">
-                                        {{-- <x-inputs.text wire:model="contract_period" id="contract_period"
+                                        {{-- <x-inputs.text wire:model.defer="contract_period" id="contract_period"
                                             placeholder="Periode Kontrak" :error="'contract_period'" /> --}}
 
                                         <div class="col-12 input-group">
                                             {{-- <span class="input-group-text" id="addons-umur">Dari :</span> --}}
-                                            {{-- <x-inputs.number wire:model="number_of_spv_pop" id="number_of_spv_pop"
+                                            {{-- <x-inputs.number wire:model.defer="number_of_spv_pop" id="number_of_spv_pop"
                                                     placeholder="" :error="'number_of_spv_pop'" min="0" /> --}}
 
-                                            <x-inputs.datepicker wire:model="date_contract_period_start" id="date_contract_period_start" placeholder=""
+                                            <x-inputs.datepicker wire:model.defer="date_contract_period_start" id="date_contract_period_start" placeholder=""
                                                 :error="'date_contract_period_start'" />
                                             <span class="input-group-text" id="addons-umur">Sampai</span>
-                                            <x-inputs.datepicker wire:model="date_contract_period_end" id="date_contract_period_end"
+                                            <x-inputs.datepicker wire:model.defer="date_contract_period_end" id="date_contract_period_end"
                                                 placeholder="" :error="'date_contract_period_end'" />
                                         </div>
                                     </div>
@@ -204,11 +204,11 @@
                                             Adaro</a></label>
                                     <div class="col-lg-6 col-md-12">
                                         <div class="col-12 input-group">
-                                            <x-inputs.text wire:model="number_of_workers" id="number_of_workers"
+                                            <x-inputs.text wire:model.defer="number_of_workers" id="number_of_workers"
                                                 placeholder="" :error="'number_of_workers'" min="0" />
                                             <span class="input-group-text" id="addons-umur">Orang</span>
                                         </div>
-                                        {{-- <x-inputs.text wire:model="number_of_workers" id="number_of_workers"
+                                        {{-- <x-inputs.text wire:model.defer="number_of_workers" id="number_of_workers"
                                             placeholder="Jumlah Pekerja yang bekerja di Adaro" :error="'number_of_workers'" /> --}}
                                     </div>
                                 </div><!-- /.form-group number_of_workers -->
@@ -219,12 +219,12 @@
                                             style="color: #00552f">Jumlah Pengawas yang Berkompetensi</a></label>
                                     <div class="col-lg-6 col-md-12">
                                         <div class="mb-3">
-                                            {{-- <x-inputs.text wire:model="number_of_spv_pop" id="number_of_spv_pop"
+                                            {{-- <x-inputs.text wire:model.defer="number_of_spv_pop" id="number_of_spv_pop"
                                                 placeholder="POP :" :error="'number_of_spv_pop'" /> --}}
 
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">POP :</span>
-                                                <x-inputs.number wire:model="number_of_spv_pop" id="number_of_spv_pop"
+                                                <x-inputs.number wire:model.defer="number_of_spv_pop" id="number_of_spv_pop"
                                                     placeholder="" :error="'number_of_spv_pop'" min="0" />
                                                 <span class="input-group-text" id="addons-umur">Orang</span>
                                             </div>
@@ -233,45 +233,45 @@
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">POM :</span>
-                                                <x-inputs.number wire:model="number_of_spv_pom" id="number_of_spv_pom"
+                                                <x-inputs.number wire:model.defer="number_of_spv_pom" id="number_of_spv_pom"
                                                     placeholder="" :error="'number_of_spv_pom'" min="0" />
                                                 <span class="input-group-text" id="addons-umur">Orang</span>
                                             </div>
-                                            {{-- <x-inputs.text wire:model="number_of_spv_pom" id="number_of_spv_pom"
+                                            {{-- <x-inputs.text wire:model.defer="number_of_spv_pom" id="number_of_spv_pom"
                                                 placeholder="POM :" :error="'number_of_spv_pom'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">POU :</span>
-                                                <x-inputs.number wire:model="number_of_spv_pou" id="number_of_spv_pou"
+                                                <x-inputs.number wire:model.defer="number_of_spv_pou" id="number_of_spv_pou"
                                                     placeholder="" :error="'number_of_spv_pou'" min="0" />
                                                 <span class="input-group-text" id="addons-umur">Orang</span>
                                             </div>
-                                            {{-- <x-inputs.text wire:model="number_of_spv_pou" id="number_of_spv_pou"
+                                            {{-- <x-inputs.text wire:model.defer="number_of_spv_pou" id="number_of_spv_pou"
                                                 placeholder="POU :" :error="'number_of_spv_pou'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Implementasi SMKP
                                                     :</span>
-                                                <x-inputs.number wire:model="number_of_spv_imp_smkp"
+                                                <x-inputs.number wire:model.defer="number_of_spv_imp_smkp"
                                                     id="number_of_spv_imp_smkp" placeholder="" :error="'number_of_spv_imp_smkp'"
                                                     min="0" />
                                                 <span class="input-group-text" id="addons-umur">Orang</span>
                                             </div>
-                                            {{-- <x-inputs.text wire:model="number_of_spv_imp_smkp"
+                                            {{-- <x-inputs.text wire:model.defer="number_of_spv_imp_smkp"
                                                 id="number_of_spv_imp_smkp" placeholder="Implementasi SMKP :"
                                                 :error="'number_of_spv_imp_smkp'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Auditor SMKP :</span>
-                                                <x-inputs.number wire:model="number_of_spv_auditor_smkp"
+                                                <x-inputs.number wire:model.defer="number_of_spv_auditor_smkp"
                                                     id="number_of_spv_auditor_smkp" placeholder="" :error="'number_of_spv_auditor_smkp'"
                                                     min="0" />
                                                 <span class="input-group-text" id="addons-umur">Orang</span>
                                             </div>
-                                            {{-- <x-inputs.text wire:model="number_of_spv_auditor_smkp"
+                                            {{-- <x-inputs.text wire:model.defer="number_of_spv_auditor_smkp"
                                                 id="number_of_spv_auditor_smkp" placeholder="Auditor SMKP :"
                                                 :error="'number_of_spv_auditor_smkp'" /> --}}
                                         </div>
@@ -285,37 +285,37 @@
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Nama :</span>
-                                                <x-inputs.text wire:model="equipped_name" id="equipped_name"
+                                                <x-inputs.text wire:model.defer="equipped_name" id="equipped_name"
                                                     placeholder="" :error="'equipped_name'" min="0" />
                                             </div>
-                                            {{-- <x-inputs.text wire:model="equipped_name" id="equipped_name"
+                                            {{-- <x-inputs.text wire:model.defer="equipped_name" id="equipped_name"
                                                 placeholder="Nama :" :error="'equipped_name'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Jabatan :</span>
-                                                <x-inputs.text wire:model="equipped_position" id="equipped_position"
+                                                <x-inputs.text wire:model.defer="equipped_position" id="equipped_position"
                                                     placeholder="" :error="'equipped_position'" min="0" />
                                             </div>
-                                            {{-- <x-inputs.text wire:model="equipped_position" id="equipped_position"
+                                            {{-- <x-inputs.text wire:model.defer="equipped_position" id="equipped_position"
                                                 placeholder="Jabatan :" :error="'equipped_position'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Telepon :</span>
-                                                <x-inputs.text wire:model="equipped_telephone" id="equipped_telephone"
+                                                <x-inputs.text wire:model.defer="equipped_telephone" id="equipped_telephone"
                                                     placeholder="" :error="'equipped_telephone'" min="0" />
                                             </div>
-                                            {{-- <x-inputs.text wire:model="equipped_telephone" id="equipped_telephone"
+                                            {{-- <x-inputs.text wire:model.defer="equipped_telephone" id="equipped_telephone"
                                                 placeholder="Telepon :" :error="'equipped_telephone'" /> --}}
                                         </div>
                                         <div class="mb-3">
                                             <div class="col-12 input-group">
                                                 <span class="input-group-text" id="addons-umur">Alamat Email :</span>
-                                                <x-inputs.text wire:model="equipped_email" id="equipped_email"
+                                                <x-inputs.text wire:model.defer="equipped_email" id="equipped_email"
                                                     placeholder="" :error="'equipped_email'" min="0" />
                                             </div>
-                                            {{-- <x-inputs.text wire:model="equipped_email" id="equipped_email"
+                                            {{-- <x-inputs.text wire:model.defer="equipped_email" id="equipped_email"
                                                 placeholder="Alamat Email :" :error="'equipped_email'" /> --}}
                                         </div>
                                     </div>
@@ -424,7 +424,7 @@
                                                         <div
                                                             class="checklist_csms_value_{{ $value->id }} d-flex flex-column gap-3">
                                                             <x-inputs.select2
-                                                                wire:model="checklist_csms_value_{{ $value->id }}"
+                                                                wire:model.defer="checklist_csms_value_{{ $value->id }}"
                                                                 id="checklist_csms_value_{{ $value->id }}"
                                                                 class="form-select" placeholder="Pemenuhan">
                                                                 <option value="Ya">Ya</option>
@@ -439,7 +439,7 @@
                                                                         x-show="checklist_csms_value_{{ $value->id }} === 'Tidak'"
                                                                         class="mb-3">
                                                                         <x-kplh-texteditor
-                                                                            wire:model="checklist_csms_note_{{ $value->id }}"
+                                                                            wire:model.defer="checklist_csms_note_{{ $value->id }}"
                                                                             id="checklist_csms_note_{{ $value->id }}"
                                                                             placeholder="Alamat Perusahaan"
                                                                             :error="'checklist_csms_note_{{ $value->id }}'" />
@@ -459,7 +459,7 @@
                                                                         </span>
                                                                         <input type="file" name=""
                                                                             id=""
-                                                                            wire:model="checklist_csms_file_{{ $value->id }}"
+                                                                            wire:model.defer="checklist_csms_file_{{ $value->id }}"
                                                                             accept=".pdf, .png, .jpeg, .jpg" multiple
                                                                             @change="handleFileSelect" />
                                                                     </button>
@@ -517,7 +517,7 @@
                         <div class="row form-group">
                             <label for="tanggal_service" class="col col-form-label">Ringkasan Hasil Inspeksi</label>
                             <div class="col-6">
-                                <x-kplh-texteditor wire:model="summary" id="summary"
+                                <x-kplh-texteditor wire:model.defer="summary" id="summary"
                                     placeholder="Ringkasan Hasil Inspeksi" :error="'summary'" />
                             </div>
                         </div> --}}

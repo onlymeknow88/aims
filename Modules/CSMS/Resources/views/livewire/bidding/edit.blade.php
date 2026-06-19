@@ -74,7 +74,7 @@
                                 <label for="company_name" class="col col-form-label">Nama Perusahaan *<br>(Penulisan
                                     Perusahaan Sesuai Akta Perusahaan)</label>
                                 <div class="col-6">
-                                    <x-inputs.text wire:model="company_name" id="company_name" placeholder=""
+                                    <x-inputs.text wire:model.defer="company_name" id="company_name" placeholder=""
                                         :error="'company_name'" />
                                 </div>
                             </div><!-- /.form-group company_name -->
@@ -82,7 +82,7 @@
                             <div class="row mb-3 form-group">
                                 <label for="address" class="col col-form-label">Alamat Perusahaan *</label>
                                 <div class="col-6">
-                                    <x-inputs.textarea wire:model="address" id="address" placeholder=""
+                                    <x-inputs.textarea wire:model.defer="address" id="address" placeholder=""
                                         :error="'address'"></x-inputs.textarea>
                                 </div>
                             </div><!-- /.form-group address -->
@@ -90,7 +90,7 @@
                             <div class="row mb-3 form-group">
                                 <label for="company_site" class="col col-form-label">Site Perusahaan *</label>
                                 <div class="col-6">
-                                    <x-inputs.textarea wire:model="company_site" id="company_site" placeholder=""
+                                    <x-inputs.textarea wire:model.defer="company_site" id="company_site" placeholder=""
                                         :error="'company_site'"></x-inputs.textarea>
                                 </div>
                             </div><!-- /.form-group company_site -->
@@ -100,7 +100,7 @@
                                     Badan Usaha
                                     *</label>
                                 <div class="col-6">
-                                    <x-inputs.text wire:model="license_number" id="license_number" placeholder=""
+                                    <x-inputs.text wire:model.defer="license_number" id="license_number" placeholder=""
                                         :error="'license_number'" />
                                 </div>
                             </div><!-- /.form-group license_number -->
@@ -179,7 +179,7 @@
                                                 <div
                                                     class="checklist_csms_value_{{ $value->question_id }} d-flex flex-column gap-3">
                                                     <x-inputs.select2
-                                                        wire:model="checklist_csms_value_{{ $value->question_id }}"
+                                                        wire:model.defer="checklist_csms_value_{{ $value->question_id }}"
                                                         id="checklist_csms_value_{{ $value->question_id }}"
                                                         class="form-select" placeholder="Pemenuhan">
                                                         <option value="Ya">Ya</option>
@@ -194,7 +194,7 @@
                                                                 x-show="checklist_csms_value_{{ $value->question_id }} === 'Tidak'"
                                                                 class="mb-3">
                                                                 <x-kplh-texteditor
-                                                                    wire:model="checklist_csms_note_{{ $value->question_id }}"
+                                                                    wire:model.defer="checklist_csms_note_{{ $value->question_id }}"
                                                                     id="checklist_csms_note_{{ $value->question_id }}"
                                                                     placeholder="Alamat Perusahaan"
                                                                     :error="'checklist_csms_note_{{ $value->question_id }}'" />
@@ -213,7 +213,7 @@
                                                                         File</a>
                                                                 </span>
                                                                 <input type="file" name="" id=""
-                                                                    wire:model="checklist_csms_file_{{ $value->question_id }}"
+                                                                    wire:model.defer="checklist_csms_file_{{ $value->question_id }}"
                                                                     accept=".pdf, .png, .jpeg, .jpg" multiple
                                                                     @change="handleFileSelect" />
                                                             </button>
@@ -330,7 +330,7 @@
                     <div class="row form-group">
                         <label for="person_in_charge" class="col col-form-label">Penanggung Jawab Bidder</label>
                         <div class="col-6">
-                            <x-inputs.text wire:model="person_in_charge" id="person_in_charge" placeholder=""
+                            <x-inputs.text wire:model.defer="person_in_charge" id="person_in_charge" placeholder=""
                                 :error="'person_in_charge'" />
                         </div>
                     </div>

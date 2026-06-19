@@ -234,10 +234,18 @@ class Edit extends Component
                             Storage::delete($path . '/' . $file['name']);
                         }
 
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $filename = $file['name'];
+                        $filePathTemp = $file['file']->getRealPath();
+                        $blobResult = uploadToBlobStorage($filename, $filePathTemp, $path);
+
+                        $full_path = $blobResult['fileBlobPathName'] ?? ($path . '/' . $filename);
+                        $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                        $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
 
                         $x = $checklist->files()->create([
                             'file' => $full_path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'size' => $file['size'],
                             'name' => $file['name'],
                             'type' => $file['extension']

@@ -178,9 +178,11 @@
                                         @foreach ($checklist->files as $index => $file)
                                             <div class="content">
                                                 <a class="text-primary"
-                                                    href="{{ route('csms::bidding.download-file', [$file->id]) }}"
-                                                    target="_blank"><i class="fa fa-download"></i>
-                                                    Attachment
+                                                    href="javascript:void(0)"
+                                                    onclick="previewBlobFile('{{ $file->id }}', '{{ $file->name }}', 'checklist')"
+                                                    data-id="{{ $file->id }}"
+                                                    data-type="checklist">
+                                                    <i class="fa fa-eye"></i> Preview Attachment
                                                 </a>
                                             </div>
                                         @endforeach

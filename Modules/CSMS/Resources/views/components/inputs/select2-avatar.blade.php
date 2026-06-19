@@ -1,16 +1,47 @@
-@props(['placeholder' => 'Select Options', 'id', 'error' => false])
+@props(['placeholder' => 'Select Options', 'id', 'error' => false, 'disabled' => false])
+
+@php
+    $modelName = null;
+    $isDeferred = false;
+    if ($attributes->has('wire:model')) {
+        $modelName = $attributes->get('wire:model');
+    } elseif ($attributes->has('wire:model.defer')) {
+        $modelName = $attributes->get('wire:model.defer');
+        $isDeferred = true;
+    } elseif ($attributes->has('wire:model.lazy')) {
+        $modelName = $attributes->get('wire:model.lazy');
+    } else {
+        foreach ($attributes->getAttributes() as $key => $value) {
+            if (str_starts_with($key, 'wire:model')) {
+                $modelName = $value;
+                if (str_contains($key, '.defer')) {
+                    $isDeferred = true;
+                }
+                break;
+            }
+        }
+    }
+    $modelName = $modelName ?? $id;
+@endphp
+
+@php
+    $slotStr = (string) $slot;
+    $optionsHash = md5($slotStr);
+    $wireKey = "select2-avatar-wrapper-{$id}-{$optionsHash}";
+@endphp
 
 <div>
-    <select {{ $attributes }}
-        id="{{ $id }}"
-        data-placeholder="{{ $placeholder }}"
-        class="w-full form-select @error($error) is-invalid @enderror">
-        <option></option>
-        {{-- <option data-avatar="{{asset('./images/no-profile.png')}}" selected>{{ $placeholder }}</option> --}}
-        {{ $slot }}
-    </select>
+    <div wire:ignore wire:key="{{ $wireKey }}">
+        <select {{ $attributes }} @if ($disabled) disabled @endif
+            id="{{ $id }}"
+            data-placeholder="{{ $placeholder }}"
+            class="w-full form-select @error($error) is-invalid @enderror">
+            <option></option>
+            {!! $slotStr !!}
+        </select>
+    </div>
     @error($error)
-        <div class="invalid-feedback">
+        <div class="invalid-feedback d-block">
             {{ $message }}
         </div>
     @enderror
@@ -35,12 +66,35 @@
 @push('scripts')
     <script>
         $(function() {
-            window.initAvatar = () => {
-                $('#{{ $id }}').select2({
-                    placeholder: 'test',
-                    theme: 'bootstrap-5',
-                    templateResult: formatState,
-                    templateSelection: formatState,
+            window.initAvatar_{{ str_replace('-', '_', $id) }} = () => {
+                const $el = $('#{{ $id }}');
+                if (!$el.length) return;
+
+                if (!$el.hasClass("select2-hidden-accessible")) {
+                    $el.select2({
+                        placeholder: '{{ $placeholder }}',
+                        theme: 'bootstrap-5',
+                        templateResult: formatState,
+                        templateSelection: formatState,
+                        allowClear: true
+                    });
+                }
+
+                // Set value from Livewire if present and different
+                const val = @this.get('{{ $modelName }}');
+                if (val !== undefined && val !== null && $el.val() !== val) {
+                    $el.val(val).trigger('change.select2');
+                }
+
+                $el.off('change.select2-hook');
+                $el.on('change.select2-hook', function(e) {
+                    const currentVal = @this.get('{{ $modelName }}');
+                    const isSame = (currentVal == e.target.value) || 
+                                   ((currentVal === null || currentVal === undefined || currentVal === '') && 
+                                    (e.target.value === null || e.target.value === undefined || e.target.value === ''));
+                    if (!isSame) {
+                        @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                    }
                 });
             }
 
@@ -63,15 +117,10 @@
                 return $state;
             };
 
-            initAvatar();
-
-            $('#{{ $id }}').on('change', function(e) {
-                let elementName = $(this).attr('id');
-                @this.set(elementName, e.target.value);
-            });
+            initAvatar_{{ str_replace('-', '_', $id) }}();
 
             window.livewire.on('select2',()=>{
-                initAvatar();
+                initAvatar_{{ str_replace('-', '_', $id) }}();
             });
         });
     </script>

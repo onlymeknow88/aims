@@ -504,6 +504,11 @@ class TableMaker extends Component
 
             $this->itemSelected = $this->itemSelected->toArray();
         }
+
+        // Dispatch browser event agar Alpine.js sync selectedIds secara instan
+        $this->dispatchBrowserEvent('fl-sync-selection', [
+            'ids' => array_values($this->itemSelected),
+        ]);
     }
 
     public function activedInfo()
@@ -515,6 +520,10 @@ class TableMaker extends Component
     {
         $this->itemSelected = [];
         $this->countSelected = 0;
+        $this->selectAll = false;
+
+        // Sync Alpine agar selectedIds ikut direset
+        $this->dispatchBrowserEvent('fl-sync-selection', ['ids' => []]);
     }
 
     public function removeItem()
@@ -548,6 +557,10 @@ class TableMaker extends Component
 
         $this->itemSelected = [];
         $this->countSelected = 0;
+        $this->selectAll = false;
+
+        // Sync Alpine agar toolbar reset setelah delete
+        $this->dispatchBrowserEvent('fl-sync-selection', ['ids' => []]);
     }
 
     public function exportExcel()

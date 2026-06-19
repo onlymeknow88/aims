@@ -49,11 +49,13 @@ class PermissionSeederTableSeeder extends Seeder
             $permissionModels['Pica - Inspeksi KPLH View Draft'],
             $permissionModels['Pica - Audit View Draft'],
             $permissionModels['Pica - PJA View Draft'],
+            $permissionModels['Pica - Field Leadership View Document'],
         ]);
 
         $pjaRole->syncPermissions([
             $permissionModels['Pica - PJA View Request Review'],
             $permissionModels['Pica - PJA View Draft'],
+            $permissionModels['Pica - Field Leadership View Document'],
         ]);
 
         $crsRole->syncPermissions([

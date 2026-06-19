@@ -177,7 +177,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['competency_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -205,7 +205,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['other_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -233,7 +233,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['competency_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -261,7 +261,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['appoinment_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -289,7 +289,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['organizational_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -317,7 +317,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['administration_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -345,7 +345,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['commitment_file'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">
@@ -373,7 +373,7 @@
 
                                 <div class="files-content d-flex flex-column gap-2">
                                     @foreach ($files['approval_letter'] as $keyFile => $itemFile)
-                                        <a href="{{ asset($itemFile['file']) }}">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile['id'] }}', '{{ $itemFile['name'] }}', 'pjo')" data-id="{{ $itemFile['id'] }}" data-type="pjo">
                                             <div class="image d-flex w-100 align-items-center bg-white rounded p-3 border border-1"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
                                                 <div class="thumb">

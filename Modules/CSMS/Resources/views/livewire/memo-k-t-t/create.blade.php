@@ -29,7 +29,7 @@
                                 Memo Number
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="memo_number" id="memo_number" placeholder="Memo Number"
+                                <x-inputs.text wire:model.defer="memo_number" id="memo_number" placeholder="Memo Number"
                                     :error="'memo_number'" />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -39,7 +39,7 @@
                                 Title
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="title" id="title" placeholder="Title"
+                                <x-inputs.text wire:model.defer="title" id="title" placeholder="Title"
                                     :error="'title'" />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -67,7 +67,7 @@
                                 Initiator KTT
                             </label>
                             <div class="col-8">
-                                <x-inputs.text wire:model="ktt_id" id="ktt_id" placeholder="Initiator KTT"
+                                <x-inputs.text wire:model.defer="ktt_id" id="ktt_id" placeholder="Initiator KTT"
                                     :error="'ktt_id'" disabled />
                             </div>
                         </div><!-- /.form-group criteria -->
@@ -77,7 +77,7 @@
                                 Date
                             </label>
                             <div class="col-8">
-                                <x-inputs.datepicker wire:model="date" id="date" :error="'date'"
+                                <x-inputs.datepicker wire:model.defer="date" id="date" :error="'date'"
                                     placeholder="Select Date" />
                             </div>
                         </div><!-- /.form-group date -->
@@ -94,7 +94,7 @@
                                             alt="image upload" /></span>
                                     <span class="text-upload">Drop or <a href="#">Select
                                             File</a></span>
-                                    <input type="file" name="" id="" wire:model="temporaryFile"
+                                    <input type="file" name="" id="" wire:model.defer="temporaryFile"
                                         accept=".pdf, .png, .jpeg, .jpg" multiple />
 
                                 </button>
@@ -127,7 +127,7 @@
                                 Desciption
                             </label>
                             <div class="col-8">
-                                <textarea type="text" wire:model="description" class="form-control" rows="4" placeholder="Description"></textarea>
+                                <textarea type="text" wire:model.defer="description" class="form-control" rows="4" placeholder="Description"></textarea>
                             </div>
                         </div><!-- /.form-group date -->
 

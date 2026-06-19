@@ -39,8 +39,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->user()->can('Pica - Field Leadership View Document') ||
-                auth()->user()->can('Pica - Field Leadership Approve Document'))
+        @if (auth()->user()->can('Pica - CRS View Request Review'))
             <li class="item-sidebar">
                 <a href="{{ route('pica::listing.review-crs.index') }}"
                     class="link-sidebar text-decoration-none {{ Request::routeIs('pica::listing.review-crs.*') ? 'active' : '' }}">

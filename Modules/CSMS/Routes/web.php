@@ -51,6 +51,7 @@ use Modules\CSMS\Http\Livewire\Dictionary\Edit as DictionaryEdit;
 
 use Modules\CSMS\Http\Livewire\Approval\Biddings as ApprovalBiddings;
 use Modules\CSMS\Http\Livewire\Approval\PostBiddings as ApprovalPostBiddings;
+use Modules\CSMS\Http\Controllers\CSMSController;
 
 
 Route::get('/login', LoginPage::class)->name('login');
@@ -141,4 +142,8 @@ Route::middleware(['auth:csms'])->group(function () {
         Route::get('bidding/', ApprovalBiddings::class)->name('bidding');
         Route::get('post-bidding/', ApprovalPostBiddings::class)->name('post-bidding');
     });
+
+    /* Preview Files */
+    Route::get('/files/{id}/preview', [CSMSController::class, 'previewFile'])->name('files.preview');
+    Route::get('/files/{id}/sas-uri', [CSMSController::class, 'getFileSasUri'])->name('files.sas-uri');
 });

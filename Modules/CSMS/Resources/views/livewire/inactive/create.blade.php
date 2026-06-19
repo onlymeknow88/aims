@@ -58,7 +58,7 @@
                                 <div class="row mb-3 form-group">
                                     <label for="companyId" class="col col-form-label">Jenis Badan Usaha</label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="criteria_company" id="criteria_company"
+                                        <x-inputs.text wire:model.defer="criteria_company" id="criteria_company"
                                             placeholder="Jenis Badan Usaha" :error="'criteria_company'" />
                                     </div>
                                 </div><!-- /.form-group companyId -->
@@ -67,7 +67,7 @@
                                     <label for="departmentId" class="col col-form-label">Nama Perusahaan *<br>(Penulisan
                                         Perusahaan Sesuai Akta Perusahaan)</label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="criteria_company" id="criteria_company"
+                                        <x-inputs.text wire:model.defer="criteria_company" id="criteria_company"
                                             placeholder="Nama Perusahaan" :error="'criteria_company'" />
                                     </div>
                                 </div><!-- /.form-group departmentId -->
@@ -75,7 +75,7 @@
                                 <div class="row mb-3 form-group">
                                     <label for="sectionId" class="col col-form-label">Alamat Perusahaan *</label>
                                     <div class="col-6">
-                                        <x-kplh-texteditor wire:model="summary" id="summary"
+                                        <x-kplh-texteditor wire:model.defer="summary" id="summary"
                                             placeholder="Ringkasan Hasil Inspeksi" :error="'summary'" />
                                     </div>
                                 </div><!-- /.form-group sectionId -->
@@ -83,7 +83,7 @@
                                 <div class="row mb-3 form-group">
                                     <label for="company_sites" class="col col-form-label">Site Perusahaan *</label>
                                     <div class="col-6">
-                                        <x-kplh-texteditor wire:model="company_sites" id="company_sites"
+                                        <x-kplh-texteditor wire:model.defer="company_sites" id="company_sites"
                                             placeholder="Site Perusahaan" :error="'company_sites'" />
                                     </div>
                                 </div><!-- /.form-group location -->
@@ -92,7 +92,7 @@
                                     <label for="detail_location" class="col col-form-label">Nomor Ijin Badan Usaha
                                         *</label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Nomor Ijin Badan Usaha" :error="'detail_location'" />
                                     </div>
                                 </div><!-- /.form-group detail_location -->
@@ -101,7 +101,7 @@
                                     <label for="kttId" class="col-lg-6 col-md-12 col-form-label">Kriteria Jasa
                                         Perusahaan</label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Kriteria Jasa Perusahaan" :error="'detail_location'" />
                                     </div>
                                 </div><!-- /.form-group kttId -->
@@ -111,7 +111,7 @@
                                         <a href="#" style="color: #00552f">Singkatan Nama Perusahaan (Max 5
                                             Huruf)</a></label>
                                     <div class="col-6">
-                                        <x-inputs.text wire:model="criteria_company" id="criteria_company"
+                                        <x-inputs.text wire:model.defer="criteria_company" id="criteria_company"
                                             placeholder="Contoh: Maruwai Coal > MAC" :error="'criteria_company'" />
                                     </div>
                                 </div><!-- /.form-group departmentId -->
@@ -121,7 +121,7 @@
                                             style="color: #00552f">Lingkup Usaha/Jasa (Sesuai Surat Ijin Dari Instansi
                                             Terkait)</a></label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Lingkup Usaha/Jasa" :error="'detail_location'" />
                                     </div>
                                 </div><!-- /.form-group kttId -->
@@ -130,7 +130,7 @@
                                     <label for="kttId" class="col-lg-6 col-md-12 col-form-label"><a href="#"
                                             style="color: #00552f">Periode Kontrak</a></label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Periode Kontrak" :error="'detail_location'" />
                                     </div>
                                 </div><!-- /.form-group kttId -->
@@ -139,7 +139,7 @@
                                     <label for="kttId" class="col-lg-6 col-md-12 col-form-label"><a href="#"
                                             style="color: #00552f">Jumlah Pekerja yang bekerja di Adaro</a></label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Jumlah Pekerja yang bekerja di Adaro" :error="'detail_location'" />
                                     </div>
                                 </div><!-- /.form-group kttId -->
@@ -149,23 +149,23 @@
                                             style="color: #00552f">Jumlah Pengawas yang Berkompetensi</a></label>
                                     <div class="col-lg-6 col-md-12">
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="POP :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="POM :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="POU :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Implementasi SMKP :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Auditor SMKP :" :error="'detail_location'" />
                                         </div>
                                     </div>
@@ -176,19 +176,19 @@
                                             style="color: #00552f">Dilengkapi oleh</a></label>
                                     <div class="col-lg-6 col-md-12">
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Nama :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Jabatan :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Telepon :" :error="'detail_location'" />
                                         </div>
                                         <div class="mb-3">
-                                            <x-inputs.text wire:model="detail_location" id="detail_location"
+                                            <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                                 placeholder="Alamat Email :" :error="'detail_location'" />
                                         </div>
                                     </div>
@@ -198,7 +198,7 @@
                                     <label for="pjaId" class="col-lg-6 col-md-12 col-form-label">Perusahaan
                                         Induk</label>
                                     <div class="col-lg-6 col-md-12">
-                                        <x-inputs.text wire:model="detail_location" id="detail_location"
+                                        <x-inputs.text wire:model.defer="detail_location" id="detail_location"
                                             placeholder="Perusahaan Induk" :error="'detail_location'" />
                                     </div>
                                 </div> --}}
@@ -236,7 +236,7 @@
                                                         <div
                                                             class="wrapper_building_criteria_1 d-flex flex-column gap-3">
                                                             <x-inputs.select2
-                                                                wire:model="checklist_csms_value_{{ $i }}_{{ $value->id }}"
+                                                                wire:model.defer="checklist_csms_value_{{ $i }}_{{ $value->id }}"
                                                                 id="checklist_csms_value_{{ $i }}_{{ $value->id }}"
                                                                 class="form-select" placeholder="Pemenuhan">
                                                                 <option value="Ya">Ya</option>
@@ -259,7 +259,7 @@
                                                                                     File</a></span>
                                                                             <input type="file" name=""
                                                                                 id=""
-                                                                                wire:model="checklist_csms_file_{{ $i }}_{{ $value->id }}"
+                                                                                wire:model.defer="checklist_csms_file_{{ $i }}_{{ $value->id }}"
                                                                                 accept=".pdf, .png, .jpeg, .jpg"
                                                                                 multiple />
 
@@ -283,7 +283,7 @@
                         <div class="row form-group">
                             <label for="tanggal_service" class="col col-form-label">Ringkasan Hasil Inspeksi</label>
                             <div class="col-6">
-                                <x-kplh-texteditor wire:model="summary" id="summary"
+                                <x-kplh-texteditor wire:model.defer="summary" id="summary"
                                     placeholder="Ringkasan Hasil Inspeksi" :error="'summary'" />
                             </div>
                         </div> --}}
