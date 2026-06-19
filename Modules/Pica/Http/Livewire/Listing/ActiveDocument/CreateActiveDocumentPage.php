@@ -99,14 +99,14 @@ class CreateActiveDocumentPage extends Component
         // dd($propertyName, $value);
         if ($propertyName == 'company_id') {
             $this->company_type = Company::find($value);
-            $this->detail_company = $this->company_type->type;
+            $this->detail_company = $this->company_type ? $this->company_type->type : null;
         }
         if ($propertyName == 'target_date') {
             $this->settlement_date = $value;
         }
         if ($propertyName == 'section_id') {
             $department = Section::find($value);
-            $this->department_id = $department->department_id;
+            $this->department_id = $department ? $department->department_id : null;
         }
         if ($propertyName == 'temporaryFile') {
             if (is_object($value[0])) {
@@ -178,12 +178,15 @@ class CreateActiveDocumentPage extends Component
 
             foreach ($this->evidances as $key => $file) {
                 $path = 'pica/file/' . $picaDocument->id;
-                $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                $tempPath = $file['file']->getRealPath();
+                $blobResult = uploadToBlobStorage($file['name'], $tempPath, $path);
 
                 $picaDocument->picaFiles()->create([
-                    'file' => $full_path,
+                    'file' => $blobResult['fileBlobPathName'] ?? ($path . '/' . $file['name']),
                     'size' => $file['size'],
-                    'type' => $this->type
+                    'type' => $this->type,
+                    'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                    'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                 ]);
             }
 
@@ -246,12 +249,15 @@ class CreateActiveDocumentPage extends Component
 
             foreach ($this->evidances as $key => $file) {
                 $path = 'pica/file/' . $picaDocument->id;
-                $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                $tempPath = $file['file']->getRealPath();
+                $blobResult = uploadToBlobStorage($file['name'], $tempPath, $path);
 
                 $picaDocument->picaFiles()->create([
-                    'file' => $full_path,
+                    'file' => $blobResult['fileBlobPathName'] ?? ($path . '/' . $file['name']),
                     'size' => $file['size'],
-                    'type' => $this->type
+                    'type' => $this->type,
+                    'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                    'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                 ]);
             }
 

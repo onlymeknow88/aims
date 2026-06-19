@@ -236,7 +236,7 @@
                                 @endphp
                                 <div class="image d-flex flex-column align-items-start justify-content-center bg-white rounded p-3 border border-1"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="attachment">
-                                    <a href="{{ asset('storage/' . $itemFile->file) }}" target="_blank">
+                                    <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile->id }}', '{{ $file }}', 'pica_file')" data-id="{{ $itemFile->id }}" data-type="pica_file">
                                         <div class="thumb mb-2">
                                             <img src="{{ $ext == 'pdf' ? asset('./images/icons/pdf.png') : asset('./images/activity.png') }}"
                                                 alt="{{ $ext }}" />
@@ -317,19 +317,21 @@
                                                     @if ($loop->index == 0)
                                                         <h6 class="fw-normal">Images</h6>
                                                     @endif
-                                                    <div
-                                                        class="image d-flex align-items-center justify-content-between bg-white rounded p-2 border border-1 mb-2">
-                                                        <div class="d-flex gap-2 align-items-center">
-                                                            <div class="thumb">
-                                                                <img src="{{ asset('./images/activity.png') }}"
-                                                                    alt="activity">
+                                                    <a href="javascript:void(0)" onclick="previewBlobFile('{{ $value->id }}', '{{ basename($value->file) }}', 'activity')" data-id="{{ $value->id }}" data-type="activity">
+                                                        <div
+                                                            class="image d-flex align-items-center justify-content-between bg-white rounded p-2 border border-1 mb-2">
+                                                            <div class="d-flex gap-2 align-items-center">
+                                                                <div class="thumb">
+                                                                    <img src="{{ asset('./images/activity.png') }}"
+                                                                        alt="activity">
+                                                                </div>
+                                                                <div class="img-name text-dark">
+                                                                    {{ Str::limit(basename($value->file), 15) }}
+                                                                </div>
                                                             </div>
-                                                            <div class="img-name">
-                                                                {{ Str::limit(explode('/', $value->file)[4], 15) }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="img-size opacity-50">{{ $value->size }}</div>
-                                                    </div><!-- image -->
+                                                            <div class="img-size opacity-50 text-secondary">{{ $value->size }}</div>
+                                                        </div><!-- image -->
+                                                    </a>
                                                 </div><!-- /.images -->
                                             @endforeach
                                             @foreach ($item->files->where('type_file', 'pdf') as $value)
@@ -337,19 +339,21 @@
                                                     @if ($loop->index == 0)
                                                         <h6 class="fw-normal">Files</h6>
                                                     @endif
-                                                    <div
-                                                        class="image d-flex align-items-center justify-content-between bg-white rounded p-2 border border-1 mb-2">
-                                                        <div class="d-flex gap-2 align-items-center">
-                                                            <div class="thumb">
-                                                                <img src="{{ asset('./images/icons/pdf.png') }}"
-                                                                    alt="excel">
+                                                    <a href="javascript:void(0)" onclick="previewBlobFile('{{ $value->id }}', '{{ basename($value->file) }}', 'activity')" data-id="{{ $value->id }}" data-type="activity">
+                                                        <div
+                                                            class="image d-flex align-items-center justify-content-between bg-white rounded p-2 border border-1 mb-2">
+                                                            <div class="d-flex gap-2 align-items-center">
+                                                                <div class="thumb">
+                                                                    <img src="{{ asset('./images/icons/pdf.png') }}"
+                                                                        alt="excel">
+                                                                </div>
+                                                                <div class="img-name text-dark">
+                                                                    {{ Str::limit(basename($value->file), 15) }}
+                                                                </div>
                                                             </div>
-                                                            <div class="img-name">
-                                                                {{ Str::limit(explode('/', $value->file)[4], 15) }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="img-size opacity-50">{{ $value->size }}</div>
-                                                    </div><!-- image -->
+                                                            <div class="img-size opacity-50 text-secondary">{{ $value->size }}</div>
+                                                        </div><!-- image -->
+                                                    </a>
                                                 </div><!-- /.images -->
                                             @endforeach
                                         </div><!-- /.actifity-inner -->
@@ -424,19 +428,21 @@
                                                                 @endif
                                                                 <div class="images-content d-flex gap-2 flex-wrap">
                                                                     @foreach ($item->files->where('type_file', '!=', 'pdf') as $value)
-                                                                        <div
-                                                                            class="image d-flex flex-column align-items-start justify-content-center bg-white rounded p-3 border border-1">
-                                                                            <div class="thumb mb-2">
-                                                                                <img src="{{ asset('./images/activity.png') }}"
-                                                                                    alt="activity">
-                                                                            </div>
-                                                                            <div class="img-name">
-                                                                                {{ Str::limit(explode('/', $value->file)[4], 10) }}
-                                                                            </div>
-                                                                            <div class="img-size opacity-50">
-                                                                                {{ $value->size }}
-                                                                            </div>
-                                                                        </div><!-- image -->
+                                                                        <a href="{{ $value->blob_url ?? asset('storage/' . $value->file) }}" target="_blank" data-id="{{ $value->id }}" data-type="activity" class="text-decoration-none">
+                                                                            <div
+                                                                                class="image d-flex flex-column align-items-start justify-content-center bg-white rounded p-3 border border-1">
+                                                                                <div class="thumb mb-2">
+                                                                                    <img src="{{ asset('./images/activity.png') }}"
+                                                                                        alt="activity">
+                                                                                </div>
+                                                                                <div class="img-name text-dark">
+                                                                                    {{ Str::limit(basename($value->file), 10) }}
+                                                                                </div>
+                                                                                <div class="img-size opacity-50 text-secondary">
+                                                                                    {{ $value->size }}
+                                                                                </div>
+                                                                            </div><!-- image -->
+                                                                        </a>
                                                                     @endforeach
                                                                 </div><!-- /.images-content -->
                                                             </div><!-- /.images -->
@@ -447,19 +453,21 @@
                                                                 @endif
                                                                 <div class="files-content d-flex gap-2 flex-wrap">
                                                                     @foreach ($item->files->where('type_file', 'pdf') as $value)
-                                                                        <div
-                                                                            class="image d-flex flex-column align-items-start justify-content-center bg-white rounded p-3 border border-1">
-                                                                            <div class="thumb mb-2">
-                                                                                <img src="{{ asset('./images/icons/pdf.png') }}"
-                                                                                    alt="pdf">
-                                                                            </div>
-                                                                            <div class="img-name">
-                                                                                {{ Str::limit(explode('/', $value->file)[4], 10) }}
-                                                                            </div>
-                                                                            <div class="img-size opacity-50">
-                                                                                {{ $value->size }}
-                                                                            </div>
-                                                                        </div><!-- image -->
+                                                                        <a href="{{ $value->blob_url ?? asset('storage/' . $value->file) }}" target="_blank" data-id="{{ $value->id }}" data-type="activity" class="text-decoration-none">
+                                                                            <div
+                                                                                class="image d-flex flex-column align-items-start justify-content-center bg-white rounded p-3 border border-1">
+                                                                                <div class="thumb mb-2">
+                                                                                    <img src="{{ asset('./images/icons/pdf.png') }}"
+                                                                                        alt="pdf">
+                                                                                </div>
+                                                                                <div class="img-name text-dark">
+                                                                                    {{ Str::limit(basename($value->file), 10) }}
+                                                                                </div>
+                                                                                <div class="img-size opacity-50 text-secondary">
+                                                                                    {{ $value->size }}
+                                                                                </div>
+                                                                            </div><!-- image -->
+                                                                        </a>
                                                                     @endforeach
                                                                 </div><!-- /.files-content -->
                                                             </div><!-- /.images -->

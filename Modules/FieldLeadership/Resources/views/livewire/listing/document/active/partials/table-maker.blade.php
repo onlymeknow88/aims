@@ -7,7 +7,35 @@
 
         <div class="table-demo position-relative">
 
-            <div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+        <div x-data="{
+                selectedIds: [],
+                get countSelected() { return this.selectedIds.length; },
+                get editUrl() {
+                    if (this.selectedIds.length === 1) {
+                        return '{{ url('field-leadership/listing/active/edit') }}/' + this.selectedIds[0];
+                    }
+                    return '#';
+                },
+                toggleRow(id) {
+                    const idx = this.selectedIds.indexOf(id);
+                    if (idx === -1) {
+                        this.selectedIds.push(id);
+                    } else {
+                        this.selectedIds.splice(idx, 1);
+                    }
+                },
+                isSelected(id) {
+                    return this.selectedIds.includes(id);
+                },
+                syncToWire() {
+                    $wire.set('itemSelected', this.selectedIds);
+                    $wire.set('countSelected', this.selectedIds.length);
+                },
+                clearSelection() {
+                    this.selectedIds = [];
+                    $wire.call('removeSeleced');
+                }
+            }">
 
                 <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2">
 
@@ -29,45 +57,47 @@
                             <span class="text-button">Import File</span>
                         </a>
 
-                        @if ($countSelected > 0)
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="exportExcel()">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
-                                <span class="text-button">Export</span>
-                            </a>
+                        <template x-if="selectedIds.length > 0">
+                            <div class="d-flex gap-2 align-items-center">
+                                <a href="#" type="button"
+                                    class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
+                                    @click.prevent="syncToWire(); $nextTick(() => $wire.call('exportExcel'))">
+                                    <span class="icon d-flex align-items-center"><img
+                                            src="{{ asset('images/icons/export-top.svg') }}" alt="image export"></span>
+                                    <span class="text-button">Export</span>
+                                </a>
 
-                            <a href="#" type="button"
-                                class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="$emit('remove-item')">
-                                <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">Delete</span>
-                            </a>
-                        @endif
+                                <a href="#" type="button"
+                                    class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
+                                    @click.prevent="syncToWire(); $nextTick(() => $wire.$emit('remove-item'))">
+                                    <span class="icon d-flex align-items-center"><img
+                                            src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
+                                    <span class="text-button">Delete</span>
+                                </a>
+                            </div>
+                        </template>
 
-                        @if ($countSelected == 1)
-                            <a href="{{ route('field-leadership::listing.active.edit', $itemSelected) }}" type="button"
+                        <template x-if="selectedIds.length === 1">
+                            <a :href="editUrl" type="button"
                                 class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
                                 <span class="icon d-flex align-items-center"><img
-                                        src="{{ asset('images/icons/pencil.png') }}" alt="image delete"></span>
+                                        src="{{ asset('images/icons/pencil.png') }}" alt="image edit"></span>
                                 <span class="text-button">Edit</span>
                             </a>
-                        @endif
+                        </template>
                     </div><!-- /.toolbar-left -->
 
                     <div class="toolbar-right d-flex align-items-center">
 
-                        @if ($countSelected > 0)
+                        <template x-if="selectedIds.length > 0">
                             <a href="#" type="button"
                                 class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                wire:click="removeSeleced()">
+                                @click.prevent="clearSelection()">
                                 <span class="icon d-flex align-items-center"><img
                                         src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
-                                <span class="text-button">{{ $countSelected }} Row Selected</span>
+                                <span class="text-button"><span x-text="selectedIds.length"></span> Row Selected</span>
                             </a>
-                        @endif
+                        </template>
 
                         <div class="column-sort d-flex justify-content-between">
                             <a class="button-toolbar d-flex gap-2 align-items-center py-2 px-3" type="button"
@@ -1028,8 +1058,9 @@
                             <tbody>
                                 @foreach ($this->activeListings as $itemIndex => $items)
                                     <tr wire:key="{{ $itemIndex }}"
-                                        wire:click="onSelectedItem('{{ $items->id }}')"
-                                        @if (in_array($items->id, $itemSelected)) class="selected" @else class="tr" @endif>
+                                        @click="toggleRow('{{ $items->id }}')"
+                                        :class="isSelected('{{ $items->id }}') ? 'selected' : 'tr'"
+                                        style="cursor: pointer;">
                                         <td class="td-check">
                                             <span class="icon-checked"></span>
                                         </td>

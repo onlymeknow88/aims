@@ -70,79 +70,89 @@ class TableMaker extends Component
         $last = FieldLeadership::latest()->first();
         $this->latestUpdate = 'Update on ' . Carbon::parse($last->created_at ?? null)->format('F d, Y . H:i A');
 
+        $employeeId = auth()->user()->employee?->id;
+
         $this->fieldDetailCompany = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
+            ->where('created_by', $employeeId)
+            ->whereNotNull('detail_company')
+            ->select('detail_company')
             ->groupBy('detail_company')
-            ->toBase();
-        $this->fieldCompany = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
-            ->groupBy('company_id')
-            ->map(function ($item) {
-                return $item->first()->company;
-            });
-        $this->fieldCcow = FieldLeadership::whereHas('ccow', function ($query) {
-            $query->where('type', CompanyType::Internal);
-        })
-            ->where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
-            ->groupBy('ccow_id')
-            ->map(function ($item) {
-                return $item->first()->ccow;
-            });
-        $this->fieldDepartment = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
-            ->groupBy('department_id')
-            ->map(function ($item) {
-                return $item->first()->department;
-            });
-        $this->fieldSection = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
-            ->groupBy('section_id')
-            ->map(function ($item) {
-                return $item->first()->section;
-            });
-        $this->fieldLocation = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
-            ->groupBy('area_location_id')
-            ->map(function ($item) {
-                return $item->first()->areaLocation;
-            });
+            ->get();
+
+        $this->fieldCompany = Company::whereIn('id', function ($query) use ($employeeId) {
+            $query->select('company_id')
+                ->from('field_leaderships')
+                ->where('published', FieldLeadershipType::Draft)
+                ->where('created_by', $employeeId)
+                ->whereNotNull('company_id');
+        })->get();
+
+        $this->fieldCcow = Company::where('type', CompanyType::Internal)
+            ->whereIn('id', function ($query) use ($employeeId) {
+                $query->select('ccow_id')
+                    ->from('field_leaderships')
+                    ->where('published', FieldLeadershipType::Draft)
+                    ->where('created_by', $employeeId)
+                    ->whereNotNull('ccow_id');
+            })->get();
+
+        $this->fieldDepartment = Department::whereIn('id', function ($query) use ($employeeId) {
+            $query->select('department_id')
+                ->from('field_leaderships')
+                ->where('published', FieldLeadershipType::Draft)
+                ->where('created_by', $employeeId)
+                ->whereNotNull('department_id');
+        })->get();
+
+        $this->fieldSection = Section::whereIn('id', function ($query) use ($employeeId) {
+            $query->select('section_id')
+                ->from('field_leaderships')
+                ->where('published', FieldLeadershipType::Draft)
+                ->where('created_by', $employeeId)
+                ->whereNotNull('section_id');
+        })->get();
+
+        $this->fieldLocation = AreaLocation::whereIn('id', function ($query) use ($employeeId) {
+            $query->select('area_location_id')
+                ->from('field_leaderships')
+                ->where('published', FieldLeadershipType::Draft)
+                ->where('created_by', $employeeId)
+                ->whereNotNull('area_location_id');
+        })->get();
+
         $this->fieldType = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
+            ->where('created_by', $employeeId)
+            ->whereNotNull('type')
+            ->select('type')
             ->groupBy('type')
-            ->toBase();
-        $this->fieldCategory = FieldLeadershipRisk::whereNotNull('category_id')
-            ->get()
-            ->groupBy('category_id')
-            ->map(function ($item) {
-                return $item->first()->category;
-            });
-        $this->fieldConditionType = FieldLeadershipRisk::whereHas('fieldLeadership', function ($query) {
-            $query->where('created_by', auth()->user()->employee?->id);
-        })
-            ->whereNotNull('type_id')
-            ->get()
-            ->groupBy('type_id')
-            ->map(function ($item) {
-                return $item->first()->type;
-            });
-        $this->fieldPotency = FieldLeadershipRisk::whereNotNull('potency_id')
-            ->get()
-            ->groupBy('potency_id')
-            ->map(function ($item) {
-                return $item->first()->potency;
-            });
+            ->get();
+
+        $this->fieldCategory = FieldLeadershipCategory::whereIn('id', function ($query) {
+            $query->select('category_id')
+                ->from('field_leadership_risks')
+                ->whereNotNull('category_id');
+        })->get();
+
+        $this->fieldConditionType = \Modules\FieldLeadership\Entities\FieldLeadershipKtaAndTta::whereIn('id', function ($query) use ($employeeId) {
+            $query->select('type_id')
+                ->from('field_leadership_risks')
+                ->whereIn('fl_id', function ($subQuery) use ($employeeId) {
+                    $subQuery->select('id')
+                        ->from('field_leaderships')
+                        ->where('published', FieldLeadershipType::Draft)
+                        ->where('created_by', $employeeId);
+                })
+                ->whereNotNull('type_id');
+        })->get();
+
+        $this->fieldPotency = FieldLeadershipPotencyAndConsequnce::whereIn('id', function ($query) {
+            $query->select('potency_id')
+                ->from('field_leadership_risks')
+                ->whereNotNull('potency_id');
+        })->get();
 
         $this->countData = FieldLeadership::where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->get()
+            ->where('created_by', $employeeId)
             ->count();
 
         $this->limit = $this->countData;
@@ -312,127 +322,133 @@ class TableMaker extends Component
     }
     // END::COLUMN
 
+    private $cachedActiveListings = null;
+
     public function getActiveListingsProperty(): LengthAwarePaginator
     {
-        return FieldLeadership::when(!empty($this->sortSelected), function ($query) {
-            $query->where(function ($query) {
-                $query->when(isset($this->sortSelected['company_id']), function ($query) {
-                    $query->whereIn('company_id', $this->sortSelected['company_id']);
+        if ($this->cachedActiveListings === null) {
+            $this->cachedActiveListings = FieldLeadership::with(['company', 'ccow', 'department', 'section', 'areaLocation', 'risks.category', 'risks.type', 'risks.potency', 'members.employee', 'positives'])
+                ->when(!empty($this->sortSelected), function ($query) {
+                    $query->where(function ($query) {
+                        $query->when(isset($this->sortSelected['company_id']), function ($query) {
+                            $query->whereIn('company_id', $this->sortSelected['company_id']);
+                        })
+                            ->when(isset($this->sortSelected['detail_company']), function ($query) {
+                                $query->whereIn('detail_company', $this->sortSelected['detail_company']);
+                            })
+                            ->when(isset($this->sortSelected['ccow_id']), function ($query) {
+                                $query->whereIn('ccow_id', $this->sortSelected['ccow_id']);
+                            })
+                            ->when(isset($this->sortSelected['department_id']), function ($query) {
+                                $query->whereIn('department_id', $this->sortSelected['department_id']);
+                            })
+                            ->when(isset($this->sortSelected['section_id']), function ($query) {
+                                $query->whereIn('section_id', $this->sortSelected['section_id']);
+                            })
+                            ->when(isset($this->sortSelected['area_location_id']), function ($query) {
+                                $query->whereIn('area_location_id', $this->sortSelected['area_location_id']);
+                            })
+                            ->when(isset($this->sortSelected['detail_location']), function ($query) {
+                                $query->whereIn('detail_location', $this->sortSelected['detail_location']);
+                            })
+                            ->when(isset($this->sortSelected['type']), function ($query) {
+                                $query->whereIn('type', $this->sortSelected['type']);
+                            })
+                            ->when(isset($this->sortSelected['category']), function ($query) {
+                                $query->whereHas('risks', function ($query) {
+                                    $query->whereIn('category_id', $this->sortSelected['category']);
+                                });
+                            })
+                            ->when(isset($this->sortSelected['potency']), function ($query) {
+                                $query->whereHas('risks', function ($query) {
+                                    $query->whereIn('potency_id', $this->sortSelected['potency']);
+                                });
+                            });
+                    });
                 })
-                    ->when(isset($this->sortSelected['detail_company']), function ($query) {
-                        $query->whereIn('detail_company', $this->sortSelected['detail_company']);
-                    })
-                    ->when(isset($this->sortSelected['ccow_id']), function ($query) {
-                        $query->whereIn('ccow_id', $this->sortSelected['ccow_id']);
-                    })
-                    ->when(isset($this->sortSelected['department_id']), function ($query) {
-                        $query->whereIn('department_id', $this->sortSelected['department_id']);
-                    })
-                    ->when(isset($this->sortSelected['section_id']), function ($query) {
-                        $query->whereIn('section_id', $this->sortSelected['section_id']);
-                    })
-                    ->when(isset($this->sortSelected['area_location_id']), function ($query) {
-                        $query->whereIn('area_location_id', $this->sortSelected['area_location_id']);
-                    })
-                    ->when(isset($this->sortSelected['detail_location']), function ($query) {
-                        $query->whereIn('detail_location', $this->sortSelected['detail_location']);
-                    })
-                    ->when(isset($this->sortSelected['type']), function ($query) {
-                        $query->whereIn('type', $this->sortSelected['type']);
-                    })
-                    ->when(isset($this->sortSelected['category']), function ($query) {
-                        $query->whereHas('risks', function ($query) {
-                            $query->whereIn('category_id', $this->sortSelected['category']);
+                ->when(!empty($this->searchCompany), function ($query) {
+                    $query->whereHas('company', function ($query) {
+                        $query->where('company_name', 'like', '%' . $this->searchCompany . '%');
+                    });
+                })
+                ->when(!empty($this->searchCcow), function ($query) {
+                    $query->whereHas('ccow', function ($query) {
+                        $query->where('company_name', 'like', '%' . $this->searchCcow . '%');
+                    });
+                })
+                ->when(!empty($this->searchDepartment), function ($query) {
+                    $query->whereHas('department', function ($query) {
+                        $query->where('name', 'like', '%' . $this->searchDepartment . '%');
+                    });
+                })
+                ->when(!empty($this->searchSection), function ($query) {
+                    $query->whereHas('section', function ($query) {
+                        $query->where('name', 'like', '%' . $this->searchSection . '%');
+                    });
+                })
+                ->when(!empty($this->searchLocation), function ($query) {
+                    $query->whereHas('areaLocation', function ($query) {
+                        $query->where('name', 'like', '%' . $this->searchLocation . '%');
+                    });
+                })
+                ->when(!empty($this->searchDetailCompany), function ($query) {
+                    $query->where('detail_company', 'like', '%' . $this->searchDetailCompany . '%');
+                })
+                ->when(!empty($this->searchDetailLocation), function ($query) {
+                    $query->where('detail_location', 'like', '%' . $this->searchDetailLocation . '%');
+                })
+                ->when(!empty($this->searchType), function ($query) {
+                    $query->where('type', 'like', '%' . $this->searchType . '%');
+                })
+                ->when(!empty($this->searchMember), function ($query) {
+                    $query->whereHas('members', function ($query) {
+                        $query->whereHas('employee', function ($query) {
+                            $query->where('name', 'like', '%' . $this->searchMember . '%');
                         });
-                    })
-                    ->when(isset($this->sortSelected['potency']), function ($query) {
-                        $query->whereHas('risks', function ($query) {
-                            $query->whereIn('potency_id', $this->sortSelected['potency']);
+                    });
+                })
+                ->when(!empty($this->searchPositive), function ($query) {
+                    $query->whereHas('positives', function ($query) {
+                        $query->where('description', 'like', '%' . $this->searchPositive . '%');
+                    });
+                })
+                ->whereHas('risks', function ($query) {
+                    $query->when(!empty($this->searchRiskCondition), function ($query) {
+                        $query->where('risk_condition', 'like', '%' . $this->searchRiskCondition . '%');
+                    })->when(!empty($this->searchCategory), function ($query) {
+                        $query->whereHas('category', function ($query) {
+                            $query->where('name', 'like', '%' . $this->searchCategory . '%');
+                        });
+                    })->when(!empty($this->searchPotency), function ($query) {
+                        $query->whereHas('potency', function ($query) {
+                            $query->where('name', 'like', '%' . $this->searchPotency . '%');
+                        });
+                    })->when(!empty($this->searchRepairAction), function ($query) {
+                        $query->where('repair_action', 'like', '%' . $this->searchRepairAction . '%');
+                    });
+                })
+                ->when(!empty($this->searchPja), function ($query) {
+                    $query->whereHas('pja', function ($query) {
+                        $query->whereHas('user', function ($query) {
+                            $query->where('name', 'like', '%' . $this->searchPja . '%');
                         });
                     });
-            });
-        })
-            ->when(!empty($this->searchCompany), function ($query) {
-                $query->whereHas('company', function ($query) {
-                    $query->where('company_name', 'like', '%' . $this->searchCompany . '%');
-                });
-            })
-            ->when(!empty($this->searchCcow), function ($query) {
-                $query->whereHas('ccow', function ($query) {
-                    $query->where('company_name', 'like', '%' . $this->searchCcow . '%');
-                });
-            })
-            ->when(!empty($this->searchDepartment), function ($query) {
-                $query->whereHas('department', function ($query) {
-                    $query->where('name', 'like', '%' . $this->searchDepartment . '%');
-                });
-            })
-            ->when(!empty($this->searchSection), function ($query) {
-                $query->whereHas('section', function ($query) {
-                    $query->where('name', 'like', '%' . $this->searchSection . '%');
-                });
-            })
-            ->when(!empty($this->searchLocation), function ($query) {
-                $query->whereHas('areaLocation', function ($query) {
-                    $query->where('name', 'like', '%' . $this->searchLocation . '%');
-                });
-            })
-            ->when(!empty($this->searchDetailCompany), function ($query) {
-                $query->where('detail_company', 'like', '%' . $this->searchDetailCompany . '%');
-            })
-            ->when(!empty($this->searchDetailLocation), function ($query) {
-                $query->where('detail_location', 'like', '%' . $this->searchDetailLocation . '%');
-            })
-            ->when(!empty($this->searchType), function ($query) {
-                $query->where('type', 'like', '%' . $this->searchType . '%');
-            })
-            ->when(!empty($this->searchMember), function ($query) {
-                $query->whereHas('members', function ($query) {
-                    $query->whereHas('employee', function ($query) {
-                        $query->where('name', 'like', '%' . $this->searchMember . '%');
-                    });
-                });
-            })
-            ->when(!empty($this->searchPositive), function ($query) {
-                $query->whereHas('positives', function ($query) {
-                    $query->where('description', 'like', '%' . $this->searchPositive . '%');
-                });
-            })
-            ->whereHas('risks', function ($query) {
-                $query->when(!empty($this->searchRiskCondition), function ($query) {
-                    $query->where('risk_condition', 'like', '%' . $this->searchRiskCondition . '%');
-                })->when(!empty($this->searchCategory), function ($query) {
-                    $query->whereHas('category', function ($query) {
-                        $query->where('name', 'like', '%' . $this->searchCategory . '%');
-                    });
-                })->when(!empty($this->searchPotency), function ($query) {
-                    $query->whereHas('potency', function ($query) {
-                        $query->where('name', 'like', '%' . $this->searchPotency . '%');
-                    });
-                })->when(!empty($this->searchRepairAction), function ($query) {
-                    $query->where('repair_action', 'like', '%' . $this->searchRepairAction . '%');
-                });
-            })
-            ->when(!empty($this->searchPja), function ($query) {
-                $query->whereHas('pja', function ($query) {
-                    $query->whereHas('user', function ($query) {
-                        $query->where('name', 'like', '%' . $this->searchPja . '%');
-                    });
-                });
-            })
-            ->when(!empty($this->search), function ($query) {
-                $query->search($this->search);
-            })
-            ->when(!empty($this->startDate) && !empty($this->endDate), function ($query) {
-                $start = Carbon::parse($this->startDate)->format('Y-m-d');
-                $end = Carbon::parse($this->endDate)->format('Y-m-d');
+                })
+                ->when(!empty($this->search), function ($query) {
+                    $query->search($this->search);
+                })
+                ->when(!empty($this->startDate) && !empty($this->endDate), function ($query) {
+                    $start = Carbon::parse($this->startDate)->format('Y-m-d');
+                    $end = Carbon::parse($this->endDate)->format('Y-m-d');
 
-                $query->whereBetween('date', [$start, $end]);
-            })
-            ->where('published', FieldLeadershipType::Draft)
-            ->where('created_by', auth()->user()->employee?->id)
-            ->orderBy($this->sortField, $this->sortType)
-            ->paginate($this->limit);
+                    $query->whereBetween('date', [$start, $end]);
+                })
+                ->where('published', FieldLeadershipType::Draft)
+                ->where('created_by', auth()->user()->employee?->id)
+                ->orderBy($this->sortField, $this->sortType)
+                ->paginate($this->limit);
+        }
+        return $this->cachedActiveListings;
     }
 
     public function onSelectedItem($id)

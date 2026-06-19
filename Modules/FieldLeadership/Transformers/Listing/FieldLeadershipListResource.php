@@ -42,14 +42,14 @@ class FieldLeadershipListResource extends JsonResource
 
             foreach ($risk->files->where('type', FieldLeadershipType::RiskFinding) as $file) {
                 $files->push([
-                    'path' => env('APP_URL') . '/storage/' . $file->file,
+                    'path' => route('field-leadership::files.preview', ['id' => $file->id]),
                     'size' => $file->size,
                 ]);
             }
 
             foreach ($risk->files->where('type', FieldLeadershipType::CorrectiveAction)  as $file) {
                 $files_ca->push([
-                    'path' => env('APP_URL') . '/storage/' . $file->file,
+                    'path' => route('field-leadership::files.preview', ['id' => $file->id]),
                     'size' => $file->size,
                 ]);
             }

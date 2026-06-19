@@ -100,13 +100,13 @@
 
 @once
     @push('styles')
-        <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('assets/libs/dropzone/dist/dropzone.css') }}" type="text/css" />
     @endpush
 @endonce
 
 @once
     @push('scripts')
-        <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+        <script src="{{ asset('assets/libs/dropzone/dist/dropzone-min.js') }}"></script>
     @endpush
 @endonce
 

@@ -125,83 +125,130 @@ class CreateActiveFieldLeadershipPage extends Component
         $this->emit('form-check-input');
     }
 
+    private $cachedCcows = null;
+    private $cachedCompanies = null;
+    private $cachedDepartments = null;
+    private $cachedSections = null;
+    private $cachedAreaLocations = null;
+    private $cachedAreaManagers = null;
+    private $cachedEmployees = null;
+    private $cachedMemberInternals = null;
+    private $cachedMemberExternals = null;
+    private $cachedCategories = null;
+    private $cachedTypeKtaTta = null;
+    private $cachedPotencies = null;
+
     public function getCcowsProperty()
     {
-        return Company::where('type', CompanyType::Internal)->get();
+        if ($this->cachedCcows === null) {
+            $this->cachedCcows = Company::select('id', 'company_name')->where('type', CompanyType::Internal)->get();
+        }
+        return $this->cachedCcows;
     }
 
     public function getCompaniesProperty()
     {
-        return Company::all();
+        if ($this->cachedCompanies === null) {
+            $this->cachedCompanies = Company::select('id', 'company_name', 'type')->get();
+        }
+        return $this->cachedCompanies;
     }
 
     public function getDepartmentsProperty()
     {
-        return Department::where('company_id', $this->ccow_id)->get();
+        if ($this->cachedDepartments === null) {
+            $this->cachedDepartments = Department::select('id', 'name')->where('company_id', $this->ccow_id)->get();
+        }
+        return $this->cachedDepartments;
     }
 
     public function getSectionsProperty()
     {
-        return Section::where('department_id', $this->department_id)->get();
+        if ($this->cachedSections === null) {
+            $this->cachedSections = Section::select('id', 'name')->where('department_id', $this->department_id)->get();
+        }
+        return $this->cachedSections;
     }
 
     public function getAreaLocationsProperty()
     {
-        return AreaLocation::where('section_id', $this->section_id)->get();
+        if ($this->cachedAreaLocations === null) {
+            $this->cachedAreaLocations = AreaLocation::select('id', 'name')->where('section_id', $this->section_id)->get();
+        }
+        return $this->cachedAreaLocations;
     }
 
     public function getAreaManagersProperty()
     {
-        return AreaManager::where('section_id', $this->section_id)->get();
+        if ($this->cachedAreaManagers === null) {
+            $this->cachedAreaManagers = AreaManager::with('user:id,name')->where('section_id', $this->section_id)->get();
+        }
+        return $this->cachedAreaManagers;
     }
 
     public function getEmployeesProperty()
     {
-        return User::whereHas('department', function ($query) {
-            $query->where('company_id', $this->company_id)
-                ->whereHas('company', function ($q) {
-                    $q->where('type', $this->company_type->type ?? null);
-                });
-        })->get();
+        if ($this->cachedEmployees === null) {
+            $this->cachedEmployees = User::whereHas('department', function ($query) {
+                $query->where('company_id', $this->company_id)
+                    ->whereHas('company', function ($q) {
+                        $q->where('type', $this->company_type->type ?? null);
+                    });
+            })->get();
+        }
+        return $this->cachedEmployees;
     }
 
     public function getMemberInternalsProperty()
     {
-        return Employee::whereHas('user', function ($sql) {
-            $sql->whereHas('department', function ($query) {
-                $query->whereHas('company', function ($q) {
-                    $q->where('type', CompanyType::Internal);
+        if ($this->cachedMemberInternals === null) {
+            $this->cachedMemberInternals = Employee::select('id', 'name')->whereHas('user', function ($sql) {
+                $sql->whereHas('department', function ($query) {
+                    $query->whereHas('company', function ($q) {
+                        $q->where('type', CompanyType::Internal);
+                    });
                 });
-            });
-        })
-            ->get();
+            })->get();
+        }
+        return $this->cachedMemberInternals;
     }
 
     public function getMemberExternalsProperty()
     {
-        return Employee::whereHas('user', function ($sql) {
-            $sql->whereHas('department', function ($query) {
-                $query->whereHas('company', function ($q) {
-                    $q->whereIn('type', [CompanyType::Contractor, CompanyType::SubContractor]);
+        if ($this->cachedMemberExternals === null) {
+            $this->cachedMemberExternals = Employee::select('id', 'name')->whereHas('user', function ($sql) {
+                $sql->whereHas('department', function ($query) {
+                    $query->whereHas('company', function ($q) {
+                        $q->whereIn('type', [CompanyType::Contractor, CompanyType::SubContractor]);
+                    });
                 });
-            });
-        })
-            ->get();
+            })->get();
+        }
+        return $this->cachedMemberExternals;
     }
 
     public function getCategoriesProperty()
     {
-        return FieldLeadershipCategory::whereIn('name', ['Kondisi Tidak Aman', 'Tindakan Tidak Aman', 'Not Applicable'])->get();
+        if ($this->cachedCategories === null) {
+            $this->cachedCategories = FieldLeadershipCategory::whereIn('name', ['Kondisi Tidak Aman', 'Tindakan Tidak Aman', 'Not Applicable'])->get();
+        }
+        return $this->cachedCategories;
     }
 
     public function getTypeKtaTtaProperty()
     {
-        return FieldLeadershipKtaAndTta::all();
+        if ($this->cachedTypeKtaTta === null) {
+            $this->cachedTypeKtaTta = FieldLeadershipKtaAndTta::all();
+        }
+        return $this->cachedTypeKtaTta;
     }
 
     public function getPotenciesProperty()
     {
-        return FieldLeadershipPotencyAndConsequnce::all();
+        if ($this->cachedPotencies === null) {
+            $this->cachedPotencies = FieldLeadershipPotencyAndConsequnce::all();
+        }
+        return $this->cachedPotencies;
     }
 
     public function addMember()
@@ -403,9 +450,10 @@ class CreateActiveFieldLeadershipPage extends Component
     public function saved($publish)
     {
         try {
-            $this->validate();
 
+            $this->validate();
             DB::beginTransaction();
+
 
             $fieldLeadership = FieldLeadership::create([
                 'number' => $this->generateNumber(),
@@ -568,20 +616,45 @@ class CreateActiveFieldLeadershipPage extends Component
                     ]);
                 }
 
-                foreach ($value['files'] as $key => $file) {
-                    $path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
-                    $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                // foreach ($value['files'] as $key => $file) {
+                //     $path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                //     $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
 
-                    // dd($path);
+                //     // dd($path);
+                //     $riskCondition->files()->create([
+                //         'file' => $full_path,
+                //         'size' => $file['size'],
+                //         'type' => FieldLeadershipType::RiskFinding
+                //     ]);
+
+                //     if ($publish == 'HR') {
+                //         $picaDocument->picaFiles()->create([
+                //             'file' => $full_path,
+                //             'size' => $file['size'],
+                //             'type' => FieldLeadershipType::RiskFinding
+                //         ]);
+                //     }
+                // }
+                foreach ($value['files'] as $key => $file) {
+                    $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                    $tempPath   = $file['file']->getRealPath(); // path fisik dari Livewire temp file
+
+                    $blobResult = uploadToBlobStorage($file['name'], $tempPath, $directPath);
+                    $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $file['name'];
+
                     $riskCondition->files()->create([
-                        'file' => $full_path,
+                        'file' => $relative_path,
+                        'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                        'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                         'size' => $file['size'],
-                        'type' => FieldLeadershipType::RiskFinding
+                        'type' => FieldLeadershipType::RiskFinding,
                     ]);
 
                     if ($publish == 'HR') {
                         $picaDocument->picaFiles()->create([
-                            'file' => $full_path,
+                            'file' => $relative_path,
+                            'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                            'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                             'size' => $file['size'],
                             'type' => FieldLeadershipType::RiskFinding
                         ]);
@@ -590,18 +663,25 @@ class CreateActiveFieldLeadershipPage extends Component
 
                 if ($value['repaired'] == true) {
                     foreach ($value['files_ca'] as $key => $file) {
-                        $path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
-                        $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                        $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                        $tempPath   = $file['file']->getRealPath();
+
+                        $blobResult = uploadToBlobStorage($file['name'], $tempPath, $directPath);
+                        $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $file['name'];
 
                         $riskCondition->files()->create([
-                            'file' => $full_path,
+                            'file' => $relative_path,
+                            'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                            'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                             'size' => $file['size'],
-                            'type' => FieldLeadershipType::CorrectiveAction
+                            'type' => FieldLeadershipType::CorrectiveAction,
                         ]);
 
                         if ($publish == 'HR') {
                             $picaDocument->picaFiles()->create([
-                                'file' => $full_path,
+                                'file' => $relative_path,
+                                'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                                'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                                 'size' => $file['size'],
                                 'type' => FieldLeadershipType::CorrectiveAction
                             ]);

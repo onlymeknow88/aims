@@ -398,7 +398,7 @@
 }
 
 .sidebar .content-sidebar ul .item-sidebar a:hover {
-    background: #009D50 !important;
+    background: #063D56 !important;
     color: white
 }
 
@@ -757,7 +757,7 @@ h6,
 
 .sidebar .content-sidebar ul .item-sidebar.active a:hover,
 .sidebar .content-sidebar ul .item-sidebar.active a {
-    background-color: #009D50 !important;
+    background-color: #063D56 !important;
     color: #ffffff !important;
 }
 

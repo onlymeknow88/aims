@@ -249,7 +249,7 @@
                             <div class="col-8">
                                 @foreach ($risk->files->where('type', 'Temuan Risiko') as $keyFile => $itemFile)
                                     <div class="row form-group mb-3 bg-white rounded p-3 border border-1">
-                                        <a href="{{ asset('storage/' . $itemFile->file) }}" target="_blank">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile->id }}', '{{ explode('/', $itemFile->file)[4] }}', 'field-leadership')">
                                             <div class="col-sm-12 bg-white d-flex justify-content-between file-list">
                                                 <div>
                                                     <img src="{{ asset('/images/icons/pdf.png') }}" alt="pdf" />
@@ -292,7 +292,7 @@
                             <div class="col-8">
                                 @foreach ($risk->files->where('type', 'Tindakan Perbaikan') as $keyFile => $itemFile)
                                     <div class="row form-group mb-3 bg-white rounded p-3 border border-1">
-                                        <a href="{{ asset('storage/' . $itemFile->file) }}" target="_blank">
+                                        <a href="javascript:void(0)" onclick="previewBlobFile('{{ $itemFile->id }}', '{{ explode('/', $itemFile->file)[4] }}', 'field-leadership')">
                                             <div class="col-sm-12 bg-white d-flex justify-content-between file-list">
                                                 <div>
                                                     <img src="{{ asset('/images/icons/pdf.png') }}" alt="pdf" />

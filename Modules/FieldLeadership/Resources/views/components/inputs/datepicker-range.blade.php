@@ -10,7 +10,7 @@
 @once
     @push('styles')
         <!-- datepicker -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css"
+        <link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}"
             rel="stylesheet">
         </link>
     @endpush
@@ -19,7 +19,7 @@
 @once
     @push('scripts')
         <!-- datepicker -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+        <script src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     @endpush
 @endonce
 

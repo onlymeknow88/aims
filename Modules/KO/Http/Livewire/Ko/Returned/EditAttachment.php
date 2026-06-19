@@ -76,88 +76,40 @@ class EditAttachment extends Component
             $data = [];
             $data['ko_proposal_id'] = $this->ko_proposal->id;
 
-            if ($this->stnk) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->stnk);
-                $data['stnk'] = $full_path;
+            $blobResponses = [];
+            $attachmentFields = [
+                'stnk', 'nota_pajak', 'surat_pengantar', 're_manufacture', 'oem',
+                'dokumen_sertifikat', 'inspeksi_p3k', 'kir', 'uji_pjit',
+                'pra_komisioning', 'setting_radio', 'slo', 'komisioning_internal', 'com'
+            ];
+
+            foreach ($attachmentFields as $field) {
+                if ($this->$field) {
+                    $file = $this->$field;
+                    $filename = $file->getClientOriginalName();
+                    $filePathTemp = $file->getRealPath();
+                    $directPath = 'ko/attachment/' . $this->ko_proposal->id . '/' . $field;
+
+                    $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
+                    if ($blobResult['fileBlobUrl']) {
+                        $data[$field] = $blobResult['fileBlobUrl'];
+                        $blobResponses[$field] = $blobResult['blobResponse'];
+                    } else {
+                        $path = 'ko/attachment/' . $this->ko_proposal->id;
+                        $full_path = Storage::disk('public')->put($path, $file);
+                        $data[$field] = $full_path;
+                    }
+                }
             }
 
-            if ($this->nota_pajak) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->nota_pajak);
-                $data['nota_pajak'] = $full_path;
-            }
-
-            if ($this->surat_pengantar) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->surat_pengantar);
-                $data['surat_pengantar'] = $full_path;
-            }
-
-            if ($this->re_manufacture) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->re_manufacture);
-                $data['re_manufacture'] = $full_path;
-            }
-
-            if ($this->oem) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->oem);
-                $data['oem'] = $full_path;
-            }
-
-            if ($this->dokumen_sertifikat) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->dokumen_sertifikat);
-                $data['dokumen_sertifikat'] = $full_path;
-            }
-
-            if ($this->inspeksi_p3k) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->inspeksi_p3k);
-                $data['inspeksi_p3k'] = $full_path;
-            }
-
-            if ($this->kir) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->kir);
-                $data['kir'] = $full_path;
-            }
-
-            if ($this->uji_pjit) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->uji_pjit);
-                $data['uji_pjit'] = $full_path;
-            }
-
-            if ($this->pra_komisioning) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->pra_komisioning);
-                $data['pra_komisioning'] = $full_path;
-            }
-
-            if ($this->setting_radio) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->setting_radio);
-                $data['setting_radio'] = $full_path;
-            }
-
-            if ($this->slo) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->slo);
-                $data['slo'] = $full_path;
-            }
-
-            if ($this->komisioning_internal) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->komisioning_internal);
-                $data['komisioning_internal'] = $full_path;
-            }
-
-            if ($this->com) {
-                $path = 'ko/attachment/' . $this->ko_proposal->id;
-                $full_path = Storage::disk('public')->put($path, $this->com);
-                $data['com'] = $full_path;
+            // Gabungkan/update data response jika sebelumnya sudah ada
+            if (!empty($blobResponses)) {
+                $oldResponses = [];
+                if ($this->ko_proposal->koAttachment && $this->ko_proposal->koAttachment->blob_response) {
+                    $oldResponses = json_decode($this->ko_proposal->koAttachment->blob_response, true) ?? [];
+                }
+                $data['blob_response'] = json_encode(array_merge($oldResponses, $blobResponses));
             }
 
             if ($this->ko_proposal->koAttachment) {

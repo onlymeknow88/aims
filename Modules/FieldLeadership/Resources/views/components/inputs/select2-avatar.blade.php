@@ -19,16 +19,16 @@
 @once
     @push('styles')
         <!-- Select2 -->
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
         <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+            href="{{ asset('assets/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}" />
     @endpush
 @endonce
 
 @once
     @push('scripts')
         <!-- Select2 -->
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
     @endpush
 @endonce
 
@@ -65,9 +65,16 @@
 
             initAvatar();
 
-            $('#{{ $id }}').on('change', function(e) {
+            $('#{{ $id }}').on('change', function(e, programmatic) {
+                if (programmatic) return;
                 let elementName = $(this).attr('id');
-                @this.set(elementName, e.target.value);
+                const currentVal = @this.get(elementName);
+                const isSame = (currentVal == e.target.value) || 
+                               ((currentVal === null || currentVal === undefined || currentVal === '') && 
+                                (e.target.value === null || e.target.value === undefined || e.target.value === ''));
+                if (!isSame) {
+                    @this.set(elementName, e.target.value);
+                }
             });
 
             window.livewire.on('select2',()=>{

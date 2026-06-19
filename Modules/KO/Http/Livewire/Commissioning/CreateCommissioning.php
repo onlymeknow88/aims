@@ -135,12 +135,18 @@ class CreateCommissioning extends Component
 
                     if (isset($commissioning['attachments'])) {
                         foreach ($commissioning['attachments'] as $key => $attachment) {
-                            $path = 'ko/commissioning-attachment/' . $this->ko_proposal->id;
-                            $full_path = Storage::disk('public')->put($path, $attachment);
+                            $filename = $attachment->getClientOriginalName();
+                            $filePathTemp = $attachment->getRealPath();
+                            $directPath = 'ko/commissioning-attachment/' . $this->ko_proposal->id;
+
+                            $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
                             $issueReport->attachments()->create([
-                                'attachment' => $full_path,
+                                'attachment' => $blobResult['fileBlobPathName'] ?? ('ko/commissioning-attachment/' . $this->ko_proposal->id . '/' . $filename),
+                                'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                                'blob_response' => $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null,
                                 'size' => $this->changeByte($attachment->getSize()),
-                                'name' => $attachment->getClientOriginalName(),
+                                'name' => $filename,
                                 'type' => $attachment->getClientOriginalExtension()
                             ]);
                         }

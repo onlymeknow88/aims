@@ -1,51 +1,50 @@
 @props(['id', 'error' => null])
 
-<input {{ $attributes }} type="text" class="form-control datetimepicker-input @error($error) is-invalid @enderror"
-       id="{{ $id }}" data-toggle="datetimepicker" data-target="#{{ $id }}"
-       onchange="this.dispatchEvent(new InputEvent('input'))" autocomplete="off"/>
-@error($error)
-<div class="invalid-feedback">
-    {{ $message }}
+<div>
+    <input {{ $attributes }} type="text" class="form-control datetimepicker-input @error($error) is-invalid @enderror"
+           id="{{ $id }}" data-toggle="datetimepicker" data-target="#{{ $id }}"
+           onchange="this.dispatchEvent(new InputEvent('input'))" autocomplete="off"/>
+    @error($error)
+    <div class="invalid-feedback d-block">
+        {{ $message }}
+    </div>
+    @enderror
 </div>
-
-@enderror
 
 @once
     @push('styles')
-        <!-- datepicker -->
-        <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet"></link>-->
         <link rel="stylesheet" href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
     @endpush
 @endonce
 
 @once
     @push('scripts')
-        <!-- datepicker -->
-        <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>-->
         <script src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     @endpush
 @endonce
 
 @push('scripts')
     <script type="text/javascript">
+        $(function() {
+            const $el = $('#{{ $id }}');
+            if (!$el.length) return;
 
-        $('#{{ $id }}').datepicker({
-            format: 'MM dd, yyyy',
-            autoclose: true,
-            todayHighlight: true,
-        });
+            const initPicker = () => {
+                if (!$el.data('datepicker')) {
+                    $el.datepicker({
+                        format: 'MM dd, yyyy',
+                        autoclose: true,
+                        todayHighlight: true,
+                    });
+                }
+            };
 
-        window.initDatePicker = () => {
-            $('.datetimepicker-input').datepicker({
-                format: 'MM dd, yyyy',
-                autoclose: true
+            initPicker();
+
+            // Re-initialize on livewire events if needed
+            window.livewire.on('datetimepicker-input', () => {
+                initPicker();
             });
-        }
-
-        initDatePicker('.datetimepicker-input');
-
-        window.livewire.on('datetimepicker-input', () => {
-            initDatePicker();
         });
     </script>
 @endpush

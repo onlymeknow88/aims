@@ -374,10 +374,10 @@
                                             @endphp
                                         </td>
                                         <td>
-                                            {{$field->koCommissioningItem($data->koCommissioning->id)->first()->condition}}
+                                            {{$field->koCommissioningItem($data->koCommissioning->id)->first()?->condition}}
                                         </td>
                                         <td style="white-space: normal">
-                                            {{$field->koCommissioningItem($data->koCommissioning->id)->first()->note ?? '-'}}
+                                            {{$field->koCommissioningItem($data->koCommissioning->id)->first()?->note ?? '-'}}
                                         </td>
                                         <td class="text-center">{{$field->hazard_code}}</td>
                                     </tr>

@@ -23,6 +23,7 @@ use Modules\Pica\Http\Livewire\Listing\Crs\CrsPage;
 use Modules\Pica\Http\Livewire\Listing\Draft\DraftPage;
 use Modules\Pica\Http\Livewire\Listing\ReturnDocument\ReturnDocumentPage;
 use Modules\Pica\Http\Livewire\LoginPage\LoginPage;
+use Modules\Pica\Http\Controllers\PicaController;
 
 Route::get('/login', LoginPage::class)->name('login');
 Route::get('/logout', function () {
@@ -31,6 +32,9 @@ Route::get('/logout', function () {
 })->name('logout');
 
 Route::middleware(['auth:pica'])->group(function () {
+    Route::get('files/{id}/preview', [PicaController::class, 'previewFile'])->name('files.preview');
+    Route::get('files/{id}/sas', [PicaController::class, 'getFileSasUri'])->name('files.sas-uri');
+
     // Dashboard
     Route::get('/', DashboardPage::class)->name('dashboard');
 

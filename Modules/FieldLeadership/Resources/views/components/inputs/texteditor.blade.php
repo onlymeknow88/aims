@@ -13,14 +13,14 @@
 @once
     @push('styles')
         <!-- summernote -->
-        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+        <link href="{{ asset('assets/libs/summernote/summernote-bs5.min.css') }}" rel="stylesheet">
     @endpush
 @endonce
 
 @once
     @push('scripts')
         <!-- summernote -->
-        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+        <script src="{{ asset('assets/libs/summernote/summernote-bs5.min.js') }}"></script>
     @endpush
 @endonce
 

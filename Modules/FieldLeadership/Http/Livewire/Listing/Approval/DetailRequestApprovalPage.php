@@ -114,8 +114,20 @@ class DetailRequestApprovalPage extends Component
             ]);
 
             foreach ($this->activityFile as $key => $value) {
+                $filename = $value['file']->getClientOriginalName();
+                $filePathTemp = $value['file']->getRealPath();
+                $directPath = 'field-leadership/' . $this->field->id . '/activity/' . $activity->id;
+
+                $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
+                $path = $blobResult['fileBlobPathName'] ?? ('field-leadership/' . $this->field->id . '/activity/' . $activity->id . '/' . $filename);
+                $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
+
                 $file = $activity->files()->create([
-                    'file' => Storage::disk('public')->putFileAs('field-leadership/' . $this->field->id . '/activity/' . $activity->id, $value['file'], $value['file']->getClientOriginalName()),
+                    'file' => $path,
+                    'blob_url' => $blobUrl,
+                    'blob_response' => $blobResponse,
                     'type_file' => $value['file']->getClientOriginalExtension(),
                     'size' => $this->changeByte($value['file']->getSize()),
                 ]);

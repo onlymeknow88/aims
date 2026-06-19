@@ -10,7 +10,7 @@ class PicaActivityFile extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['pica_activity_id', 'file', 'type_file', 'size'];
+    protected $fillable = ['pica_activity_id', 'file', 'type_file', 'size', 'blob_url', 'blob_response'];
 
     public function activity()
     {

@@ -85,7 +85,7 @@
     background: rgba(50, 49, 48, 0.2);
 }
 :root {
-    --green: #00552f;
+    --green: linear-gradient(135deg, #063D56 0%, #063D56 100%);
     --white: #ffffff;
     --gray: #f5f5f5;
     --black: #000000;
@@ -108,7 +108,7 @@
     background: rgba(50, 49, 48, 0.2);
 }
 :root {
-    --green: #00552f;
+    --green: linear-gradient(135deg, #063D56 0%, #063D56 100%);
     --white: #ffffff;
     --gray: #f5f5f5;
     --black: #000000;

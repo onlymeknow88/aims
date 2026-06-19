@@ -1,16 +1,52 @@
-@props(['placeholder' => 'Select Options', 'id', 'error' => false])
+@props([
+    'placeholder' => 'Select Options',
+    'id',
+    'parent' => 'none',
+    'error' => false,
+    'disableChange' => true,
+    'disabled' => false
+])
+
+@php
+    $modelName = null;
+    $isDeferred = false;
+    if ($attributes->has('wire:model')) {
+        $modelName = $attributes->get('wire:model');
+    } elseif ($attributes->has('wire:model.defer')) {
+        $modelName = $attributes->get('wire:model.defer');
+        $isDeferred = true;
+    } elseif ($attributes->has('wire:model.lazy')) {
+        $modelName = $attributes->get('wire:model.lazy');
+    } else {
+        foreach ($attributes->getAttributes() as $key => $value) {
+            if (str_starts_with($key, 'wire:model')) {
+                $modelName = $value;
+                if (str_contains($key, '.defer')) {
+                    $isDeferred = true;
+                }
+                break;
+            }
+        }
+    }
+    $modelName = $modelName ?? $id;
+@endphp
+
+@php
+    $slotStr = (string) $slot;
+    $optionsHash = md5($slotStr);
+    $wireKey = "select2-wrapper-{$id}-{$optionsHash}";
+@endphp
 
 <div>
-    <select {{ $attributes }}
-        id="{{ $id }}"
-        data-placeholder="{{ $placeholder }}"
-        class="w-full form-select @error($error) is-invalid @enderror">
-        <option></option>
-        {{-- <option data-avatar="{{asset('./images/no-profile.png')}}" selected>{{ $placeholder }}</option> --}}
-        {{ $slot }}
-    </select>
+    <div wire:ignore wire:key="{{ $wireKey }}">
+        <select {{ $attributes }} data-placeholder="{{ $placeholder }}" @if ($disabled) disabled @endif
+            id="{{ $id }}" class="form-select w-100 select2 form-control @error($error) is-invalid @enderror">
+            <option></option>
+            {!! $slotStr !!}
+        </select>
+    </div>
     @error($error)
-        <div class="invalid-feedback">
+        <div class="invalid-feedback d-block">
             {{ $message }}
         </div>
     @enderror
@@ -35,43 +71,64 @@
 @push('scripts')
     <script>
         $(function() {
-            window.initAvatar = () => {
-                $('#{{ $id }}').select2({
-                    placeholder: 'test',
+            const initAvatar_{{ str_replace('-', '_', $id) }} = () => {
+                const $el = $('#{{ $id }}');
+                if (!$el.length) return;
+
+                function formatState(state) {
+                    var selectedItems = '<span class="selected-item"></span>';
+                    var avatar = $(state.element).data('avatar');
+                    var email = $(state.element).data('email');
+                    var emailText = '';
+                    if (email) {
+                        emailText = '<i class="fa-solid fa-circle"></i><span class="email">' + email + '</span>';
+                    }
+                    if (!state.id) {
+                        return state.text;
+                    }
+                    var $state = $(
+                        selectedItems + '<span><img src="' + avatar +
+                        '" class="img-profile" /></span><span class="text">' + state.text + '</span>' + emailText
+                    );
+                    return $state;
+                }
+
+                let option = {
                     theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: '{{ $placeholder }}',
+                    allowClear: true,
                     templateResult: formatState,
-                    templateSelection: formatState,
+                    templateSelection: formatState
+                };
+                if ('{{ $parent }}' !== 'none') {
+                    option.dropdownParent = $('#{{ $parent }}');
+                }
+
+                // Only initialize if not already initialized
+                if (!$el.hasClass("select2-hidden-accessible")) {
+                    $el.select2(option);
+                }
+
+                // Set value from Livewire if present and different
+                const val = @this.get('{{ $modelName }}');
+                if (val !== undefined && val !== null && $el.val() !== val) {
+                    $el.val(val).trigger('change.select2');
+                }
+
+                // Unbind previous change listeners to prevent duplicates
+                $el.off('change.select2-hook');
+                $el.on('change.select2-hook', function(e) {
+                    @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
                 });
-            }
-
-            function formatState(state) {
-                var selectedItems = '<span class="selected-item"></span>';
-
-                var avatar = $(state.element).data('avatar');
-                var email = $(state.element).data('email');
-                var emailText = '';
-                if (email) {
-                    emailText = '<i class="fa-solid fa-circle"></i><span class="email">' + email + '</span>';
-                }
-                if (!state.id) {
-                    return state.text;
-                }
-                var $state = $(
-                    selectedItems + '<span><img src="' + avatar +
-                    '" class="img-profile" /></span><span class="text">' + state.text + '</span>' + emailText
-                );
-                return $state;
             };
 
-            initAvatar();
+            // Run initialization
+            initAvatar_{{ str_replace('-', '_', $id) }}();
 
-            $('#{{ $id }}').on('change', function(e) {
-                let elementName = $(this).attr('id');
-                @this.set(elementName, e.target.value);
-            });
-
-            window.livewire.on('select2',()=>{
-                initAvatar();
+            // Re-initialize when the select2 event is fired
+            window.livewire.on('select2', () => {
+                initAvatar_{{ str_replace('-', '_', $id) }}();
             });
         });
     </script>

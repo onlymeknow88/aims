@@ -56,12 +56,18 @@ class RequestQR extends Component
             }
 
             foreach ($this->file as $key => $attachment) {
-                $path = 'ko/qr-request-attachment/' . $proposal->id;
-                $full_path = Storage::disk('public')->put($path, $attachment);
+                $filename = $attachment->getClientOriginalName();
+                $filePathTemp = $attachment->getRealPath();
+                $directPath = 'ko/qr-request-attachment/' . $proposal->id;
+
+                $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
                 $proposal->koQrRequestFiles()->create([
-                    'attachment' => $full_path,
+                    'attachment' => $blobResult['fileBlobPathName'] ?? ('ko/qr-request-attachment/' . $proposal->id . '/' . $filename),
+                    'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                    'blob_response' => $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null,
                     'size' => $this->changeByte($attachment->getSize()),
-                    'name' => $attachment->getClientOriginalName(),
+                    'name' => $filename,
                     'type' => $attachment->getClientOriginalExtension()
                 ]);
             }

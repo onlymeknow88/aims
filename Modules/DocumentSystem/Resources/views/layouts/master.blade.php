@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- favicon -->
-    <link rel="icon" href="{{ asset('favicon/adaro-favicon-144x144.png') }}">
+    <link rel="icon" href="{{ asset('favicon/alamtri.png') }}">
 
     {{-- <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
@@ -163,7 +163,7 @@
             imgContainer.classList.add('d-none');
             officeContainer.classList.add('d-none');
             fallbackContainer.classList.add('d-none');
-            
+
             modal.show();
 
             const routeUrl = "{{ route('document-systems::attachments.sas-uri', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
@@ -213,11 +213,11 @@
                     const pdfIframe = document.getElementById('preview-pdf-iframe');
                     const officeIframe = document.getElementById('preview-office-iframe');
                     const imgElement = document.getElementById('preview-image-element');
-                    
+
                     if (pdfIframe && pdfIframe.src && pdfIframe.src.startsWith('blob:')) {
                         URL.revokeObjectURL(pdfIframe.src);
                     }
-                    
+
                     if (pdfIframe) pdfIframe.src = '';
                     if (officeIframe) officeIframe.src = '';
                     if (imgElement) imgElement.src = '';

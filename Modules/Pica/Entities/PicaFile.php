@@ -15,6 +15,8 @@ class PicaFile extends Model
         'file',
         'type',
         'size',
+        'blob_url',
+        'blob_response',
     ];
 
     public function pica()

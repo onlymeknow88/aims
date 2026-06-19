@@ -164,6 +164,9 @@ Route::middleware(['auth:ko'])->group(function () {
         Route::get('/solved', Solved::class)->name('solved');
     });
 
+    Route::get('attachments/{id}/sas', [\Modules\KO\Http\Controllers\KOController::class, 'getAttachmentSasUri'])->name('attachments.sas-uri');
+    Route::get('attachments/{id}/preview', [\Modules\KO\Http\Controllers\KOController::class, 'previewAttachment'])->name('attachments.preview');
+
 });
 
 

@@ -85,12 +85,15 @@ class CrsDetailPage extends Component
 
         foreach ($this->activityFile as $key => $value) {
             $path = 'pica/activity/' . $this->pica->id;
-            $full_path = Storage::disk('public')->putFileAs($path, $value['file'], $value['name']);
+            $tempPath = $value['file']->getRealPath();
+            $blobResult = uploadToBlobStorage($value['name'], $tempPath, $path);
 
-            $file = $activity->picaFiles()->create([
-                'file' => $full_path,
+            $file = $activity->files()->create([
+                'file' => $blobResult['fileBlobPathName'] ?? ($path . '/' . $value['name']),
                 'type_file' => $value['file']->getClientOriginalExtension(),
                 'size' => $this->changeByte($value['file']->getSize()),
+                'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
             ]);
         }
 

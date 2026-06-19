@@ -53,9 +53,14 @@ class TableMaker extends Component
         $this->search = $search;
     }
 
+    private $cachedTypes = null;
+
     public function getTypesProperty()
     {
-        return FieldLeadershipKtaAndTta::search($this->search)->paginate(100);
+        if ($this->cachedTypes === null) {
+            $this->cachedTypes = FieldLeadershipKtaAndTta::search($this->search)->paginate(100);
+        }
+        return $this->cachedTypes;
     }
 
     public function onSelectedItem($id)

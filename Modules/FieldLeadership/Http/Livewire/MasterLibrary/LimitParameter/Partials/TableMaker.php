@@ -33,9 +33,14 @@ class TableMaker extends Component
         $this->limit = $this->countData;
     }
 
+    private $cachedParameters = null;
+
     public function getParametersProperty()
     {
-        return FieldLeadershipParameter::all();
+        if ($this->cachedParameters === null) {
+            $this->cachedParameters = FieldLeadershipParameter::all();
+        }
+        return $this->cachedParameters;
     }
 
     public function updated($propertyName, $value)

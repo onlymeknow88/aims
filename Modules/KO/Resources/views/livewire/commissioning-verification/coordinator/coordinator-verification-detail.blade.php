@@ -526,10 +526,10 @@
                                                         @endphp
                                                     </td>
                                                     <td>
-                                                        {{$field->koCommissioningItem($koProposal->koCommissioning->id)->first()->condition}}
+                                                        {{$field->koCommissioningItem($koProposal->koCommissioning->id)->first()?->condition}}
                                                     </td>
                                                     <td style="white-space: normal">
-                                                        {{$field->koCommissioningItem($koProposal->koCommissioning->id)->first()->note ?? '-'}}
+                                                        {{$field->koCommissioningItem($koProposal->koCommissioning->id)->first()?->note ?? '-'}}
                                                     </td>
                                                     <td class="text-center">{{$field->hazard_code}}</td>
                                                 </tr>

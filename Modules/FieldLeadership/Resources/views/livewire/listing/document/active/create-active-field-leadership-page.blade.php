@@ -19,6 +19,18 @@
 
             <div class="col-8">
 
+                @if(is_null($limit_param))
+                    <div class="alert alert-danger shadow-sm mb-4" role="alert" style="border-radius: 8px;">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-circle-exclamation fs-4"></i>
+                            <div>
+                                <h6 class="alert-heading fw-bold mb-1">Limit Parameter Belum Diatur!</h6>
+                                <span>Limit Parameter belum dikonfigurasi di Master Library. Harap atur Limit Parameter terlebih dahulu di menu <strong>Master Library > Limit Parameter</strong> atau hubungi Administrator agar halaman ini dapat berfungsi dengan benar.</span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <form class="form-horizontal" method="post" enctype="multipart/form-data">
 
                     <div class="own-info mb-5">
@@ -32,7 +44,7 @@
                             <label for="title" class="col-sm-4 col-form-label">Tanggal</label>
 
                             <div class="col-sm-8">
-                                <x-field-leadership-datepicker wire:model="date" id="date" :error="'date'" />
+                                <x-field-leadership-datepicker wire:model.defer="date" id="date" :error="'date'" />
                             </div>
 
                         </div><!-- /.form-group -->
@@ -44,7 +56,8 @@
                             <div class="col-sm-8">
 
                                 <x-field-leadership-select2 wire:model="ccow_id" id="ccow_id"
-                                    placeholder="Select CCOW" data-child="department_id,section_id,area_location_id,pja_id">
+                                    placeholder="Select CCOW"
+                                    data-child="department_id,section_id,area_location_id,pja_id">
 
                                     @foreach ($this->ccows as $key => $company)
                                         <option value="{{ $company->id }}">{{ $company->company_name }}</option>
@@ -116,8 +129,7 @@
                             <div class="col-sm-8">
 
                                 <x-field-leadership-select2 wire:model="section_id" id="section_id"
-                                    placeholder="Select Section" data-child="area_location_id,pja_id"
-                                    :disabled="empty($department_id)">
+                                    placeholder="Select Section" data-child="area_location_id,pja_id" :disabled="empty($department_id)">
 
                                     @foreach ($this->sections as $key => $section)
                                         <option value="{{ $section->id }}">{{ $section->name }}</option>
@@ -136,8 +148,7 @@
                             <div class="col-sm-8">
 
                                 <x-field-leadership-select2 wire:model="area_location_id" id="area_location_id"
-                                    placeholder="Select Area Location"
-                                    :disabled="empty($section_id)">
+                                    placeholder="Select Area Location" :disabled="empty($section_id)">
 
                                     @foreach ($this->areaLocations as $key => $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -155,7 +166,7 @@
 
                             <div class="col-sm-8">
 
-                                <textarea class="form-control" rows="4" wire:model="detail_location" placeholder="Detail Location"></textarea>
+                                <textarea class="form-control" rows="4" wire:model.defer="detail_location" placeholder="Detail Location"></textarea>
 
                             </div>
 
@@ -175,9 +186,8 @@
 
                             <div class="col-sm-8">
 
-                                <x-field-leadership-select2 wire:model="pja_id" id="pja_id" name="pja_id"
-                                    placeholder="Select Select PJA"
-                                    :disabled="empty($section_id)">
+                                <x-field-leadership-select2 wire:model.defer="pja_id" id="pja_id" name="pja_id"
+                                    placeholder="Select Select PJA" :disabled="empty($section_id)">
 
                                     @foreach ($this->areaManagers as $key => $areaManager)
                                         <option value="{{ $areaManager->id }}">
@@ -197,7 +207,7 @@
 
                             <div class="col-sm-8">
 
-                                <x-field-leadership-select2 wire:model="pjo_id" id="pjo_id" name="pjo_id"
+                                <x-field-leadership-select2 wire:model.defer="pjo_id" id="pjo_id" name="pjo_id"
                                     placeholder="Select Select KTT/PJO">
 
                                     <option value="{{ $company_type->user_id ?? null }}">
@@ -228,7 +238,7 @@
 
                             <div class="col-sm-8">
 
-                                <textarea class="form-control" rows="4" wire:model="job" placeholder="Tugas / SOP / WI yang diamati"></textarea>
+                                <textarea class="form-control" rows="4" wire:model.defer="job" placeholder="Tugas / SOP / WI yang diamati"></textarea>
                             </div>
 
                         </div><!-- /.form-group -->
@@ -242,7 +252,7 @@
 
                                 <input type="number"
                                     class="form-control @error('personil_on_review') is-invalid @enderror"
-                                    id="personil_on_review" wire:model="personil_on_review"
+                                    id="personil_on_review" wire:model.defer="personil_on_review"
                                     placeholder="Jumlah Personil Yang Diamati" aria-describedby="basic-addon4">
                             </div>
 
@@ -257,7 +267,7 @@
 
                                 <input type="text"
                                     class="form-control @error('personil_on_review_name') is-invalid @enderror"
-                                    id="personil_on_review_name" wire:model="personil_on_review_name"
+                                    id="personil_on_review_name" wire:model.defer="personil_on_review_name"
                                     autocomplete="off" placeholder="Nama Personel Yang Diamati"
                                     aria-describedby="basic-addon4">
                             </div>
@@ -279,17 +289,17 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question1 }}
-                                            <input type="text" wire:model="question1" hidden>
+                                            <input type="text" wire:model.defer="question1" hidden>
                                         </div>
                                         <div class="col-sm-12 mb-3">
-                                            <x-field-leadership-select2 wire:model="answer1" id="answer1"
+                                            <x-field-leadership-select2 wire:model.defer="answer1" id="answer1"
                                                 placeholder="Select Answer">
                                                 <option value="Ya">Ya</option>
                                                 <option value="Tidak">Tidak</option>
                                             </x-field-leadership-select2>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description1" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description1" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -305,17 +315,17 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question2 }}
-                                            <input type="text" wire:model="question2" hidden>
+                                            <input type="text" wire:model.defer="question2" hidden>
                                         </div>
                                         <div class="col-sm-12 mb-3">
-                                            <x-field-leadership-select2 wire:model="answer2" id="answer2"
+                                            <x-field-leadership-select2 wire:model.defer="answer2" id="answer2"
                                                 placeholder="Select Answer">
                                                 <option value="Ya">Ya</option>
                                                 <option value="Tidak">Tidak</option>
                                             </x-field-leadership-select2>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description2" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description2" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -331,10 +341,10 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question3 }}
-                                            <input type="text" wire:model="question3" hidden>
+                                            <input type="text" wire:model.defer="question3" hidden>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description3" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description3" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -350,17 +360,17 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question4 }}
-                                            <input type="text" wire:model="question4" hidden>
+                                            <input type="text" wire:model.defer="question4" hidden>
                                         </div>
                                         <div class="col-sm-12 mb-3">
-                                            <x-field-leadership-select2 wire:model="answer4" id="answer4"
+                                            <x-field-leadership-select2 wire:model.defer="answer4" id="answer4"
                                                 placeholder="Select Answer">
                                                 <option value="Ya">Ya</option>
                                                 <option value="Tidak">Tidak</option>
                                             </x-field-leadership-select2>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description4" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description4" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -376,17 +386,17 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question5 }}
-                                            <input type="text" wire:model="question5" hidden>
+                                            <input type="text" wire:model.defer="question5" hidden>
                                         </div>
                                         <div class="col-sm-12 mb-3">
-                                            <x-field-leadership-select2 wire:model="answer5" id="answer5"
+                                            <x-field-leadership-select2 wire:model.defer="answer5" id="answer5"
                                                 placeholder="Select Answer">
                                                 <option value="Ya">Ya</option>
                                                 <option value="Tidak">Tidak</option>
                                             </x-field-leadership-select2>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description5" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description5" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -402,17 +412,17 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-12 mb-3">
                                             {{ $question6 }}
-                                            <input type="text" wire:model="question6" hidden>
+                                            <input type="text" wire:model.defer="question6" hidden>
                                         </div>
                                         <div class="col-sm-12 mb-3">
-                                            <x-field-leadership-select2 wire:model="answer6" id="answer6"
+                                            <x-field-leadership-select2 wire:model.defer="answer6" id="answer6"
                                                 placeholder="Select Answer">
                                                 <option value="Ya">Ya</option>
                                                 <option value="Tidak">Tidak</option>
                                             </x-field-leadership-select2>
                                         </div>
                                         <div class="col-sm-12">
-                                            <textarea type="text" wire:model="description6" class="form-control" rows="2" placeholder="Description"></textarea>
+                                            <textarea type="text" wire:model.defer="description6" class="form-control" rows="2" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -463,10 +473,9 @@
 
                                 <div class="{{ count($member) == 1 ? 'col-sm-8' : 'col-sm-7' }}">
 
-                                    <x-field-leadership-select2 wire:model="member.{{ $loop->index }}.employee_id"
+                                    <x-field-leadership-select2 wire:model.defer="member.{{ $loop->index }}.employee_id"
                                         id="member.{{ $loop->index }}.employee_id" name="employee_id"
-                                        placeholder="Select Employee"
-                                        :disabled="empty($member[$loop->index]['type'])">
+                                        placeholder="Select Employee" :disabled="empty($member[$loop->index]['type'])">
 
                                         @if ($member[$loop->index]['type'] == App\Enums\CompanyType::Internal)
                                             @foreach ($this->memberInternals as $key => $val)
@@ -535,7 +544,7 @@
                                 <div class="input-group">
                                     <input type="text"
                                         class="form-control @error('visit_time') is-invalid @enderror" id="visit_time"
-                                        wire:model="visit_time" placeholder="0" aria-describedby="basic-addon4"
+                                        wire:model.defer="visit_time" placeholder="0" aria-describedby="basic-addon4"
                                         style="padding-left: 9px">
                                     <span
                                         class="input-group-text document-prefix @error('visit_time') is-invalid @enderror"
@@ -559,7 +568,7 @@
                             <div class="mb-3 row form-group required">
 
                                 <div class=" {{ count($positive_condition) == 1 ? 'col-sm-12' : 'col-sm-11' }}">
-                                    <textarea type="text" wire:model="positive_condition.{{ $loop->index }}.description" class="form-control"
+                                    <textarea type="text" wire:model.defer="positive_condition.{{ $loop->index }}.description" class="form-control"
                                         rows="4" placeholder="Description"></textarea>
                                 </div>
 
@@ -582,17 +591,17 @@
 
                         <div class="col-sm-12 pb-3">
 
-                            <button type="button" class="btn btn-light-secondary text-center mt-3"
+                             <button type="button" class="btn btn-light-secondary text-center mt-3"
                                 wire:click="addPositiveCondition" style="width: 100%;"
-                                {{ count($positive_condition) < $limit_param->max_item_positive_condition ? '' : 'disabled' }}>
+                                {{ count($positive_condition) < ($limit_param?->max_item_positive_condition ?? 0) ? '' : 'disabled' }}>
                                 <i class="fa fa-plus"></i> Add Positive Condition
                             </button>
 
                         </div>
                         <div
-                            class="col-sm-12 align-self-center {{ count($positive_condition) < $limit_param->max_item_positive_condition ? 'd-none' : 'd-block' }}">
+                            class="col-sm-12 align-self-center {{ count($positive_condition) < ($limit_param?->max_item_positive_condition ?? 0) ? 'd-none' : 'd-block' }}">
 
-                            <span>Maximum {{ $limit_param->max_item_positive_condition }} Positive Condition</span>
+                            <span>Maximum {{ $limit_param?->max_item_positive_condition ?? 0 }} Positive Condition</span>
 
                         </div>
 
@@ -629,7 +638,7 @@
                                             <span class="text-danger">*</span>
                                         </label>
 
-                                        <textarea class="form-control" rows="7" wire:model="risk_condition.{{ $loop->index }}.description"
+                                        <textarea class="form-control" rows="7" wire:model.defer="risk_condition.{{ $loop->index }}.description"
                                             placeholder="{{ $hazard_report_label ? 'Kondisi' : 'Perilaku/Kondisi' }} Beresiko yang Diamati"></textarea>
                                     </div>
 
@@ -638,7 +647,9 @@
 
                                         @if ($type == 'Hazard Report')
                                             @php
-                                                $risk_condition[$loop->index]['category'] = $this->categories->where('name', 'Kondisi Tidak Aman')->first()->id;
+                                                $risk_condition[$loop->index]['category'] = $this->categories
+                                                    ->where('name', 'Kondisi Tidak Aman')
+                                                    ->first()->id;
                                             @endphp
 
                                             <input type="text"
@@ -668,13 +679,15 @@
                                             for="">{{ $hazard_report_label ? 'Jenis Kondisi Tidak Aman' : 'Jenis Kondisi Tidak Aman / Tindakan Tidak Aman' }}</label>
 
                                         <x-field-leadership-select2
-                                            wire:model="risk_condition.{{ $loop->index }}.type"
+                                            wire:model.defer="risk_condition.{{ $loop->index }}.type"
                                             id="risk_condition.{{ $loop->index }}.type"
                                             name="risk_condition.{{ $loop->index }}.type" placeholder="Select Type"
                                             :disabled="empty($risk_condition[$loop->index]['category'])">
 
                                             @php
-                                                $category = $this->categories->where('id', $risk_condition[$loop->index]['category'])->first();
+                                                $category = $this->categories
+                                                    ->where('id', $risk_condition[$loop->index]['category'])
+                                                    ->first();
                                             @endphp
 
                                             @if (isset($category))
@@ -701,7 +714,7 @@
                                     <div class="col-sm-12">
                                         <label for="">Tingkat Risiko / Potensi</label>
                                         <x-field-leadership-select2
-                                            wire:model="risk_condition.{{ $loop->index }}.level"
+                                            wire:model.defer="risk_condition.{{ $loop->index }}.level"
                                             id="risk_condition.{{ $loop->index }}.level"
                                             name="risk_condition.{{ $loop->index }}.level"
                                             placeholder="Select Type">
@@ -821,7 +834,7 @@
                                             {{ $risk_condition[$loop->index]['repaired'] != true ? 'Tanggal Rencana Pemenuhan Tindakan Perbaikan' : 'Tanggal Tindakan Perbaikan' }}
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <x-inputs.datepicker wire:model="risk_condition.{{ $loop->index }}.due_date"
+                                        <x-inputs.datepicker wire:model.defer="risk_condition.{{ $loop->index }}.due_date"
                                             id="risk_condition.{{ $loop->index }}.due_date" :error="'risk_condition.{{ $loop->index }}.due_date'"
                                             placeholder="Select Date" autocomplete="off" />
                                     </div>
@@ -849,7 +862,7 @@
                                                 Tindakan Perbaikan
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <textarea class="form-control" rows="7" wire:model="risk_condition.{{ $loop->index }}.action"
+                                            <textarea class="form-control" rows="7" wire:model.defer="risk_condition.{{ $loop->index }}.action"
                                                 placeholder="Tindakan Perbaikan"></textarea>
                                         </div>
                                     </div>
@@ -860,7 +873,7 @@
                                     <div class="col-sm-12 mb-3">
                                         <label for="">Jenis Tindakan Perbaikan</label>
                                         <x-field-leadership-select2
-                                            wire:model="risk_condition.{{ $loop->index }}.type_action"
+                                            wire:model.defer="risk_condition.{{ $loop->index }}.type_action"
                                             id="risk_condition.{{ $loop->index }}.type_action"
                                             name="risk_condition.{{ $loop->index }}.type_action"
                                             placeholder="Select Type">
@@ -888,7 +901,7 @@
                                         class="col-sm-12 {{ $risk_condition[$loop->index]['repaired'] == true ? '' : 'd-none' }}">
                                         <label for="">Nama Pengawas</label>
                                         <input type="text"
-                                            wire:model="risk_condition.{{ $loop->index }}.supervisor"
+                                            wire:model.defer="risk_condition.{{ $loop->index }}.supervisor"
                                             class="form-control" placeholder="Masukan Nama Pengawas">
                                     </div>
                                 </div>

@@ -29,6 +29,7 @@ use Modules\FieldLeadership\Http\Livewire\MasterLibrary\TypeKtaTta\TypeKtaTtaPag
 use Modules\FieldLeadership\Http\Livewire\Listing\Approval\RequestReviewApprovalPage;
 use Modules\FieldLeadership\Http\Livewire\Listing\Pja\DetailPjaPage;
 use Modules\FieldLeadership\Http\Livewire\Login\LoginPage;
+use Modules\FieldLeadership\Http\Controllers\General\GeneralController;
 
 // Login
 Route::get('/login', LoginPage::class)->name('login');
@@ -38,6 +39,9 @@ Route::get('/logout', function () {
 })->name('logout');
 
 Route::middleware(['auth:field-leadership'])->group(function () {
+    Route::get('files/{id}/preview', [GeneralController::class, 'previewFile'])->name('files.preview');
+    Route::get('files/{id}/sas', [GeneralController::class, 'getFileSasUri'])->name('files.sas-uri');
+
     // Dashboard
     Route::get('/', DashboardPage::class)->name('dashboard');
     // Route::get('/', ActiveFieldLeadershipPage::class)->name('dashboard');

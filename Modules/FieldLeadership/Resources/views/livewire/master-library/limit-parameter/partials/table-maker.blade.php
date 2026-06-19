@@ -1,4 +1,26 @@
-<div x-data="{ itemSelected: @entangle('itemSelected'), info: @entangle('info') }">
+<div x-data="{
+    itemSelected: @entangle('itemSelected').defer,
+    info: @entangle('info'),
+    toggleSelectAll() {
+        if (this.isAllSelected()) {
+            this.itemSelected = [];
+        } else {
+            this.itemSelected = {{ json_encode($this->parameters->pluck('id')->map(fn($id) => (string)$id)->toArray()) }};
+        }
+    },
+    isAllSelected() {
+        return this.itemSelected.length > 0 && this.itemSelected.length === {{ $this->parameters->count() }};
+    },
+    toggleItem(id) {
+        id = String(id);
+        let idx = this.itemSelected.indexOf(id);
+        if (idx > -1) {
+            this.itemSelected.splice(idx, 1);
+        } else {
+            this.itemSelected.push(id);
+        }
+    }
+}">
 
     <div class="toolbar-tables border-top border-bottom d-flex justify-content-between p-2">
 
@@ -17,53 +39,34 @@
                 </a>
             @endif
 
-            @if ($countSelected > 0)
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                    <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/export-top.svg') }}"
-                            alt="image export"></span>
-                    <span class="text-button">Export</span>
-                </a>
+            <template x-if="itemSelected.length > 0">
+                <div class="d-flex gap-2 align-items-center">
+                    <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
+                        <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/export-top.svg') }}"
+                                alt="image export"></span>
+                        <span class="text-button">Export</span>
+                    </a>
 
-                <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                    wire:click="$emit('remove-item')">
-                    <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/delete-top.svg') }}"
-                            alt="image delete"></span>
-                    <span class="text-button">Delete</span>
-                </a>
-            @endif
+                    <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
+                        wire:click="$emit('remove-item')">
+                        <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/delete-top.svg') }}"
+                                alt="image delete"></span>
+                        <span class="text-button">Delete</span>
+                    </a>
+                </div>
+            </template>
         </div><!-- /.toolbar-left -->
 
         <div class="toolbar-right d-flex align-items-center">
 
-            @if ($countSelected > 0)
+            <template x-if="itemSelected.length > 0">
                 <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                    wire:click="removeSeleced()">
+                    @click="itemSelected = []">
                     <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/delete-top.svg') }}"
                             alt="image delete"></span>
-                    <span class="text-button">{{ $countSelected }} Row Selected</span>
+                    <span class="text-button"><span x-text="itemSelected.length"></span> Row Selected</span>
                 </a>
-            @endif
-
-            {{-- <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/sort.png') }}"
-                        alt="image add"></span>
-            </a>
-
-            <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/filter-top.svg') }}"
-                        alt="image export"></span>
-            </a>
-
-            <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                wire:click="activedInfo()">
-                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/info.png') }}"
-                        alt="image info"></span>
-            </a>
-
-            <a href="#" type="button" class="button-toolbar d-flex gap-2 align-items-center py-2 px-3">
-                <span class="icon d-flex align-items-center"><img src="{{ asset('images/icons/menu.png') }}"
-                        alt="image menu"></span>
-            </a> --}}
+            </template>
 
         </div><!-- /.toolbar-right -->
 
@@ -75,8 +78,8 @@
 
             <table class="table">
                 <thead>
-                    <tr @if ($selectAll) class="selected" @else class="tr" @endif>
-                        <th class="sticky-top" wire:click="toggleSelectAll">
+                    <tr :class="isAllSelected() ? 'selected' : 'tr'">
+                        <th class="sticky-top" @click="toggleSelectAll()">
                             <span class="icon-checked"></span>
                         </th>
                         <th class="sticky-top">Max Item Member</th>
@@ -89,37 +92,30 @@
                 </thead>
                 <tbody>
                     @foreach ($this->parameters as $itemIndex => $items)
-                        <tr wire:key="{{ $itemIndex }}" wire:click="onSelectedItem('{{ $items->id }}')"
-                            @if (in_array($items->id, $itemSelected)) class="selected" @else class="tr" @endif>
+                        <tr wire:key="{{ $itemIndex }}" @click="toggleItem('{{ $items->id }}')"
+                            :class="itemSelected.includes(String('{{ $items->id }}')) ? 'selected' : 'tr'">
                             <td class="td-check">
                                 <span class="icon-checked"></span>
                             </td>
-                            <td scope="row" wire:click="edit('{{ $items->id }}')">
+                            <td scope="row" wire:click.stop="edit('{{ $items->id }}')">
                                 {{ $items->max_item_member }}
                             </td>
-                            <td scope="row" wire:click="edit('{{ $items->id }}')">
+                            <td scope="row" wire:click.stop="edit('{{ $items->id }}')">
                                 {{ $items->max_item_positive_condition }}
                             </td>
-                            <td scope="row" wire:click="edit('{{ $items->id }}')">
+                            <td scope="row" wire:click.stop="edit('{{ $items->id }}')">
                                 {{ $items->max_item_risk_condition }}
                             </td>
-                            <td scope="row" wire:click="edit('{{ $items->id }}')">
+                            <td scope="row" wire:click.stop="edit('{{ $items->id }}')">
                                 {{ $items->max_item_corrective_action }}
                             </td>
                             <td>{{ Carbon\Carbon::parse($items->created_at)->format('F d, Y') }}</td>
-                            {{-- <td>
-                            <a href="#" class="action-icon" wire:click="edit('{{ $items->id }}')">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                        </td> --}}
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
         </div><!-- /.table-wrapper -->
-
-        {{-- <div class="info" x-show="info">test</div> --}}
 
     </div><!-- /.table-content-->
 

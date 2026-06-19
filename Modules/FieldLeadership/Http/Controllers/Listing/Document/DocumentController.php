@@ -188,15 +188,23 @@ class DocumentController extends Controller
 
             if ($value['files'] != null) {
                 foreach ($value['files'] as $key => $file) {
-                    $path = explode('/', $file['path']);
-                    Storage::disk('public')->move($file['path'], 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2]);
-                    $new_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2];
+                    $tempPath = Storage::disk('public')->path($file['path']);
+                    $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                    $filename = basename($file['path']);
+                    $blobResult = uploadToBlobStorage($filename, $tempPath, $directPath);
+                    $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename;
 
                     $riskCondition->files()->create([
-                        'file' => $new_path,
+                        'file' => $relative_path,
+                        'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                        'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                         'size' => $file['file_size'],
                         'type' => FieldLeadershipType::RiskFinding
                     ]);
+
+                    if (Storage::disk('public')->exists($file['path'])) {
+                        Storage::disk('public')->delete($file['path']);
+                    }
                 }
             }
 
@@ -206,15 +214,23 @@ class DocumentController extends Controller
                 ]);
                 if ($value['files_ca'] != null) {
                     foreach ($value['files_ca'] as $key => $file) {
-                        $path = explode('/', $file['path']);
-                        Storage::disk('public')->move($file['path'], 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2]);
-                        $new_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2];
+                        $tempPath = Storage::disk('public')->path($file['path']);
+                        $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                        $filename = basename($file['path']);
+                        $blobResult = uploadToBlobStorage($filename, $tempPath, $directPath);
+                        $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename;
 
                         $riskCondition->files()->create([
-                            'file' => $new_path,
+                            'file' => $relative_path,
+                            'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                            'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                             'size' => $file['file_size'],
                             'type' => FieldLeadershipType::CorrectiveAction
                         ]);
+
+                        if (Storage::disk('public')->exists($file['path'])) {
+                            Storage::disk('public')->delete($file['path']);
+                        }
                     }
                 }
             }
@@ -429,6 +445,15 @@ class DocumentController extends Controller
 
         if ($request->input('risk_condition')) {
             $risk = FieldLeadershipRisk::where('fl_id', $fieldLeadership->id)->get();
+            $existingFilesMap = [];
+            foreach ($risk as $r) {
+                foreach ($r->files as $f) {
+                    $existingFilesMap[$f->file] = [
+                        'blob_url' => $f->blob_url,
+                        'blob_response' => $f->blob_response,
+                    ];
+                }
+            }
 
             foreach ($risk as $key => $value) {
                 if (!empty($value->files)) {
@@ -465,12 +490,28 @@ class DocumentController extends Controller
 
                 if ($value['files'] != null) {
                     foreach ($value['files'] as $key => $file) {
-                        $path = explode('/', $file['path']);
-                        Storage::disk('public')->move($file['path'], 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2]);
-                        $new_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2];
+                        if (strpos($file['path'], 'temp-field-leadership') === false) {
+                            $relative_path = $file['path'];
+                            $blob_url = $existingFilesMap[$relative_path]['blob_url'] ?? null;
+                            $blob_response = $existingFilesMap[$relative_path]['blob_response'] ?? null;
+                        } else {
+                            $tempPath = Storage::disk('public')->path($file['path']);
+                            $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                            $filename = basename($file['path']);
+                            $blobResult = uploadToBlobStorage($filename, $tempPath, $directPath);
+                            $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename;
+                            $blob_url = $blobResult['fileBlobUrl'] ?? null;
+                            $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
+
+                            if (Storage::disk('public')->exists($file['path'])) {
+                                Storage::disk('public')->delete($file['path']);
+                            }
+                        }
 
                         $riskCondition->files()->create([
-                            'file' => $new_path,
+                            'file' => $relative_path,
+                            'blob_url' => $blob_url,
+                            'blob_response' => $blob_response,
                             'size' => $file['file_size'],
                             'type' => FieldLeadershipType::RiskFinding
                         ]);
@@ -483,12 +524,28 @@ class DocumentController extends Controller
                     ]);
                     if ($value['files_ca'] != null) {
                         foreach ($value['files_ca'] as $key => $file) {
-                            $path = explode('/', $file['path']);
-                            Storage::disk('public')->move($file['path'], 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2]);
-                            $new_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $path[2];
+                            if (strpos($file['path'], 'temp-field-leadership') === false) {
+                                $relative_path = $file['path'];
+                                $blob_url = $existingFilesMap[$relative_path]['blob_url'] ?? null;
+                                $blob_response = $existingFilesMap[$relative_path]['blob_response'] ?? null;
+                            } else {
+                                $tempPath = Storage::disk('public')->path($file['path']);
+                                $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+                                $filename = basename($file['path']);
+                                $blobResult = uploadToBlobStorage($filename, $tempPath, $directPath);
+                                $relative_path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename;
+                                $blob_url = $blobResult['fileBlobUrl'] ?? null;
+                                $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
+
+                                if (Storage::disk('public')->exists($file['path'])) {
+                                    Storage::disk('public')->delete($file['path']);
+                                }
+                            }
 
                             $riskCondition->files()->create([
-                                'file' => $new_path,
+                                'file' => $relative_path,
+                                'blob_url' => $blob_url,
+                                'blob_response' => $blob_response,
                                 'size' => $file['file_size'],
                                 'type' => FieldLeadershipType::CorrectiveAction
                             ]);

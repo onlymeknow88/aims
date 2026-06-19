@@ -89,9 +89,11 @@ class EditActiveDocumentPage extends Component
 
             $this->evidances[] = [
                 'file' => $file->file,
-                'name' => $name[3],
+                'name' => isset($name[3]) ? $name[3] : end($name),
                 'size' => $file->size,
                 'extension' => $file->extension,
+                'blob_url' => $file->blob_url,
+                'blob_response' => $file->blob_response,
             ];
         }
     }
@@ -138,14 +140,14 @@ class EditActiveDocumentPage extends Component
         // dd($propertyName, $value);
         if ($propertyName == 'company_id') {
             $this->company_type = Company::find($value);
-            $this->detail_company = $this->company_type->type;
+            $this->detail_company = $this->company_type ? $this->company_type->type : null;
         }
         if ($propertyName == 'target_date') {
             $this->settlement_date = $value;
         }
         if ($propertyName == 'section_id') {
             $department = Section::find($value);
-            $this->department_id = $department->department_id;
+            $this->department_id = $department ? $department->department_id : null;
         }
         if ($propertyName == 'temporaryFile') {
             if (is_object($value[0])) {
@@ -222,15 +224,23 @@ class EditActiveDocumentPage extends Component
 
                 if (!is_object($file['file'])) {
                     $full_path = $file['file'];
+                    $blob_url = $file['blob_url'] ?? null;
+                    $blob_response = $file['blob_response'] ?? null;
                 } else {
                     $path = 'pica/file/' . $picaDocument->id;
                     $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                    
+                    $blobResult = uploadToBlobStorage($file['name'], $file['file']->getRealPath(), $path);
+                    $blob_url = $blobResult['fileBlobUrl'] ?? null;
+                    $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
                 }
 
                 $picaDocument->picaFiles()->create([
                     'file' => $full_path,
                     'size' => $file['size'],
-                    'type' => $this->type
+                    'type' => $this->type,
+                    'blob_url' => $blob_url,
+                    'blob_response' => $blob_response,
                 ]);
             }
 
@@ -299,15 +309,23 @@ class EditActiveDocumentPage extends Component
 
                 if (!is_object($file['file'])) {
                     $full_path = $file['file'];
+                    $blob_url = $file['blob_url'] ?? null;
+                    $blob_response = $file['blob_response'] ?? null;
                 } else {
                     $path = 'pica/file/' . $picaDocument->id;
                     $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
+                    
+                    $blobResult = uploadToBlobStorage($file['name'], $file['file']->getRealPath(), $path);
+                    $blob_url = $blobResult['fileBlobUrl'] ?? null;
+                    $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
                 }
 
                 $picaDocument->picaFiles()->create([
                     'file' => $full_path,
                     'size' => $file['size'],
-                    'type' => $this->type
+                    'type' => $this->type,
+                    'blob_url' => $blob_url,
+                    'blob_response' => $blob_response,
                 ]);
             }
 

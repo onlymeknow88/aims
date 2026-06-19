@@ -92,21 +92,29 @@
                 // Set value from Livewire if present and different
                 const val = @this.get('{{ $modelName }}');
                 if (val !== undefined && val !== null && $el.val() !== val) {
-                    $el.val(val).trigger('change.select2');
+                    $el.val(val).trigger('change.select2', [true]);
                 }
 
                 @if ($disableChange)
                     // Unbind previous change listeners to prevent duplicates
                     $el.off('change.select2-hook');
-                    $el.on('change.select2-hook', function(e) {
-                        @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                    $el.on('change.select2-hook', function(e, programmatic) {
+                        if (programmatic) return;
+
+                        const currentVal = @this.get('{{ $modelName }}');
+                        const isSame = (currentVal == e.target.value) || 
+                                       ((currentVal === null || currentVal === undefined || currentVal === '') && 
+                                        (e.target.value === null || e.target.value === undefined || e.target.value === ''));
+                        if (!isSame) {
+                            @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                        }
                         let childStr = $(this).data('child');
                         if (childStr) {
                             let children = childStr.split(',');
                             children.forEach(function(childId) {
                                 const $child = $(document.getElementById(childId.trim()));
                                 if ($child.length) {
-                                    $child.val(null).prop('disabled', true).trigger('change');
+                                    $child.val(null).prop('disabled', true).trigger('change', [true]);
                                     const $container = $child.next('.select2-container');
                                     if ($container.length) {
                                         $container.addClass('select2-container--disabled');

@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
          */
         'redirect.document-systems' => \Modules\DocumentSystem\Http\Middleware\RedirectIfLoggedOut::class,
         'redirect.mcu' => \Modules\Mcu\Http\Middleware\RedirectIfLoggedOut::class,
-        'redirect.kplh' => \Modules\Kplh\Http\Middleware\RedirectIfLoggedOut::class,
+        // 'redirect.kplh' => \Modules\Kplh\Http\Middleware\RedirectIfLoggedOut::class,
         
         'AdminDashboard' => \App\Http\Middleware\AdminDashboard::class,
         'AdminSap' => \Modules\Sap\Http\Middleware\AdminSap::class,

@@ -1,13 +1,52 @@
-@props(['placeholder' => 'Select Options', 'id', 'error' => false])
+@props([
+    'placeholder' => 'Select Options',
+    'id',
+    'parent' => 'none',
+    'error' => false,
+    'disableChange' => true,
+    'disabled' => false
+])
+
+@php
+    $modelName = null;
+    $isDeferred = false;
+    if ($attributes->has('wire:model')) {
+        $modelName = $attributes->get('wire:model');
+    } elseif ($attributes->has('wire:model.defer')) {
+        $modelName = $attributes->get('wire:model.defer');
+        $isDeferred = true;
+    } elseif ($attributes->has('wire:model.lazy')) {
+        $modelName = $attributes->get('wire:model.lazy');
+    } else {
+        foreach ($attributes->getAttributes() as $key => $value) {
+            if (str_starts_with($key, 'wire:model')) {
+                $modelName = $value;
+                if (str_contains($key, '.defer')) {
+                    $isDeferred = true;
+                }
+                break;
+            }
+        }
+    }
+    $modelName = $modelName ?? $id;
+@endphp
+
+@php
+    $slotStr = (string) $slot;
+    $optionsHash = md5($slotStr);
+    $wireKey = "select2-wrapper-{$id}-{$optionsHash}";
+@endphp
 
 <div>
-    <select {{ $attributes }} data-placeholder="{{ $placeholder }}" id="{{ $id }}"
-        class="form-select w-100 select2 @error($error) is-invalid @enderror">
-        <option></option>
-        {{ $slot }}
-    </select>
+    <div wire:ignore wire:key="{{ $wireKey }}">
+        <select {{ $attributes }} data-placeholder="{{ $placeholder }}" @if ($disabled) disabled @endif
+            id="{{ $id }}" class="form-select w-100 select2 form-control @error($error) is-invalid @enderror">
+            <option></option>
+            {!! $slotStr !!}
+        </select>
+    </div>
     @error($error)
-        <div class="invalid-feedback">
+        <div class="invalid-feedback d-block">
             {{ $message }}
         </div>
     @enderror
@@ -32,56 +71,62 @@
 @push('scripts')
     <script>
         $(function() {
-            window.initSelect2 = (id, parent) => {
+            const initSelect2_{{ str_replace('-', '_', $id) }} = () => {
+                const $el = $('#{{ $id }}');
+                if (!$el.length) return;
+
                 let option = {
                     theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: '{{ $placeholder }}',
+                    allowClear: true
                 };
-                if (parent != 'none') {
-                    option = {
-                        theme: 'bootstrap-5',
-                        dropdownParent: $('#' + parent),
-                    };
-                }
-                $(id).select2(option);
-            }
-
-            initSelect2('#{{ $id }}', '{{ $parent }}');
-
-            $('#{{ $id }}').on('change', function(e) {
-                let elementName = $(this).attr('id');
-                let child = $(this).data('child');
-                @this.set(elementName, e.target.value);
-                if (child) {
-                    $('#' + child).select2("destroy").select2({
-                        theme: 'bootstrap-5',
-                    });
+                if ('{{ $parent }}' !== 'none') {
+                    option.dropdownParent = $('#{{ $parent }}');
                 }
 
-            });
+                // Only initialize if not already initialized
+                if (!$el.hasClass("select2-hidden-accessible")) {
+                    $el.select2(option);
+                }
 
-            window.initSelect22 = () => {
-                $('.select2').select2({
-                    theme: 'bootstrap-5',
-                });
+                // Set value from Livewire if present and different
+                const val = @this.get('{{ $modelName }}');
+                if (val !== undefined && val !== null && $el.val() !== val) {
+                    $el.val(val).trigger('change.select2');
+                }
 
-                $('.select2').on('change', function(e) {
-                    let elementName = $(this).attr('id');
-                    let child = $(this).data('child');
-                    @this.set(elementName, e.target.value);
-                    if (child) {
-                        $('#' + child).select2("destroy").select2({
-                            theme: 'bootstrap-5',
+                // Unbind previous change listeners to prevent duplicates
+                $el.off('change.select2-hook');
+                $el.on('change.select2-hook', function(e) {
+                    @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                    let childStr = $(this).data('child');
+                    if (childStr) {
+                        let children = childStr.split(',');
+                        children.forEach(function(childId) {
+                            const $child = $('#' + childId.trim());
+                            if ($child.length) {
+                                $child.val(null).prop('disabled', true).trigger('change');
+                                const $container = $child.next('.select2-container');
+                                if ($container.length) {
+                                    $container.addClass('select2-container--disabled');
+                                    $container.css({
+                                        'pointer-events': 'none',
+                                        'opacity': '0.6'
+                                    });
+                                }
+                            }
                         });
                     }
-
                 });
-            }
+            };
 
-            initSelect22('.select2');
+            // Run initialization
+            initSelect2_{{ str_replace('-', '_', $id) }}();
 
+            // Re-initialize when the select2 event is fired
             window.livewire.on('select2', () => {
-                initSelect2('#{{ $id }}');
-                initSelect22();
+                initSelect2_{{ str_replace('-', '_', $id) }}();
             });
         });
     </script>

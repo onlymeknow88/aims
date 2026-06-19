@@ -661,12 +661,24 @@ class EditPjaPage extends Component
                     foreach ($value['files'] as $key => $file) {
                         if (!is_object($file['file'])) {
                             $path = $file['file'];
+                            $blobUrl = $file['blob_url'] ?? null;
+                            $blobResponse = $file['blob_response'] ?? null;
                         } else {
-                            $path = Storage::disk('public')->putFileAs('field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id, $file['file'], $file['file']->getClientOriginalName());
+                            $filename = $file['file']->getClientOriginalName();
+                            $filePathTemp = $file['file']->getRealPath();
+                            $directPath = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+
+                            $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
+                            $path = $blobResult['fileBlobPathName'] ?? ('field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename);
+                            $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                            $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                         }
 
                         $riskCondition->files()->create([
                             'file' => $path,
+                            'blob_url' => $blobUrl,
+                            'blob_response' => $blobResponse,
                             'size' => $file['size'],
                             'type' => FieldLeadershipType::RiskFinding
                         ]);
@@ -676,12 +688,24 @@ class EditPjaPage extends Component
                         foreach ($value['files_ca'] as $key => $file) {
                             if (!is_object($file['file'])) {
                                 $path = $file['file'];
+                                $blobUrl = $file['blob_url'] ?? null;
+                                $blobResponse = $file['blob_response'] ?? null;
                             } else {
-                                $path = Storage::disk('public')->putFileAs('field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id, $file['file'], $file['file']->getClientOriginalName());
+                                $filename = $file['file']->getClientOriginalName();
+                                $filePathTemp = $file['file']->getRealPath();
+                                $directPath = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
+
+                                $blobResult = uploadToBlobStorage($filename, $filePathTemp, $directPath);
+
+                                $path = $blobResult['fileBlobPathName'] ?? ('field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $filename);
+                                $blobUrl = $blobResult['fileBlobUrl'] ?? null;
+                                $blobResponse = $blobResult['blobResponse'] ? json_encode($blobResult['blobResponse']) : null;
                             }
 
                             $riskCondition->files()->create([
                                 'file' => $path,
+                                'blob_url' => $blobUrl,
+                                'blob_response' => $blobResponse,
                                 'size' => $file['size'],
                                 'type' => FieldLeadershipType::CorrectiveAction
                             ]);

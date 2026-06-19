@@ -53,9 +53,14 @@ class TableMaker extends Component
         $this->search = $search;
     }
 
+    private $cachedPotencies = null;
+
     public function getPotenciesProperty()
     {
-        return FieldLeadershipPotencyAndConsequnce::search($this->search)->paginate(10);
+        if ($this->cachedPotencies === null) {
+            $this->cachedPotencies = FieldLeadershipPotencyAndConsequnce::search($this->search)->paginate(10);
+        }
+        return $this->cachedPotencies;
     }
 
     public function onSelectedItem($id)

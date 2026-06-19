@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- favicon -->
-    <link rel="icon" href="{{ asset('favicon/adaro-favicon-144x144.png') }}">
+    <link rel="icon" href="{{ asset('favicon/alamtri.png') }}">
 
     {{-- <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
@@ -35,9 +35,7 @@
         rel="stylesheet">
 
     <!-- Fontawesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('assets/libs/fontawesome-6.4.0/css/all.min.css') }}" />
 
     <!-- Font Library -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,9 +49,8 @@
     <link id="custom-css" href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
 
     <!-- Bootstrap Library-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/libs/bootstrap-5.3.0/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/dist/sweetalert2.min.css') }}">
 
     <!-- Css File -->
     <link id="custom-css" href="{{ asset('assets/css/animate.min.css') }}" rel="stylesheet" />
@@ -61,10 +58,8 @@
 
     <!-- Alpinejs Library -->
     @stack('plugin-alpine')
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="{{ asset('assets/libs/alpinejs/dist/cdn.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 
     <title>Adaro Admin</title>
 
@@ -106,13 +101,9 @@
     {{ $slot }}
 
     <!-- Javascript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('assets/libs/popper/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/bootstrap-5.3.0/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     <script type="text/javasccript" src="{{ asset('asset/js/scripts.js') }}"></script>
 
     <script>
@@ -143,9 +134,95 @@
         </script>
     @endif
 
+    @include('fieldleadership::layouts.partials.preview-modal')
+
+    <script type="text/javascript">
+        function previewBlobFile(id, fileName, type = 'document') {
+            const modal = new bootstrap.Modal(document.getElementById('previewAttachmentModal'));
+            const spinner = document.getElementById('preview-loading-spinner');
+            const pdfContainer = document.getElementById('preview-pdf-container');
+            const pdfIframe = document.getElementById('preview-pdf-iframe');
+            const imgContainer = document.getElementById('preview-image-container');
+            const imgElement = document.getElementById('preview-image-element');
+            const officeContainer = document.getElementById('preview-office-container');
+            const officeIframe = document.getElementById('preview-office-iframe');
+            const fallbackContainer = document.getElementById('preview-fallback-container');
+            const downloadBtn = document.getElementById('preview-download-btn');
+            const titleSpan = document.getElementById('preview-file-name');
+
+            // Set title and show loading/modal
+            titleSpan.innerText = fileName;
+            spinner.classList.remove('d-none');
+            pdfContainer.classList.add('d-none');
+            imgContainer.classList.add('d-none');
+            officeContainer.classList.add('d-none');
+            fallbackContainer.classList.add('d-none');
+
+            modal.show();
+
+            const routeUrl = "{{ route('field-leadership::files.sas-uri', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+
+            fetch(routeUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    const url = data.url;
+                    const ext = data.extension;
+
+                    if (ext === 'pdf') {
+                        const previewUrl = "{{ route('field-leadership::files.preview', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+                        pdfIframe.src = previewUrl;
+                        pdfContainer.classList.remove('d-none');
+                    } else if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                        const previewUrl = "{{ route('field-leadership::files.preview', ['id' => ':id']) }}".replace(':id', id) + '?type=' + type;
+                        imgElement.src = previewUrl;
+                        imgContainer.classList.remove('d-none');
+                    } else if (['docx', 'doc', 'xlsx', 'xls', 'pptx', 'ppt'].includes(ext)) {
+                        // Microsoft Office Online viewer
+                        officeIframe.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+                        officeContainer.classList.remove('d-none');
+                    } else {
+                        downloadBtn.href = url;
+                        fallbackContainer.classList.remove('d-none');
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to preview file:', err);
+                    downloadBtn.href = '#';
+                    fallbackContainer.classList.remove('d-none');
+                })
+                .finally(() => {
+                    spinner.classList.add('d-none');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalEl = document.getElementById('previewAttachmentModal');
+            if (modalEl) {
+                modalEl.addEventListener('hidden.bs.modal', function () {
+                    const pdfIframe = document.getElementById('preview-pdf-iframe');
+                    const officeIframe = document.getElementById('preview-office-iframe');
+                    const imgElement = document.getElementById('preview-image-element');
+
+                    if (pdfIframe && pdfIframe.src && pdfIframe.src.startsWith('blob:')) {
+                        URL.revokeObjectURL(pdfIframe.src);
+                    }
+
+                    if (pdfIframe) pdfIframe.src = '';
+                    if (officeIframe) officeIframe.src = '';
+                    if (imgElement) imgElement.src = '';
+                });
+            }
+        });
+    </script>
+
     @livewireScripts
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('assets/libs/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
     <x-livewire-alert::scripts />
     <x-livewire-alert::flash />

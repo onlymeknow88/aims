@@ -32,8 +32,7 @@
                         <div class="mb-3 row form-group required">
                             <label for="title" class="col-sm-4 col-form-label">Source NCAR</label>
                             <div class="col-sm-8">
-                                <x-pica-select2 wire:model="source" id="source" placeholder="Select Source"
-                                    data-child="source">
+                                <x-pica-select2 wire:model="source" id="source" placeholder="Select Source">
                                     @foreach (App\Enums\PicaSource::asSelectArray() as $key => $item)
                                         <option value="{{ $key }}">{{ $key }}</option>
                                     @endforeach
@@ -44,8 +43,7 @@
                         <div class="mb-3 row form-group required">
                             <label for="ccow" class="col-sm-4 col-form-label">Inspection Type</label>
                             <div class="col-sm-8">
-                                <x-pica-select2 wire:model="type" id="type" placeholder="Select Type"
-                                    data-child="type">
+                                <x-pica-select2 wire:model="type" id="type" placeholder="Select Type">
                                     <option value="Inspeksi Area Kerja Daily">
                                         Inspeksi Area Kerja Daily
                                     </option>
@@ -119,7 +117,7 @@
                             <label for="ccow" class="col-sm-4 col-form-label">CCOW</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="ccow_id" id="ccow_id" placeholder="Select CCOW"
-                                    data-child="ccow_id">
+                                    data-child="section_id">
                                     @foreach ($this->ccows as $key => $company)
                                         <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                                     @endforeach
@@ -131,7 +129,7 @@
                             <label for="company" class="col-sm-4 col-form-label">Perusahaan</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="company_id" id="company_id" placeholder="Select Company"
-                                    data-child="company_id">
+                                    data-child="pjo_id">
                                     @foreach ($this->companies as $key => $company)
                                         <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                                     @endforeach
@@ -151,7 +149,7 @@
                             <label for="company" class="col-sm-4 col-form-label">Section</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="section_id" id="section_id" placeholder="Select Section"
-                                    data-child="section_id">
+                                    data-child="area_location_id,pja_id" :disabled="!$ccow_id">
                                     @foreach ($this->sections as $key => $section)
                                         <option value="{{ $section->id }}">{{ $section->department->name }} -
                                             {{ $section->name }}</option>
@@ -164,7 +162,7 @@
                             <label for="company" class="col-sm-4 col-form-label">Location</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="area_location_id" id="area_location_id"
-                                    placeholder="Select Area Location" data-child="department">
+                                    placeholder="Select Area Location" :disabled="!$section_id">
                                     @foreach ($this->areaLocations as $key => $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
                                     @endforeach
@@ -175,7 +173,7 @@
                         <div class="mb-3 row form-group">
                             <label for="company" class="col-sm-4 col-form-label">Detail Location</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" rows="4" wire:model="detail_location" placeholder="Detail Location"></textarea>
+                                <textarea class="form-control" rows="4" wire:model.defer="detail_location" placeholder="Detail Location"></textarea>
                             </div>
                         </div><!-- /.form-group -->
 
@@ -190,7 +188,7 @@
                         <div class="mb-3 row form-group required">
                             <label for="title" class="col-sm-4 col-form-label">Initiator/Auditor</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" wire:model="auditor"
+                                <input type="text" class="form-control" wire:model.defer="auditor"
                                     placeholder="Initiator/Auditor" />
                             </div>
                         </div><!-- /.form-group -->
@@ -199,7 +197,7 @@
                             <label for="pj" class="col-sm-4 col-form-label">Penanggung Jawab Area</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="pja_id" id="pja_id" name="pja_id"
-                                    placeholder="Select Select PJA">
+                                    placeholder="Select Select PJA" :disabled="!$section_id">
                                     @foreach ($this->areaManagers as $key => $areaManager)
                                         <option value="{{ $areaManager->id }}">
                                             {{ $areaManager->user->name ?? null }} -
@@ -214,7 +212,7 @@
                             <label for="pj" class="col-sm-4 col-form-label">KTT/PJO</label>
                             <div class="col-sm-8">
                                 <x-pica-select2 wire:model="pjo_id" id="pjo_id" name="pjo_id"
-                                    placeholder="Select Select PJO/KTT">
+                                    placeholder="Select Select PJO/KTT" :disabled="!$company_id">
                                     <option value="{{ $company_type->user_id ?? null }}">
                                         {{ $company_type->user->name ?? null }}
                                     </option>
@@ -248,7 +246,7 @@
                             Description Non Compliance
                         </label>
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="7" wire:model="non_compliance" placeholder="Non Compliance"></textarea>
+                            <textarea class="form-control" rows="7" wire:model.defer="non_compliance" placeholder="Non Compliance"></textarea>
                         </div>
                     </div><!-- /.form-group -->
 
@@ -257,7 +255,7 @@
                             Description Non Compliance Root Cause
                         </label>
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="7" wire:model="non_compliance_root"
+                            <textarea class="form-control" rows="7" wire:model.defer="non_compliance_root"
                                 placeholder="Non Compliance Root Cause"></textarea>
                         </div>
                     </div><!-- /.form-group -->
@@ -267,7 +265,7 @@
                             Corrective Action/Agreed prevention
                         </label>
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="7" wire:model="corrective_action" placeholder="Corrective Action"></textarea>
+                            <textarea class="form-control" rows="7" wire:model.defer="corrective_action" placeholder="Corrective Action"></textarea>
                         </div>
                     </div><!-- /.form-group -->
 
@@ -276,7 +274,7 @@
                             Remarks
                         </label>
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="7" wire:model="remarks" placeholder="Remarks"></textarea>
+                            <textarea class="form-control" rows="7" wire:model.defer="remarks" placeholder="Remarks"></textarea>
                         </div>
                     </div><!-- /.form-group -->
 

@@ -11,7 +11,7 @@
         @endif
     </title>
     <!-- favicon -->
-    <link rel="icon" href="{{ asset('favicon/adaro-favicon-144x144.png') }}">
+    <link rel="icon" href="{{ asset('favicon/alamtri.png') }}">
 
     {{-- <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
         <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
@@ -84,7 +84,7 @@
     <script src="{{ asset('assets/libs/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>-->
     <script type="text/javasccript" src="{{ asset('assets/js/scripts.js') }}"></script>
-    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script> 
+    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
     <x-livewire-alert::flash />
 
     <script>
