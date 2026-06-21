@@ -40,10 +40,15 @@ class Index extends Component
             
             \DB::beginTransaction();
             $image = $this->doc->store('storage/public/iso9001/' . $this->audit->id . "/notice-letter");
+                $tempPath = $this->doc->getRealPath();
+                $blobResult = uploadToBlobStorage($this->doc->getClientOriginalName(), $tempPath, 'audit/' . $this->audit->id . '/attachment');
             $this->audit->notice_letters()->create([
                     'original_name'=>$this->doc->getClientOriginalName(),
                     'url' => $image, 
-                    'status' => SubBundleStatusEnum::SUBMITTED]);
+                    'status' => SubBundleStatusEnum::SUBMITTED,
+                    'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                    'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
+                ]);
             \DB::commit();
             $this->dispatchBrowserEvent('swal', [
                 'title' => 'Berhasil',

@@ -128,6 +128,10 @@ class Detail extends Component
             'parent_company_id' => $this->ccow_id,
         ]);
 
+        $this->bidding->company_id = $cc->id;
+        $this->bidding->save();
+        $this->company_id = $cc->id;
+
         // dd($cc);
 
         DB::commit();
@@ -145,6 +149,10 @@ class Detail extends Component
 
     public function getSyncStatusProperty()
     {
+        if ($this->bidding->status->value !== CsmsStatus::Approved) {
+            return false;
+        }
+
         $company = Company::where('company_name', $this->company_name)->count();
 
 

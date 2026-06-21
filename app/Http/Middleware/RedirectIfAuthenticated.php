@@ -45,7 +45,7 @@ class RedirectIfAuthenticated
             }
 
             if ($guard == "kplh" && Auth::guard($guard)->check()) {
-                return redirect()->route('kplh::list');
+                return redirect()->route('kplh::lists');
             }
         }
 

@@ -99,24 +99,31 @@
                     // Unbind previous change listeners to prevent duplicates
                     $el.off('change.select2-hook');
                     $el.on('change.select2-hook', function(e) {
-                        @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
-                        let childStr = $(this).data('child');
-                        if (childStr) {
-                            let children = childStr.split(',');
-                            children.forEach(function(childId) {
-                                const $child = $('#' + childId.trim());
-                                if ($child.length) {
-                                    $child.val(null).prop('disabled', true).trigger('change');
-                                    const $container = $child.next('.select2-container');
-                                    if ($container.length) {
-                                        $container.addClass('select2-container--disabled');
-                                        $container.css({
-                                            'pointer-events': 'none',
-                                            'opacity': '0.6'
-                                        });
+                        const currentVal = @this.get('{{ $modelName }}');
+                        const isSame = (currentVal == e.target.value) || 
+                                       ((currentVal === null || currentVal === undefined || currentVal === '') && 
+                                        (e.target.value === null || e.target.value === undefined || e.target.value === ''));
+                        
+                        if (!isSame) {
+                            @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                            let childStr = $(this).data('child');
+                            if (childStr) {
+                                let children = childStr.split(',');
+                                children.forEach(function(childId) {
+                                    const $child = $('#' + childId.trim());
+                                    if ($child.length) {
+                                        $child.val(null).prop('disabled', true).trigger('change');
+                                        const $container = $child.next('.select2-container');
+                                        if ($container.length) {
+                                            $container.addClass('select2-container--disabled');
+                                            $container.css({
+                                                'pointer-events': 'none',
+                                                'opacity': '0.6'
+                                            });
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     });
                 @endif

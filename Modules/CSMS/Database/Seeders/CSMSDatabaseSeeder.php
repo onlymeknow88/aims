@@ -16,8 +16,9 @@ class CSMSDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(
+        $this->call([
             CsmsRoleAndPermissionSeederTableSeeder::class,
-        );
+            CSMSDummySeeder::class,
+        ]);
     }
 }

@@ -58,6 +58,10 @@
                                         {{ $document->original_name }} | {{date('d F Y H:i:s',strtotime($document->created_at))}}
                                         <a class="btn btn-secondary btn-sm" target="_blank"
                                         href="{{route('audit::'.$category.'.detail.'.$module.'.download',['id'=>$audit->id,'notice_id'=>$document->id])}}"> <i class="fa fa-download"></i></a>
+                                        <a class="btn btn-info btn-sm text-white" href="javascript:void(0)"
+                                        onclick="previewBlobFile('{{$document->id}}', '{{$document->original_name}}', '{{$module}}')" data-id="{{$document->id}}" data-type="{{$module}}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
                                         <button class="btn btn-sm btn-danger" wire:click.prevent="delete('{{$audit->id}}','{{$document->id}}')"> <i class="fa fa-trash"></i></button>
                                     </div>
                                 </div>

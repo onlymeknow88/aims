@@ -138,7 +138,7 @@
             $user = Auth::guard('web')->user() ?: Auth::guard('dashboard')->user();
 
             $sidebarModules = [
-                'coe' => ['url' => 'coe', 'label' => 'Calendar Of Event', 'icon' => 'fa-regular fa-calendar'],
+                'coe' => ['url' => 'coe', 'label' => 'Calendar Of Event', 'icon' => 'fa-regular fa-calendar', 'public' => true],
                 'document-system' => ['url' => 'document-systems', 'label' => 'Document System', 'icon' => 'fa-regular fa-file-lines'],
                 'sap' => ['url' => 'sap', 'label' => 'Safety Accountability Program', 'icon' => 'fa-regular fa-clipboard'],
                 'field-leadership' => ['url' => 'field-leadership', 'label' => 'Field Leadership', 'icon' => 'fa-regular fa-address-book'],
@@ -169,7 +169,7 @@
                     $hasAccess = ($user && method_exists($user, 'hasAccessToGuard')) ? $user->hasAccessToGuard($guard) : ($user instanceof \App\Models\Admin);
                     $isActive = request()->is($info['url']) || request()->is($info['url'] . '/*');
                 @endphp
-                @if($hasAccess)
+                @if($hasAccess || ($info['public'] ?? false))
                     <li class="item-sidebar {{ $isActive ? 'active' : '' }} mx-2">
                         <a href="{{ url($info['url']) }}"
                             class="d-flex align-items-center justify-content-between fw-normal py-2 px-3 rounded">

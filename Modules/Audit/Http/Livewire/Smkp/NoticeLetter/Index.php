@@ -40,7 +40,13 @@ class Index extends Component
             try {
                 \DB::beginTransaction();
                 $image = $this->doc->store('storage/public/smkp/' . $this->audit->id . "/notice-letter");
-                $this->audit->notice_letters()->create(['original_name'=>$this->doc->getClientOriginalName(),'url' => $image, 'status' => SubBundleStatusEnum::SUBMITTED]);
+                $tempPath = $this->doc->getRealPath();
+                $blobResult = uploadToBlobStorage($this->doc->getClientOriginalName(), $tempPath, 'audit/' . $this->audit->id . '/attachment');
+                $this->audit->notice_letters()->create([
+                    'original_name'=>$this->doc->getClientOriginalName(),'url' => $image, 'status' => SubBundleStatusEnum::SUBMITTED,
+                    'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                    'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
+                ]);
                 \DB::commit();
                 $this->dispatchBrowserEvent('swal', [
                     'title' => 'Berhasil',

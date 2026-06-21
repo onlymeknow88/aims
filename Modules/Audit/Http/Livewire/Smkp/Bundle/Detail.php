@@ -50,7 +50,7 @@ class Detail extends Component
 
     protected function getAudit($id)
     {
-        $this->audit = Audit::with('company', 'auditors', 'evaluators')->find($id);
+        $this->audit = Audit::with('company', 'auditors', 'evaluators')->findOrFail($id);
         
         $this->progress = formProgress([
             "company_id",

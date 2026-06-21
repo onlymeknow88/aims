@@ -93,6 +93,10 @@
                                         <td>
                                         <a class="btn btn-secondary btn-sm" target="_blank"
                                         href="{{route('audit::glossary.download',['id'=>$document->id])}}"> <i class="fa fa-download"></i></a>
+                                        <a class="btn btn-info btn-sm text-white" href="javascript:void(0)"
+                                        onclick="previewBlobFile('{{$document->id}}', '{{$document->document_name}}', 'glossary')" data-id="{{$document->id}}" data-type="glossary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
                                         <button type="button" class="btn btn-danger btn-sm"><i
                                                                 class="fa fa-trash"
                                                                 wire:click="delete('{{$document->id}}')"></i>

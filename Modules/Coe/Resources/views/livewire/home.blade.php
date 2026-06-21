@@ -22,14 +22,17 @@
 
             <div class="col-3 justify-content-end">
                 @if(Auth::guard('web')->check() || Auth::guard('dashboard')->check())
+                    @php
+                        $user = Auth::guard('web')->user() ?: Auth::guard('dashboard')->user();
+                        $hasCoeAccess = ($user && method_exists($user, 'hasAccessToGuard')) ? $user->hasAccessToGuard('coe') : ($user instanceof \App\Models\Admin);
+                    @endphp
                     <div class="profile-menu d-flex justify-content-end align-items-center gap-3">
-                        <a href="{{ route('coe::dashboard') }}" class="btn btn-success bg-green btn-sm d-flex align-items-center gap-1" style="font-weight: 600; border-radius: 8px;">
-                            <i class="fa-solid fa-gauge"></i> Dashboard
-                        </a>
+                        @if($hasCoeAccess)
+                            <a href="{{ route('coe::dashboard') }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center gap-2" style="background-color: #063D56; border: none; font-weight: 600; border-radius: 8px; color: #fff; padding: 0.5rem 1rem; font-size: 0.85rem; text-decoration: none;">
+                                <i class="fa-solid fa-gauge"></i> Dashboard
+                            </a>
+                        @endif
                         <div class="d-flex align-items-center gap-3 text-decoration-none position-relative">
-                            @php
-                                $user = Auth::guard('web')->user() ?: Auth::guard('dashboard')->user();
-                            @endphp
                             <span class="profile-text text-dark">{{ ucfirst($user->name) }}</span>
                             <span class="profile-image">
                                 <span class="text-profile">{{ preg_filter('/[^A-Z]/', '', ucfirst($user->name)) ?: substr(ucfirst($user->name), 0, 1) }}</span>
@@ -38,7 +41,7 @@
                     </div>
                 @else
                     <div class="profile-menu d-flex justify-content-end align-items-center">
-                        <a href="{{ route('login') }}" class="btn btn-success bg-green btn-sm d-flex align-items-center gap-1" style="font-weight: 600; border-radius: 8px;">
+                        <a href="{{ route('login') }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center gap-2" style="background-color: #063D56; border: none; font-weight: 600; border-radius: 8px; color: #fff; padding: 0.5rem 1rem; font-size: 0.85rem; text-decoration: none;">
                             <i class="fa-solid fa-right-to-bracket"></i> Login
                         </a>
                     </div>

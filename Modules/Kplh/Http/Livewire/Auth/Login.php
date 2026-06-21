@@ -21,6 +21,18 @@ class Login extends Component
         'remember' => 'nullable'
     ];
 
+    public function mount()
+    {
+        $centralUser = Auth::guard('web')->user() ?: Auth::guard('dashboard')->user();
+        if ($centralUser && method_exists($centralUser, 'hasAccessToGuard') && $centralUser->hasAccessToGuard('kplh')) {
+            Auth::guard('kplh')->login($centralUser);
+        }
+
+        if (Auth::guard('kplh')->check()) {
+            return redirect()->route('kplh::dashboard');
+        }
+    }
+
     public function loginStore()
     {
         $this->validate();

@@ -1,5 +1,29 @@
 @props(['placeholder' => 'Select Options', 'id', 'error' => false])
 
+@php
+    $modelName = null;
+    $isDeferred = false;
+    if ($attributes->has('wire:model')) {
+        $modelName = $attributes->get('wire:model');
+    } elseif ($attributes->has('wire:model.defer')) {
+        $modelName = $attributes->get('wire:model.defer');
+        $isDeferred = true;
+    } elseif ($attributes->has('wire:model.lazy')) {
+        $modelName = $attributes->get('wire:model.lazy');
+    } else {
+        foreach ($attributes->getAttributes() as $key => $value) {
+            if (str_starts_with($key, 'wire:model')) {
+                $modelName = $value;
+                if (str_contains($key, '.defer')) {
+                    $isDeferred = true;
+                }
+                break;
+            }
+        }
+    }
+    $modelName = $modelName ?? $id;
+@endphp
+
 <div>
     <select {{ $attributes }}
         id="{{ $id }}"
@@ -37,14 +61,37 @@
 @push('scripts')
     <script>
         $(function() {
-            window.initAvatar = () => {
-                $('#{{ $id }}').select2({
-                    placeholder: 'test',
-                    theme: 'bootstrap-5',
-                    templateResult: formatState,
-                    templateSelection: formatState,
+            const initAvatar = () => {
+                const $el = $('#{{ $id }}');
+                if (!$el.length) return;
+
+                if (!$el.hasClass("select2-hidden-accessible")) {
+                    $el.select2({
+                        placeholder: 'test',
+                        theme: 'bootstrap-5',
+                        templateResult: formatState,
+                        templateSelection: formatState,
+                    });
+                }
+
+                // Set value from Livewire if present and different
+                const val = @this.get('{{ $modelName }}');
+                if (val !== undefined && val !== null && $el.val() !== val) {
+                    $el.val(val).trigger('change.select2');
+                }
+
+                $el.off('change.select2-hook');
+                $el.on('change.select2-hook', function(e) {
+                    const currentVal = @this.get('{{ $modelName }}');
+                    const isSame = (currentVal == e.target.value) || 
+                                   ((currentVal === null || currentVal === undefined || currentVal === '') && 
+                                    (e.target.value === null || e.target.value === undefined || e.target.value === ''));
+                    
+                    if (!isSame) {
+                        @this.set('{{ $modelName }}', e.target.value, {{ $isDeferred ? 'true' : 'false' }});
+                    }
                 });
-            }
+            };
 
             function formatState(state) {
                 var selectedItems = '<span class="selected-item"></span>';
@@ -66,11 +113,6 @@
             };
 
             initAvatar();
-
-            $('#{{ $id }}').on('change', function(e) {
-                let elementName = $(this).attr('id');
-                @this.set(elementName, e.target.value);
-            });
 
             window.livewire.on('select2',()=>{
                 initAvatar();

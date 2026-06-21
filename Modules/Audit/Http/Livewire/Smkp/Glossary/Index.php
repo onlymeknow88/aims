@@ -49,7 +49,9 @@ class Index extends Component
                     AuditGlossary::create([
                         'audit_category'=>$this->audit_category,
                         'document_name'=>$this->document_name,
-                        'url'=>$url
+                        'url'=>$url,
+                        'blob_url' => $blobResult['fileBlobUrl'] ?? null,
+                        'blob_response' => isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null,
                     ]);
                 \DB::commit();
                 $this->dispatchBrowserEvent('swal', [

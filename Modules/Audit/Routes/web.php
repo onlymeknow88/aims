@@ -19,6 +19,7 @@ use Modules\Audit\Http\Controllers\OpeningAttendanceController;
 use Modules\Audit\Http\Controllers\ReportResultController;
 use Modules\Audit\Http\Controllers\ResponseAuditController;
 use Modules\Audit\Http\Controllers\TestController;
+use Modules\Audit\Http\Controllers\AuditFileController;
 
 
 use Modules\Audit\Http\Livewire\Auth\Login;
@@ -148,6 +149,8 @@ Route::as('audit::')->group(function () {
     Route::middleware('auth:audit')->group(function () {
 
         Route::get("/", DashboardIndex::class)->name('dashboard');
+        Route::get('files/{id}/sas', [AuditFileController::class, 'getFileSasUri'])->name('files.sas-uri');
+        Route::get('files/{id}/preview', [AuditFileController::class, 'previewFile'])->name('files.preview');
         Route::get("/glossary/smkp", SMKPGlossaryIndex::class)->name('glossary-smkp');
         Route::get("/glossary/smk3", SMK3GlossaryIndex::class)->name('glossary-smk3');
         Route::get("/glossary/iso45001", ISO45001GlossaryIndex::class)->name('glossary-iso45001');
