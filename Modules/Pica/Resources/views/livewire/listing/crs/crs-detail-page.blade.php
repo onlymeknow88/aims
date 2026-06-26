@@ -22,9 +22,9 @@
                             <span class="profile-image">
                                 <!--<img src="{{ asset('images/profile.png') }}" alt="Profile images" srcset="{{ asset('images/profile.png') }}">-->
                                 <span
-                                    class="text-profile">{{ preg_filter('/[^A-Z]/', '', ucfirst($pica->auditor)) }}</span>
+                                    class="text-profile">{{ $pica->auditor_name ? (preg_filter('/[^A-Z]/', '', ucfirst($pica->auditor_name)) ?: substr(ucfirst($pica->auditor_name), 0, 1)) : '-' }}</span>
                             </span>
-                            <span class="profile-text">{{ ucfirst($pica->auditor) }}</span>
+                            <span class="profile-text">{{ $pica->auditor_name ? ucfirst($pica->auditor_name) : '-' }}</span>
                         </div>
                     </div><!-- /.author -->
 

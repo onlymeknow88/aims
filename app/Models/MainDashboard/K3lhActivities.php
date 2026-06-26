@@ -21,6 +21,8 @@ class K3lhActivities extends Model
         'description',
         'attc',
         'url',
+        'blob_url',
+        'blob_response',
         'visible'
     ];
 

@@ -22,7 +22,9 @@ class StrategicProject extends Model
         'date',
         'description',
         'attc',
-        'url'
+        'url',
+        'blob_url',
+        'blob_response'
     ];
 
     protected $hidden = [

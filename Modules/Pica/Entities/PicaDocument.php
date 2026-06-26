@@ -93,6 +93,25 @@ class PicaDocument extends Model
         return $this->belongsTo(User::class, 'pjo_id');
     }
 
+    public function getAuditorNameAttribute()
+    {
+        if ($this->auditor) {
+            return $this->auditor;
+        }
+
+        $picaRelation = \Modules\Pica\Entities\Pica::where('picaable_id', $this->id)->first();
+        if ($picaRelation) {
+            if ($picaRelation->source === 'Field Leadership' || $picaRelation->source === \App\Enums\PicaSource::FieldLeadership) {
+                $risk = \Modules\FieldLeadership\Entities\FieldLeadershipRisk::find($picaRelation->source_id);
+                if ($risk && $risk->fieldLeadership) {
+                    return $risk->fieldLeadership->createdBy->name ?? null;
+                }
+            }
+        }
+
+        return $this->pjo->name ?? ($this->pja->user->employee->name ?? ($this->pja->user->name ?? null));
+    }
+
     public function activities()
     {
         return $this->hasMany(PicaActivity::class, 'pica_id');

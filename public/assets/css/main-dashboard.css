@@ -117,7 +117,7 @@
     height: 100%;
     width: 250px;
     position: fixed;
-    z-index: 1;
+    z-index: 1200 !important;
     top: 0;
     left: 0;
     background-color: #F2F3F8;
@@ -169,7 +169,7 @@
     height: 100%;
     width: 0px;
     position: fixed;
-    z-index: 1;
+    z-index: 1200 !important;
     top: 0;
     left: 250px;
     background-color: white;

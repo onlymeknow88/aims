@@ -1,9 +1,9 @@
 <x-layouts.base>
-    <div id="SidenavLeft" class="sidenav-left sidebar ">
+    <div id="SidenavLeft" class="sidenav-left sidebar " style="z-index: 1200 !important;">
         @livewire('main-dashboard.public.sidebar.sidebar-left')
     </div>
 
-    <div id="SidenavLeft2" class="sidenav-left-2 sidebar">
+    <div id="SidenavLeft2" class="sidenav-left-2 sidebar" style="z-index: 1200 !important;">
         @livewire('main-dashboard.public.sidebar.sidebar-left-filter')
     </div>
 

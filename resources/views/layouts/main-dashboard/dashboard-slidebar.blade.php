@@ -10,18 +10,18 @@
         $user = Auth::guard('web')->user() ?: Auth::guard('dashboard')->user();
 
         $sidebarModules = [
-            'coe'              => ['url' => 'coe',              'label' => 'Calendar Of Event'],
-            'document-system'  => ['url' => 'document-systems', 'label' => 'Document System'],
-            'sap'              => ['url' => 'sap',              'label' => 'Safety Accountability Program'],
+            'coe' => ['url' => 'coe', 'label' => 'Calendar Of Event'],
+            'document-system' => ['url' => 'document-systems', 'label' => 'Document System'],
+            'sap' => ['url' => 'sap', 'label' => 'Safety Accountability Program'],
             'field-leadership' => ['url' => 'field-leadership', 'label' => 'Field Leadership'],
-            'kplh'             => ['url' => 'kplh',             'label' => 'Inspection'],
-            'audit'            => ['url' => 'audit',            'label' => 'Audit'],
-            'ibpr-and-bowtie'  => ['url' => 'ibpr-and-bowtie',  'label' => 'Management Risk'],
-            'kpp'              => ['url' => 'kpp',              'label' => 'Compliance Regulation'],
-            'mcu'              => ['url' => 'mcu',              'label' => 'Medical Check Up'],
-            'csms'             => ['url' => 'csms',             'label' => 'Contractor Safety Management'],
-            'ko'               => ['url' => 'ko',               'label' => 'Safety Operation'],
-            'pica'             => ['url' => 'pica',             'label' => 'PICA'],
+            'kplh' => ['url' => 'kplh', 'label' => 'Inspection'],
+            'audit' => ['url' => 'audit', 'label' => 'Audit'],
+            'ibpr-and-bowtie' => ['url' => 'ibpr-and-bowtie', 'label' => 'Management Risk'],
+            'kpp' => ['url' => 'kpp', 'label' => 'Compliance Regulation'],
+            'mcu' => ['url' => 'mcu', 'label' => 'Medical Check Up'],
+            'csms' => ['url' => 'csms', 'label' => 'CMS'],
+            'ko' => ['url' => 'ko', 'label' => 'Safety Operation'],
+            'pica' => ['url' => 'pica', 'label' => 'PICA'],
         ];
         $isHomeActive = request()->is('/') || request()->is('home');
     @endphp

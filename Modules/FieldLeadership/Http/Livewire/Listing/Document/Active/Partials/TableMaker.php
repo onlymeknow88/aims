@@ -74,6 +74,7 @@ class TableMaker extends Component
 
     public $findMaker;
     public $superUser;
+    public $isSuperAdmin = false;
 
 
     protected $listeners = [
@@ -83,6 +84,7 @@ class TableMaker extends Component
 
     public function mount()
     {
+        $this->isSuperAdmin = auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete');
         $this->selectedColumns = $this->columns;
 
         $last = FieldLeadership::latest()->first();
@@ -90,7 +92,9 @@ class TableMaker extends Component
 
         $employeeId = auth()->user()->employee?->id;
 
-        $this->fieldDetailCompany = FieldLeadership::where('created_by', $employeeId)
+        $this->fieldDetailCompany = FieldLeadership::when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                $query->where('created_by', $employeeId);
+            })
             ->whereNotNull('detail_company')
             ->select('detail_company')
             ->groupBy('detail_company')
@@ -99,7 +103,9 @@ class TableMaker extends Component
         $this->fieldCompany = Company::whereIn('id', function ($query) use ($employeeId) {
             $query->select('company_id')
                 ->from('field_leaderships')
-                ->where('created_by', $employeeId)
+                ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                    $query->where('created_by', $employeeId);
+                })
                 ->whereNotNull('company_id');
         })->get();
 
@@ -107,32 +113,42 @@ class TableMaker extends Component
             ->whereIn('id', function ($query) use ($employeeId) {
                 $query->select('ccow_id')
                     ->from('field_leaderships')
-                    ->where('created_by', $employeeId)
+                    ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                        $query->where('created_by', $employeeId);
+                    })
                     ->whereNotNull('ccow_id');
             })->get();
 
         $this->fieldDepartment = Department::whereIn('id', function ($query) use ($employeeId) {
             $query->select('department_id')
                 ->from('field_leaderships')
-                ->where('created_by', $employeeId)
+                ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                    $query->where('created_by', $employeeId);
+                })
                 ->whereNotNull('department_id');
         })->get();
 
         $this->fieldSection = Section::whereIn('id', function ($query) use ($employeeId) {
             $query->select('section_id')
                 ->from('field_leaderships')
-                ->where('created_by', $employeeId)
+                ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                    $query->where('created_by', $employeeId);
+                })
                 ->whereNotNull('section_id');
         })->get();
 
         $this->fieldLocation = AreaLocation::whereIn('id', function ($query) use ($employeeId) {
             $query->select('area_location_id')
                 ->from('field_leaderships')
-                ->where('created_by', $employeeId)
+                ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                    $query->where('created_by', $employeeId);
+                })
                 ->whereNotNull('area_location_id');
         })->get();
 
-        $this->fieldType = FieldLeadership::where('created_by', $employeeId)
+        $this->fieldType = FieldLeadership::when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                $query->where('created_by', $employeeId);
+            })
             ->whereNotNull('type')
             ->select('type')
             ->groupBy('type')
@@ -150,7 +166,9 @@ class TableMaker extends Component
                 ->whereIn('fl_id', function ($subQuery) use ($employeeId) {
                     $subQuery->select('id')
                         ->from('field_leaderships')
-                        ->where('created_by', $employeeId);
+                        ->when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                            $query->where('created_by', $employeeId);
+                        });
                 })
                 ->whereNotNull('type_id');
         })->get();
@@ -161,7 +179,9 @@ class TableMaker extends Component
                 ->whereNotNull('potency_id');
         })->get();
 
-        $this->countData = FieldLeadership::where('created_by', $employeeId)->count();
+        $this->countData = FieldLeadership::when(!$this->isSuperAdmin, function ($query) use ($employeeId) {
+                $query->where('created_by', $employeeId);
+            })->count();
 
         $this->limit = $this->countData;
 
@@ -454,7 +474,9 @@ class TableMaker extends Component
 
                         $query->whereBetween('date', [$start, $end]);
                     })
-                    ->where('created_by', auth()->user()->employee?->id)
+                    ->when(!$this->isSuperAdmin, function ($query) {
+                        $query->where('created_by', auth()->user()->employee?->id);
+                    })
                     ->orderBy($this->sortField, $this->sortType)
                     ->paginate($this->limit);
             } catch (\Throwable $err) {

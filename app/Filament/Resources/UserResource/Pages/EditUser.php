@@ -29,12 +29,16 @@ class EditUser extends EditRecord
                 ->label('Departments')
                 ->multiple()
                 ->relationship('departments', 'name')
+                ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} - " . ($record->company->document_code ?? $record->company->company_name ?? ''))
                 ->required(),
             Forms\Components\TextInput::make('password')
                 ->nullable()
                 ->password()
                 ->dehydrateStateUsing(fn($state) => filled($state) ? \Hash::make($state) : null)
                 ->dehydrated(fn($state) => filled($state)),
+            Forms\Components\Toggle::make('google2fa_enabled')
+                ->label('Otentikasi 2FA Aktif')
+                ->helperText('Matikan toggle ini untuk menonaktifkan/reset 2FA pengguna.'),
             Forms\Components\Toggle::make('create_employee')
                 ->label('Create Employee Data')
                 ->reactive()
@@ -66,6 +70,14 @@ class EditUser extends EditRecord
                         ->options(EmployeeStatus::asSelectArray())
                 ]),
         ]);
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (isset($data['google2fa_enabled']) && !$data['google2fa_enabled']) {
+            $data['google2fa_secret'] = null;
+        }
+        return $data;
     }
 
     protected function getActions(): array

@@ -1,5 +1,11 @@
 @push('styles')
 <style>
+/* Fix background image spilling when content is empty */
+.dashboard-wrapper {
+    background-image: none !important;
+    background-color: #F2F3F8 !important;
+}
+
 /* Custom premium UI enhancements for AIMS Dashboard */
 .inner-dashboard {
     font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -183,6 +189,16 @@
                                             style="font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $userObj->email }}</span>
                                     </div>
                                     <hr class="my-2" style="border-top: 1px solid #e2e8f0; opacity: 0.15;">
+                                    <a href="{{ route('dashboard-setting') }}"
+                                        class="dropdown-item py-2 px-2 rounded d-flex align-items-center gap-2 text-dark"
+                                        style="font-weight: 600; font-size: 0.9rem; transition: background-color 0.2s; text-decoration: none;">
+                                        <i class="fa-solid fa-gauge" style="width: 16px;"></i> Admin Panel
+                                    </a>
+                                    <a href="{{ route('profile.2fa') }}"
+                                        class="dropdown-item py-2 px-2 rounded d-flex align-items-center gap-2 text-dark"
+                                        style="font-weight: 600; font-size: 0.9rem; transition: background-color 0.2s; text-decoration: none;">
+                                        <i class="fa-solid fa-shield-halved" style="width: 16px;"></i> Otentikasi 2FA
+                                    </a>
                                     <form action="{{ route('logout') }}" method="POST" id="logout-form-header"
                                         class="d-none">
                                         @csrf
@@ -190,7 +206,7 @@
                                     <a href="javascript:void(0)"
                                         onclick="document.getElementById('logout-form-header').submit();"
                                         class="dropdown-item py-2 px-2 rounded d-flex align-items-center gap-2 text-danger"
-                                        style="font-weight: 600; font-size: 0.9rem; transition: background-color 0.2s;">
+                                        style="font-weight: 600; font-size: 0.9rem; transition: background-color 0.2s; text-decoration: none;">
                                         <i class="fa-solid fa-right-from-bracket" style="width: 16px;"></i> Logout
                                     </a>
                                 </div>
@@ -329,109 +345,136 @@
 
             <div class="dashboard-main mb-3">
                 <div class="row">
-                    <div class="col-lg-12 col-xl-8 mb-3">
-                        @livewire('main-dashboard.public.widgets.video-slide')
-                    </div>
+                    @if (setting('widget_video_slide') !== 'false')
+                        <div class="col-lg-12 col-xl-8 mb-3">
+                            @livewire('main-dashboard.public.widgets.video-slide')
+                        </div>
+                    @endif
 
-                    <div class="col-lg-12 col-xl-4 mb-3">
-                        @livewire('main-dashboard.public.widgets.calendar-of-event-list', ['result' => $dataCoe])
-                    </div>
+                    @if (setting('widget_calendar_of_event_list') !== 'false')
+                        <div class="col-lg-12 col-xl-4 mb-3">
+                            @livewire('main-dashboard.public.widgets.calendar-of-event-list', ['result' => $dataCoe])
+                        </div>
+                    @endif
                 </div>
             </div><!-- /.dashboard-main -->
 
             <div class="row production">
 
-                <div class="col-lg-12 col-xxl-6 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.production-ytd-chart', ['result' => $dataProduction])
-                </div>
+                @if (setting('widget_production_ytd_chart') !== 'false')
+                    <div class="col-lg-12 col-xxl-6 mb-3 p-2">
+                        @livewire('main-dashboard.public.widgets.production-ytd-chart', ['result' => $dataProduction])
+                    </div>
+                @endif
 
-                <div class="col-lg-12 col-xxl-6 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.production-mtd', ['result' => $dataProduction])
-                </div>
+                @if (setting('widget_production_mtd') !== 'false')
+                    <div class="col-lg-12 col-xxl-6 mb-3 p-2">
+                        @livewire('main-dashboard.public.widgets.production-mtd', ['result' => $dataProduction])
+                    </div>
+                @endif
 
             </div>
 
             <div class="row dashboard-sih">
-                <div class="col-lg-12 col-xl-4 col-xxl-5 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.safety-performance-chart')
-                </div>
-
-                <div class="col-lg-12 col-xl-4 col-xxl-3 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.image-banner')
-                </div>
-
-                <div class="col-lg-12 col-xl-4 col-xxl-4 mb-3 p-2">
-                    <div class="content-items">
-                        @livewire('main-dashboard.public.widgets.health-performance-chart')
+                @if (setting('widget_safety_performance_chart') !== 'false')
+                    <div class="col-lg-12 col-xl-4 col-xxl-5 mb-3 p-2">
+                        @livewire('main-dashboard.public.widgets.safety-performance-chart')
                     </div>
-                </div>
+                @endif
+
+                @if (setting('widget_image_banner') !== 'false')
+                    <div class="col-lg-12 col-xl-4 col-xxl-3 mb-3 p-2">
+                        @livewire('main-dashboard.public.widgets.image-banner')
+                    </div>
+                @endif
+
+                @if (setting('widget_health_performance_chart') !== 'false')
+                    <div class="col-lg-12 col-xl-4 col-xxl-4 mb-3 p-2">
+                        <div class="content-items">
+                            @livewire('main-dashboard.public.widgets.health-performance-chart')
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="row coe-project mb-3">
-                <div class="col-md-12 col-lg-6 mb-3">
-                    @livewire('main-dashboard.public.widgets.calendar')
-                </div>
-                <div class="col-md-12 col-lg-6 mb-3">
-                    @livewire('main-dashboard.public.widgets.strategic-project')
-                </div>
+                @if (setting('widget_calendar') !== 'false')
+                    <div class="col-md-12 col-lg-6 mb-3">
+                        @livewire('main-dashboard.public.widgets.calendar')
+                    </div>
+                @endif
+                @if (setting('widget_strategic_project') !== 'false')
+                    <div class="col-md-12 col-lg-6 mb-3">
+                        @livewire('main-dashboard.public.widgets.strategic-project')
+                    </div>
+                @endif
             </div>
 
             <div class="row dashboard-penghargaan-news">
-                <div class="col-lg-12 col-xl-8 mb-3 p-2">
-                    <div class="card rounded-4">
-                        <div class="card-body ">
-                            @livewire('main-dashboard.public.widgets.news-update')
+                @if (setting('widget_news_update') !== 'false')
+                    <div class="col-lg-12 col-xl-8 mb-3 p-2">
+                        <div class="card rounded-4">
+                            <div class="card-body ">
+                                @livewire('main-dashboard.public.widgets.news-update')
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <div class="col-lg-12 col-xl-4 mb-3 p-2">
-                    <div class="card rounded-4">
-                        <div class="card-body">
-                            @livewire('main-dashboard.public.widgets.penghargaan-k3lh')
+                @if (setting('widget_penghargaan_k3lh') !== 'false')
+                    <div class="col-lg-12 col-xl-4 mb-3 p-2">
+                        <div class="card rounded-4">
+                            <div class="card-body">
+                                @livewire('main-dashboard.public.widgets.penghargaan-k3lh')
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
 
 
             <div class="row dashboard-notif-kegiatan">
-                <div class="col-lg-12 col-xl-6 col-xxl-4 mb-3 p-2">
-                    <div class="card rounded-4">
-                        <div class="card-body">
-                            @livewire('main-dashboard.public.widgets.incident-notification')
+                @if (setting('widget_incident_notification') !== 'false')
+                    <div class="col-lg-12 col-xl-6 col-xxl-4 mb-3 p-2">
+                        <div class="card rounded-4">
+                            <div class="card-body">
+                                @livewire('main-dashboard.public.widgets.incident-notification')
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <div class="col-lg-12 col-xl-6 col-xxl-8 mb-3 p-2">
-                    <div class="card rounded-4">
-                        <div class="card-body">
-                            @livewire('main-dashboard.public.widgets.kegiatan-k3lh')
+                @if (setting('widget_kegiatan_k3lh') !== 'false')
+                    <div class="col-lg-12 col-xl-6 col-xxl-8 mb-3 p-2">
+                        <div class="card rounded-4">
+                            <div class="card-body">
+                                @livewire('main-dashboard.public.widgets.kegiatan-k3lh')
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             <div class="row dashboard-ssa">
-                <div class="col-lg-12 col-xl-6 mb-3 p-2">
-                    {{-- category --}}
-                    @livewire('main-dashboard.public.widgets.safety-accountability-program', ['result' => $dataSapYtdHor])
-                </div>
+                @if (setting('widget_safety_accountability_program') !== 'false')
+                    <div class="col-lg-12 col-xl-6 mb-3 p-2">
+                        {{-- category --}}
+                        @livewire('main-dashboard.public.widgets.safety-accountability-program', ['result' => $dataSapYtdHor])
+                    </div>
+                @endif
 
-                {{-- <div class="col-lg-12 col-xl-4 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.sap-ytd', ['result' => $dataSapYtdVer])
-
-                </div> --}}
-
-                <div class="col-lg-12 col-xl-6 mb-3 p-2">
-                    @livewire('main-dashboard.public.widgets.achievement-sap', ['result' => $dataSapYtdDept])
-                </div>
+                @if (setting('widget_achievement_sap') !== 'false')
+                    <div class="col-lg-12 col-xl-6 mb-3 p-2">
+                        @livewire('main-dashboard.public.widgets.achievement-sap', ['result' => $dataSapYtdDept])
+                    </div>
+                @endif
             </div>
 
-            <div class="sap-ytd mb-3">
-                @livewire('main-dashboard.public.widgets.sap-ytd', ['result' => $dataSapYtdVer, 'category' => $dataSapYtdHor])
-            </div>
+            @if (setting('widget_sap_ytd') !== 'false')
+                <div class="sap-ytd mb-3">
+                    @livewire('main-dashboard.public.widgets.sap-ytd', ['result' => $dataSapYtdVer, 'category' => $dataSapYtdHor])
+                </div>
+            @endif
 
         </div>
     </div><!-- /.col main content -->
@@ -462,49 +505,51 @@
     @endphp
 
     @foreach ($dataChar as $list)
-        <div class="p-2 mt-5 list-item-category {{ $list['widget'] }}">
-            <div class="card-body">
-                <div class="widget-title">
-                    {{ $list['name'] }}
-                </div>
+        @if (setting('widget_' . $list['widget']) !== 'false')
+            <div class="p-2 mt-5 list-item-category {{ $list['widget'] }}">
+                <div class="card-body">
+                    <div class="widget-title">
+                        {{ $list['name'] }}
+                    </div>
 
-                <div>
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-4 p-2">
-                            <div class="card rounded-4 summary-class">
-                                @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.summary', ['result' => $list['data']])
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-4 p-2">
+                                <div class="card rounded-4 summary-class">
+                                    @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.summary', ['result' => $list['data']])
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-8 p-2">
+                                <div class="card rounded-4  detail-class">
+                                    @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.detail', ['result' => $list['data']])
+                                </div>
+
                             </div>
                         </div>
-                        <div class="col-sm-12 col-lg-8 p-2">
-                            <div class="card rounded-4  detail-class">
-                                @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.detail', ['result' => $list['data']])
-                            </div>
 
+
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6 col-xl-4 p-2">
+                                <div class="card rounded-4 dougnut-class">
+                                    @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.dougnut', ['result' => $list['data']])
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6 col-xl-4 p-2">
+                                <div class="card rounded-4 chart-class">
+                                    @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.chart', ['result' => $list['data']])
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-4 p-2">
+                                <div class="card rounded-4 progress-class">
+                                    @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.progress', ['result' => $list['data']])
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-6 col-xl-4 p-2">
-                            <div class="card rounded-4 dougnut-class">
-                                @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.dougnut', ['result' => $list['data']])
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-6 col-xl-4 p-2">
-                            <div class="card rounded-4 chart-class">
-                                @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.chart', ['result' => $list['data']])
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-xl-4 p-2">
-                            <div class="card rounded-4 progress-class">
-                                @livewire('main-dashboard.public.widgets.' . $list['widget'] . '.progress', ['result' => $list['data']])
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
             </div>
-        </div>
+        @endif
     @endforeach
 
     @include('livewire.main-dashboard.public.components.popup')

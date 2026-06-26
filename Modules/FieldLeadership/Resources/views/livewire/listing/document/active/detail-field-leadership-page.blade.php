@@ -32,7 +32,7 @@
                                 <span
                                     class="text-profile">{{ preg_filter('/[^A-Z]/', '', ucfirst(auth()->user()->employee?->name ?? auth()->user()->name ?? '')) ?? '' }}</span>
                             </span>
-                            <span class="profile-text">{{ ucfirst(auth()->user()->employee?->name ?? auth()->user()->name ?? '') }}</span>
+                            <span class="profile-text">{{ $creatorName ? ucfirst($creatorName) : '-' }}</span>
                         </div>
                     </div><!-- /.author -->
 
@@ -165,18 +165,17 @@
                         </div>
                     </div><!-- /.author -->
 
-                </div><!-- /.info-items -->
 
                 @if (!empty($field->pjo_id))
                     <div class="info-item p-3 border-bottom border-1">
 
                         <div class="author d-flex flex-column gap-2">
-                            <h6 class="fw-normal">KTT / KTT</h6>
+                            <h6 class="fw-normal">KTT / PJO</h6>
                             <div class="item-content d-flex gap-2 align-items-center">
                                 <div class="thumb">
                                     <img src="{{ asset('./images/no-profile.png') }}" alt="Author">
                                 </div>
-                                <div class="author-name">{{ $field->pjo->user->name ?? null }}</div>
+                                <div class="author-name">{{ $field->pjo->name ?? null }}</div>
                             </div>
                         </div><!-- /.author -->
 

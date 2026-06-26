@@ -197,3 +197,43 @@ if (! function_exists('GetBlobSasUri')) {
         return null;
     }
 }
+
+if (! function_exists('sendPowerAutomateEmail')) {
+    function sendPowerAutomateEmail($data)
+    {
+        $url = setting('power_automate_email');
+        
+        if (!$url) {
+            return [
+                'status' => 'error',
+                'message' => 'Power Automate URL not configured in app_settings'
+            ];
+        }
+
+        // Add security key if not present
+        if (!isset($data['Key'])) {
+            $data['Key'] = '!234$';
+        }
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::post($url, $data);
+            
+            if ($response->successful()) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Email sent successfully via Power Automate'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Failed to send email: ' . $response->body()
+                ];
+            }
+        } catch (\Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Error sending email: ' . $e->getMessage()
+            ];
+        }
+    }
+}

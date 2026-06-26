@@ -75,7 +75,7 @@
 
                                 <a href="#" type="button"
                                     class="button-toolbar d-flex gap-2 align-items-center py-2 px-3"
-                                    @click.prevent="syncToWire(); $nextTick(() => $wire.$emit('remove-item'))">
+                                    @click.prevent="syncToWire(); $nextTick(() => Livewire.emit('remove-item'))">
                                     <span class="icon d-flex align-items-center"><img
                                             src="{{ asset('images/icons/delete-top.svg') }}" alt="image delete"></span>
                                     <span class="text-button">Delete</span>
@@ -1325,7 +1325,7 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
 
-            @this.on('remove-item', () => {
+            Livewire.on('remove-item', () => {
                 Swal.fire({
                     title: 'Are You Sure?',
                     text: 'Yakin akan menghapus data ini?',

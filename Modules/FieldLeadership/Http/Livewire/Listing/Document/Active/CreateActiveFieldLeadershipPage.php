@@ -585,8 +585,9 @@ class CreateActiveFieldLeadershipPage extends Component
                     'status' => $publish != 'HR' ? FieldLeadershipType::Open : FieldLeadershipType::Close,
                 ]);
 
-                if ($publish == 'HR') {
+                if ($publish == 'HR' || $value['repaired'] == true) {
                     $picaDocument = $riskCondition->pica()->create([
+                        'identity_id' => $this->generateIdentityId($fieldLeadership->created_at),
                         'source' => PicaSource::FieldLeadership,
                         'type' => $this->type,
                         'date' => Carbon::parse($this->date)->format('Y-m-d'),
@@ -598,14 +599,16 @@ class CreateActiveFieldLeadershipPage extends Component
                         'company_detail' => $this->detail_company,
                         'pja_id' => $this->pja_id,
                         'pjo_id' => $this->pjo_id,
-                        'auditor' => null,
+                        'auditor' => Auth::user()->employee?->name ?? Auth::user()->name,
                         'non_compliance' => null,
                         'non_compliance_root_cause' => $this->non_compliance_root,
                         'corrective_action' => $value['action'],
                         'target_settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
                         'settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
                         'remarks' => null,
-                        'status' => $fieldLeadership->status,
+                        'requested' => $value['repaired'] == true ? \App\Enums\Pica\PicaStatus::RequestedCrs : \App\Enums\Pica\PicaStatus::NewRequest,
+                        'published' => \App\Enums\Pica\PicaStatus::Publish,
+                        'status' => $value['repaired'] == true ? \App\Enums\Pica\PicaStatus::OnReviewCrs : $fieldLeadership->status,
                     ]);
 
                     $picaDocument->pica()->create([
@@ -616,25 +619,6 @@ class CreateActiveFieldLeadershipPage extends Component
                     ]);
                 }
 
-                // foreach ($value['files'] as $key => $file) {
-                //     $path = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
-                //     $full_path = Storage::disk('public')->putFileAs($path, $file['file'], $file['name']);
-
-                //     // dd($path);
-                //     $riskCondition->files()->create([
-                //         'file' => $full_path,
-                //         'size' => $file['size'],
-                //         'type' => FieldLeadershipType::RiskFinding
-                //     ]);
-
-                //     if ($publish == 'HR') {
-                //         $picaDocument->picaFiles()->create([
-                //             'file' => $full_path,
-                //             'size' => $file['size'],
-                //             'type' => FieldLeadershipType::RiskFinding
-                //         ]);
-                //     }
-                // }
                 foreach ($value['files'] as $key => $file) {
                     $directPath = 'field-leadership/' . $fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
                     $tempPath   = $file['file']->getRealPath(); // path fisik dari Livewire temp file
@@ -650,7 +634,7 @@ class CreateActiveFieldLeadershipPage extends Component
                         'type' => FieldLeadershipType::RiskFinding,
                     ]);
 
-                    if ($publish == 'HR') {
+                    if ($publish == 'HR' || $value['repaired'] == true) {
                         $picaDocument->picaFiles()->create([
                             'file' => $relative_path,
                             'blob_url' => $blobResult['fileBlobUrl'] ?? null,
@@ -677,7 +661,7 @@ class CreateActiveFieldLeadershipPage extends Component
                             'type' => FieldLeadershipType::CorrectiveAction,
                         ]);
 
-                        if ($publish == 'HR') {
+                        if ($publish == 'HR' || $value['repaired'] == true) {
                             $picaDocument->picaFiles()->create([
                                 'file' => $relative_path,
                                 'blob_url' => $blobResult['fileBlobUrl'] ?? null,
@@ -727,6 +711,23 @@ class CreateActiveFieldLeadershipPage extends Component
                 'text' => "Error | " . $err,
             ]);
         }
+    }
+
+    public function generateIdentityId($date)
+    {
+        $count = \Modules\Pica\Entities\PicaDocument::count();
+        $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
+        $date = Carbon::parse($date)->format('mY');
+
+        $result = 'FL' . $date . '-FL' . $formattedNumber;
+
+        while (\Modules\Pica\Entities\PicaDocument::where('identity_id', $result)->exists()) {
+            $count++;
+            $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
+            $result = 'FL' . $date . '-FL' . $formattedNumber;
+        }
+
+        return $result;
     }
 
     public function render()

@@ -10,6 +10,14 @@ use App\Models\AreaManager;
 use App\Models\Company;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Section;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 use Modules\FieldLeadership\Entities\FieldLeadership;
 use Modules\FieldLeadership\Entities\FieldLeadershipActivity;
 use Modules\FieldLeadership\Entities\FieldLeadershipCategory;
@@ -20,59 +28,99 @@ use Modules\FieldLeadership\Entities\FieldLeadershipPositive;
 use Modules\FieldLeadership\Entities\FieldLeadershipPotencyAndConsequnce;
 use Modules\FieldLeadership\Entities\FieldLeadershipQuestionPto;
 use Modules\FieldLeadership\Entities\FieldLeadershipRisk;
-use App\Models\Section;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use Storage;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class EditActiveFieldLeadershipPage extends Component
 {
-    use WithFileUploads, LivewireAlert;
+    use LivewireAlert, WithFileUploads;
 
     public $fieldLeadership;
 
     public $limit_param;
+
     public $limit_member;
 
     public $number;
+
     public $date;
+
     public $ccow_id;
+
     public $company_id;
+
     public $detail_company;
+
     public $department_id;
+
     public $section_id;
+
     public $area_location_id;
+
     public $detail_location;
+
     public $personil_on_review;
+
     public $personil_on_review_name;
+
     public $pja_id;
+
     public $pjo_id;
+
     public $type;
+
     public $job;
+
     public $visit_time;
+
     public $non_compliance_root;
+
     public $showQuestion = false;
 
     public $repaired = false;
 
     public $fieldQuestion;
-    public $question1 = "Apakah risiko yang ada di area Anda yang dapat membahayakan nyawa Anda?";
-    public $question2 = "Apakah tersedia pengendalian penting tersedia untuk melindungi Anda?";
-    public $question3 = "Bagaimana Anda mengetahui pengendalian penting tersebut efektif?";
-    public $question4 = "Apakah semua langkah kerja di dalam SOP/INK/JSA telah berkesesuaian dengan pekerjaan yang dilakukan?";
-    public $question5 = "Pekerja memahami SOP/INK/JSA tersebut?";
-    public $question6 = "Apakah ada opportunity untuk proses SOP/INK/JSA yang lebih efisien, produktif dan aman?";
-    public $answer1, $answer2, $answer3, $answer4, $answer5, $answer6;
-    public $description1, $description2, $description3, $description4, $description5, $description6;
+
+    public $question1 = 'Apakah risiko yang ada di area Anda yang dapat membahayakan nyawa Anda?';
+
+    public $question2 = 'Apakah tersedia pengendalian penting tersedia untuk melindungi Anda?';
+
+    public $question3 = 'Bagaimana Anda mengetahui pengendalian penting tersebut efektif?';
+
+    public $question4 = 'Apakah semua langkah kerja di dalam SOP/INK/JSA telah berkesesuaian dengan pekerjaan yang dilakukan?';
+
+    public $question5 = 'Pekerja memahami SOP/INK/JSA tersebut?';
+
+    public $question6 = 'Apakah ada opportunity untuk proses SOP/INK/JSA yang lebih efisien, produktif dan aman?';
+
+    public $answer1;
+
+    public $answer2;
+
+    public $answer3;
+
+    public $answer4;
+
+    public $answer5;
+
+    public $answer6;
+
+    public $description1;
+
+    public $description2;
+
+    public $description3;
+
+    public $description4;
+
+    public $description5;
+
+    public $description6;
 
     public $latestUpdate;
 
-    public $temporaryFile, $temporaryFileCA;
+    public $temporaryFile;
+
+    public $temporaryFileCA;
 
     public $member = [
         // [
@@ -117,7 +165,7 @@ class EditActiveFieldLeadershipPage extends Component
     public function mount($id)
     {
         $last = FieldLeadership::latest()->first();
-        $this->latestUpdate = 'Update on ' . Carbon::parse($last->created_at)->format('F d, Y . H:i A');
+        $this->latestUpdate = 'Update on '.Carbon::parse($last->created_at)->format('F d, Y . H:i A');
 
         $this->limit_param = FieldLeadershipParameter::first();
 
@@ -142,7 +190,7 @@ class EditActiveFieldLeadershipPage extends Component
         $this->visit_time = $this->fieldLeadership->visit_time;
         $this->non_compliance_root = $this->fieldLeadership->non_compliance_root;
 
-        if (!empty($this->fieldLeadership->questions)) {
+        if (! empty($this->fieldLeadership->questions)) {
             $this->fieldQuestion = FieldLeadershipQuestionPto::where('fl_id', $id)->get()->toArray();
 
             $this->question1 = $this->fieldQuestion[0]['question'] ?? null;
@@ -227,16 +275,27 @@ class EditActiveFieldLeadershipPage extends Component
     }
 
     private $cachedCcows = null;
+
     private $cachedCompanies = null;
+
     private $cachedDepartments = null;
+
     private $cachedSections = null;
+
     private $cachedAreaLocations = null;
+
     private $cachedAreaManagers = null;
+
     private $cachedEmployees = null;
+
     private $cachedMemberInternals = null;
+
     private $cachedMemberExternals = null;
+
     private $cachedCategories = null;
+
     private $cachedTypeKtaTta = null;
+
     private $cachedPotencies = null;
 
     public function getCcowsProperty()
@@ -244,6 +303,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedCcows === null) {
             $this->cachedCcows = Company::select('id', 'company_name')->where('type', CompanyType::Internal)->get();
         }
+
         return $this->cachedCcows;
     }
 
@@ -252,6 +312,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedCompanies === null) {
             $this->cachedCompanies = Company::select('id', 'company_name', 'type')->get();
         }
+
         return $this->cachedCompanies;
     }
 
@@ -260,6 +321,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedDepartments === null) {
             $this->cachedDepartments = Department::select('id', 'name')->where('company_id', $this->ccow_id)->get();
         }
+
         return $this->cachedDepartments;
     }
 
@@ -268,6 +330,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedSections === null) {
             $this->cachedSections = Section::select('id', 'name')->where('department_id', $this->department_id)->get();
         }
+
         return $this->cachedSections;
     }
 
@@ -276,6 +339,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedAreaLocations === null) {
             $this->cachedAreaLocations = AreaLocation::select('id', 'name')->where('section_id', $this->section_id)->get();
         }
+
         return $this->cachedAreaLocations;
     }
 
@@ -284,6 +348,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedAreaManagers === null) {
             $this->cachedAreaManagers = AreaManager::with('user:id,name')->where('section_id', $this->section_id)->get();
         }
+
         return $this->cachedAreaManagers;
     }
 
@@ -297,6 +362,7 @@ class EditActiveFieldLeadershipPage extends Component
                     });
             })->get();
         }
+
         return $this->cachedEmployees;
     }
 
@@ -311,6 +377,7 @@ class EditActiveFieldLeadershipPage extends Component
                 });
             })->get();
         }
+
         return $this->cachedMemberInternals;
     }
 
@@ -325,6 +392,7 @@ class EditActiveFieldLeadershipPage extends Component
                 });
             })->get();
         }
+
         return $this->cachedMemberExternals;
     }
 
@@ -333,6 +401,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedCategories === null) {
             $this->cachedCategories = FieldLeadershipCategory::whereIn('name', ['Kondisi Tidak Aman', 'Tindakan Tidak Aman', 'Not Applicable'])->get();
         }
+
         return $this->cachedCategories;
     }
 
@@ -341,6 +410,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedTypeKtaTta === null) {
             $this->cachedTypeKtaTta = FieldLeadershipKtaAndTta::all();
         }
+
         return $this->cachedTypeKtaTta;
     }
 
@@ -349,6 +419,7 @@ class EditActiveFieldLeadershipPage extends Component
         if ($this->cachedPotencies === null) {
             $this->cachedPotencies = FieldLeadershipPotencyAndConsequnce::all();
         }
+
         return $this->cachedPotencies;
     }
 
@@ -489,8 +560,9 @@ class EditActiveFieldLeadershipPage extends Component
 
     public function changeByte($size)
     {
-        $unit = array('b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb');
-        return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
+        $unit = ['b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'];
+
+        return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$unit[$i];
     }
 
     public function generateNumber()
@@ -500,12 +572,12 @@ class EditActiveFieldLeadershipPage extends Component
         $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
         $date = Carbon::today()->format('dmY');
 
-        $result = 'FL-' . $company->document_code . '-' . $date . '-' . $formattedNumber;
+        $result = 'FL-'.$company->document_code.'-'.$date.'-'.$formattedNumber;
 
         while (FieldLeadership::where('number', $result)->exists()) {
             $count++;
             $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
-            $result = 'FL-' . $company->document_code . '-' . $date . '-' . $formattedNumber;
+            $result = 'FL-'.$company->document_code.'-'.$date.'-'.$formattedNumber;
         }
 
         return $result;
@@ -553,6 +625,7 @@ class EditActiveFieldLeadershipPage extends Component
             $this->validate();
 
             DB::beginTransaction();
+
 
             $this->fieldLeadership->update([
                 'number' => $this->number,
@@ -625,11 +698,12 @@ class EditActiveFieldLeadershipPage extends Component
                 $this->dispatchBrowserEvent('swal', [
                     'title' => 'Error',
                     'icon' => 'error',
-                    'text' => "Anggota tim tidak boleh lebih dari 3 orang",
+                    'text' => 'Anggota tim tidak boleh lebih dari 3 orang',
                 ]);
+
                 return false;
             }
-            if (!empty($this->member)) {
+            if (! empty($this->member)) {
                 FieldLeadershipMember::where('fl_id', $this->fieldLeadership->id)->delete();
                 foreach ($this->member as $key => $value) {
                     if ($value['employee_id'] != null && $value['type'] != null) {
@@ -641,7 +715,7 @@ class EditActiveFieldLeadershipPage extends Component
                 }
             }
 
-            if (!empty($this->positive_condition)) {
+            if (! empty($this->positive_condition)) {
                 FieldLeadershipPositive::where('fl_id', $this->fieldLeadership->id)->delete();
                 foreach ($this->positive_condition as $key => $value) {
                     if ($value['description'] != null) {
@@ -652,7 +726,7 @@ class EditActiveFieldLeadershipPage extends Component
                 }
             }
 
-            if (!empty($this->risk_condition)) {
+            if (! empty($this->risk_condition)) {
                 $risk = FieldLeadershipRisk::where('fl_id', $this->fieldLeadership->id)->get();
                 $existingFilesMap = [];
                 foreach ($risk as $r) {
@@ -665,12 +739,12 @@ class EditActiveFieldLeadershipPage extends Component
                 }
 
                 foreach ($risk as $key => $value) {
-                    if (!empty($value->files)) {
-                        Storage::disk('public')->deleteDirectory('field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $value->id);
+                    if (! empty($value->files)) {
+                        Storage::disk('public')->deleteDirectory('field-leadership/'.$this->fieldLeadership->id.'/risk-condition/'.$value->id);
                         $value->files()->delete();
                     }
 
-                    if (!empty($value)) {
+                    if (! empty($value)) {
                         $value->delete();
                     }
                 }
@@ -681,8 +755,9 @@ class EditActiveFieldLeadershipPage extends Component
                         $this->dispatchBrowserEvent('swal', [
                             'title' => 'Error',
                             'icon' => 'error',
-                            'text' => "Perilaku/Kondisi Beresiko yang Diamati tidak boleh kosong",
+                            'text' => 'Perilaku/Kondisi Beresiko yang Diamati tidak boleh kosong',
                         ]);
+
                         return false;
                     }
 
@@ -690,8 +765,9 @@ class EditActiveFieldLeadershipPage extends Component
                         $this->dispatchBrowserEvent('swal', [
                             'title' => 'Error',
                             'icon' => 'error',
-                            'text' => "Tindakan Perbaikan tidak boleh kosong",
+                            'text' => 'Tindakan Perbaikan tidak boleh kosong',
                         ]);
+
                         return false;
                     }
 
@@ -699,8 +775,9 @@ class EditActiveFieldLeadershipPage extends Component
                         $this->dispatchBrowserEvent('swal', [
                             'title' => 'Error',
                             'icon' => 'error',
-                            'text' => "Target Waktu Penyelesaian tidak boleh kosong",
+                            'text' => 'Target Waktu Penyelesaian tidak boleh kosong',
                         ]);
+
                         return false;
                     }
 
@@ -716,8 +793,9 @@ class EditActiveFieldLeadershipPage extends Component
                         'status' => $publish != 'HR' ? FieldLeadershipType::Open : FieldLeadershipType::Close,
                     ]);
 
-                    if ($publish == 'HR') {
+                    if ($publish == 'HR' || $value['repaired'] == true) {
                         $picaDocument = $riskCondition->pica()->create([
+                            'identity_id' => $this->generateIdentityId($this->fieldLeadership->created_at),
                             'source' => PicaSource::FieldLeadership,
                             'type' => $this->type,
                             'date' => Carbon::parse($this->date)->format('Y-m-d'),
@@ -729,14 +807,16 @@ class EditActiveFieldLeadershipPage extends Component
                             'company_detail' => $this->detail_company,
                             'pja_id' => $this->pja_id,
                             'pjo_id' => $this->pjo_id,
-                            'auditor' => null,
+                            'auditor' => $this->fieldLeadership->createdBy->name ?? (Auth::user()->employee?->name ?? Auth::user()->name),
                             'non_compliance' => null,
                             'non_compliance_root_cause' => $this->non_compliance_root,
                             'corrective_action' => $value['action'],
                             'target_settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
                             'settlement_date' => Carbon::parse($value['due_date'])->format('Y-m-d'),
                             'remarks' => null,
-                            'status' => $this->fieldLeadership->status,
+                            'requested' => $value['repaired'] == true ? \App\Enums\Pica\PicaStatus::RequestedCrs : \App\Enums\Pica\PicaStatus::NewRequest,
+                            'published' => \App\Enums\Pica\PicaStatus::Publish,
+                            'status' => $value['repaired'] == true ? \App\Enums\Pica\PicaStatus::OnReviewCrs : $this->fieldLeadership->status,
                         ]);
 
                         $picaDocument->pica()->create([
@@ -748,15 +828,15 @@ class EditActiveFieldLeadershipPage extends Component
                     }
 
                     foreach ($value['files'] as $key => $file) {
-                        if (!is_object($file['file'])) {
+                        if (! is_object($file['file'])) {
                             $full_path = $file['file'];
                             $blob_url = $existingFilesMap[$full_path]['blob_url'] ?? null;
                             $blob_response = $existingFilesMap[$full_path]['blob_response'] ?? null;
                         } else {
-                            $directPath = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
-                            $tempPath   = $file['file']->getRealPath();
+                            $directPath = 'field-leadership/'.$this->fieldLeadership->id.'/risk-condition/'.$riskCondition->id;
+                            $tempPath = $file['file']->getRealPath();
                             $blobResult = uploadToBlobStorage($file['name'], $tempPath, $directPath);
-                            $full_path  = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $file['name'];
+                            $full_path = 'field-leadership/'.$this->fieldLeadership->id.'/risk-condition/'.$riskCondition->id.'/'.$file['name'];
                             $blob_url = $blobResult['fileBlobUrl'] ?? null;
                             $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
                         }
@@ -766,32 +846,31 @@ class EditActiveFieldLeadershipPage extends Component
                             'blob_url' => $blob_url,
                             'blob_response' => $blob_response,
                             'size' => $file['size'],
-                            'type' => FieldLeadershipType::RiskFinding
+                            'type' => FieldLeadershipType::RiskFinding,
                         ]);
 
-
-                        if ($publish == 'HR') {
+                        if ($publish == 'HR' || $value['repaired'] == true) {
                             $picaDocument->picaFiles()->create([
                                 'file' => $full_path,
                                 'blob_url' => $blob_url,
                                 'blob_response' => $blob_response,
                                 'size' => $file['size'],
-                                'type' => FieldLeadershipType::RiskFinding
+                                'type' => FieldLeadershipType::RiskFinding,
                             ]);
                         }
                     }
 
                     if ($value['repaired'] == true) {
                         foreach ($value['files_ca'] as $key => $file) {
-                            if (!is_object($file['file'])) {
+                            if (! is_object($file['file'])) {
                                 $full_path = $file['file'];
                                 $blob_url = $existingFilesMap[$full_path]['blob_url'] ?? null;
                                 $blob_response = $existingFilesMap[$full_path]['blob_response'] ?? null;
                             } else {
-                                $directPath = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id;
-                                $tempPath   = $file['file']->getRealPath();
+                                $directPath = 'field-leadership/'.$this->fieldLeadership->id.'/risk-condition/'.$riskCondition->id;
+                                $tempPath = $file['file']->getRealPath();
                                 $blobResult = uploadToBlobStorage($file['name'], $tempPath, $directPath);
-                                $full_path  = 'field-leadership/' . $this->fieldLeadership->id . '/risk-condition/' . $riskCondition->id . '/' . $file['name'];
+                                $full_path = 'field-leadership/'.$this->fieldLeadership->id.'/risk-condition/'.$riskCondition->id.'/'.$file['name'];
                                 $blob_url = $blobResult['fileBlobUrl'] ?? null;
                                 $blob_response = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
                             }
@@ -801,16 +880,16 @@ class EditActiveFieldLeadershipPage extends Component
                                 'blob_url' => $blob_url,
                                 'blob_response' => $blob_response,
                                 'size' => $file['size'],
-                                'type' => FieldLeadershipType::CorrectiveAction
+                                'type' => FieldLeadershipType::CorrectiveAction,
                             ]);
 
-                            if ($publish == 'HR') {
+                            if ($publish == 'HR' || $value['repaired'] == true) {
                                 $picaDocument->picaFiles()->create([
                                     'file' => $full_path,
                                     'blob_url' => $blob_url,
                                     'blob_response' => $blob_response,
                                     'size' => $file['size'],
-                                    'type' => FieldLeadershipType::CorrectiveAction
+                                    'type' => FieldLeadershipType::CorrectiveAction,
                                 ]);
                             }
                         }
@@ -838,9 +917,26 @@ class EditActiveFieldLeadershipPage extends Component
             $this->dispatchBrowserEvent('swal', [
                 'title' => 'Error',
                 'icon' => 'error',
-                'text' => "Error | " . $err,
+                'text' => 'Error | '.$err,
             ]);
         }
+    }
+
+    public function generateIdentityId($date)
+    {
+        $count = \Modules\Pica\Entities\PicaDocument::count();
+        $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
+        $date = Carbon::parse($date)->format('mY');
+
+        $result = 'FL'.$date.'-FL'.$formattedNumber;
+
+        while (\Modules\Pica\Entities\PicaDocument::where('identity_id', $result)->exists()) {
+            $count++;
+            $formattedNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
+            $result = 'FL'.$date.'-FL'.$formattedNumber;
+        }
+
+        return $result;
     }
 
     public function render()

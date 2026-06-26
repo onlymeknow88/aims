@@ -13,16 +13,13 @@ use Modules\Coe\Http\Livewire\Lists;
 
 Route::get('/', Home::class);
 
-Route::prefix('login')->middleware('guest')->group(function () {
-    Route::get('/', Login::class)->name('login');
-});
-
 Route::get('logout/', function () {
+    Auth::guard('dashboard')->logout();
     Session::flush();
-    return redirect(route('login'));
+    return redirect()->route('login');
 })->name('logout');
 
-Route::middleware(['auth:coe'])->group(function () {
+Route::middleware(['auth:dashboard'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/list', Lists::class)->name('list');
     Route::get('/calendar', CallendarView::class)->name('callendar');

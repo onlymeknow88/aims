@@ -27,6 +27,9 @@ class StrategicProject extends Component
             return view('livewire.main-dashboard.public.error')
                 ->extends('layouts.main-dashboard.dashboard-white');
         }
+        if ($data->url) {
+            $data->url = route('dashboard.files.stream', ['id' => $data->id, 'type' => 'strategic_project']);
+        }
         return view('livewire.main-dashboard.public.strategic-project', ['data' => $data])
             ->extends('layouts.no-header');
     }

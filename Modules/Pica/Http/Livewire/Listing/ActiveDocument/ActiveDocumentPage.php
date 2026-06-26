@@ -76,13 +76,13 @@ class ActiveDocumentPage extends Component
         $this->latestUpdate = 'Update on ' . Carbon::parse($last->created_at ?? null)->format('F d, Y . H:i A');
 
         $this->fieldSource = PicaDocument::where('published', PicaStatus::Publish)
-            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::Overdue, PicaStatus::Closed])
+            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::OnReviewCrs, PicaStatus::Overdue, PicaStatus::Closed])
             ->get()
             ->groupBy('source')
             ->toBase();
 
         $this->fieldCompany = PicaDocument::where('published', PicaStatus::Publish)
-            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::Overdue, PicaStatus::Closed])
+            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::OnReviewCrs, PicaStatus::Overdue, PicaStatus::Closed])
             ->get()
             ->groupBy('company_id')
             ->map(function ($item, $key) {
@@ -90,7 +90,7 @@ class ActiveDocumentPage extends Component
             });
 
         $this->fieldLocation = PicaDocument::where('published', PicaStatus::Publish)
-            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::Overdue, PicaStatus::Closed])
+            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::OnReviewCrs, PicaStatus::Overdue, PicaStatus::Closed])
             ->get()
             ->groupBy('location_id')
             ->map(function ($item, $key) {
@@ -98,7 +98,7 @@ class ActiveDocumentPage extends Component
             });
 
         $this->fieldStatus = PicaDocument::where('published', PicaStatus::Publish)
-            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::Overdue, PicaStatus::Closed])
+            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::OnReviewCrs, PicaStatus::Overdue, PicaStatus::Closed])
             ->get()
             ->groupBy('status')
             ->toBase();
@@ -274,7 +274,7 @@ class ActiveDocumentPage extends Component
                 $query->whereBetween('settlement_date', [$this->startDateSettlement, $this->endDateSettlement]);
             })
             ->where('published', PicaStatus::Publish)
-            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::Overdue, PicaStatus::Closed])
+            ->whereIn('status', [PicaStatus::Open, PicaStatus::OnReviewPja, PicaStatus::OnReviewCrs, PicaStatus::Overdue, PicaStatus::Closed])
             ->orderBy($this->sortField, $this->sortType)
             ->paginate($this->limit);
     }

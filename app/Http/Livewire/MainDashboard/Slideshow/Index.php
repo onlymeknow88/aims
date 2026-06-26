@@ -75,7 +75,10 @@ class Index extends Component
 
     public function AvailableChange($id)
     {
-        $data = Slideshow::where('id', $id)->first();
+        $data = Slideshow::find($id);
+        if (!$data) {
+            return;
+        }
 
         if ($data->visible == 'true') {
             $visible = 'false';

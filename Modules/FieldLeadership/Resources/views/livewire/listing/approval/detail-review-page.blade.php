@@ -1,7 +1,7 @@
 <div class="inner-content">
 
     <div class="header-detail-maker h-60px border d-flex gap-2 align-items-center px-3">
-        @if (auth()->user()->can('Field Leadsership - View Request Review For Approval'))
+        @if (auth()->user()->can('Field Leadsership - View Request Review For Approval') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete'))
             <a href="{{ route('field-leadership::listing.request-review-reviewer.index') }}"
                 class="d-flex align-items-center gap-3 ">
                 <span><i class="fa-solid fa-arrow-left"></i></span>
@@ -169,7 +169,7 @@
                                 <div class="thumb">
                                     <img src="{{ asset('./images/no-profile.png') }}" alt="Author">
                                 </div>
-                                <div class="author-name">{{ $field->pjo->user->name ?? null }}</div>
+                                <div class="author-name">{{ $field->pjo->name ?? null }}</div>
                             </div>
                         </div><!-- /.author -->
 
@@ -401,7 +401,7 @@
                 </div>
             @endif --}}
 
-            @if (auth()->user()->can('Field Leadsership - View Request Review For Approval'))
+            @if (auth()->user()->can('Field Leadsership - View Request Review For Approval') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete'))
                 <div class="footer-action mb-2">
                     <div class="action-wrapper d-flex align-items-center justify-content-end gap-2">
                         <div class="button-document">

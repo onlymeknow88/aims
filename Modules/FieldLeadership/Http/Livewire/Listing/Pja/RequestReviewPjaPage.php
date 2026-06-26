@@ -63,6 +63,8 @@ class RequestReviewPjaPage extends Component
 
     public $areaManager;
 
+    public $isSuperAdmin = false;
+
 
     protected $listeners = [
         'refreshComponent' => '$refresh',
@@ -71,6 +73,8 @@ class RequestReviewPjaPage extends Component
 
     public function mount()
     {
+        $this->isSuperAdmin = auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete');
+
         $this->areaManager = AreaManager::where('user_id', auth()->user()->id)->get()->pluck('id');
 
         $this->selectedColumns = $this->columns;
@@ -80,13 +84,17 @@ class RequestReviewPjaPage extends Component
 
         $this->fieldDetailCompany = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('detail_company')
             ->toBase();
         $this->fieldCompany = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('company_id')
             ->map(function ($item) {
@@ -97,7 +105,9 @@ class RequestReviewPjaPage extends Component
         })
             ->where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('ccow_id')
             ->map(function ($item) {
@@ -105,7 +115,9 @@ class RequestReviewPjaPage extends Component
             });
         $this->fieldDepartment = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('department_id')
             ->map(function ($item) {
@@ -113,7 +125,9 @@ class RequestReviewPjaPage extends Component
             });
         $this->fieldSection = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('section_id')
             ->map(function ($item) {
@@ -121,7 +135,9 @@ class RequestReviewPjaPage extends Component
             });
         $this->fieldLocation = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('area_location_id')
             ->map(function ($item) {
@@ -129,7 +145,9 @@ class RequestReviewPjaPage extends Component
             });
         $this->fieldType = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->groupBy('type')
             ->toBase();
@@ -157,7 +175,9 @@ class RequestReviewPjaPage extends Component
 
         $this->countData = FieldLeadership::where('published', FieldLeadershipType::Publish)
             ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-            ->whereIn('pja_id', $this->areaManager)
+            ->when(!$this->isSuperAdmin, function ($query) {
+                $query->whereIn('pja_id', $this->areaManager);
+            })
             ->get()
             ->count();
 
@@ -448,7 +468,9 @@ class RequestReviewPjaPage extends Component
                 })
                 ->where('published', FieldLeadershipType::Publish)
                 ->whereIn('status', [FieldLeadershipType::Open, FieldLeadershipType::OnReviewPja])
-                ->whereIn('pja_id', $this->areaManager)
+                ->when(!$this->isSuperAdmin, function ($query) {
+                    $query->whereIn('pja_id', $this->areaManager);
+                })
                 ->orderBy($this->sortField, $this->sortType)
                 ->paginate($this->limit);
         } catch (\Throwable $err) {

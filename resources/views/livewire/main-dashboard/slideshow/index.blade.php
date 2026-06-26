@@ -110,7 +110,7 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $index => $list)
-                                <tr>
+                                <tr wire:key="slideshow-row-{{ $list->id }}">
                                     <td>
                                         <input class="form-check-input" name="selected" type="checkbox"
                                             value="{{ $list->id }}" id="selected" x-model="itemSelected" />

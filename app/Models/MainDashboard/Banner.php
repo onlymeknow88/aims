@@ -21,6 +21,8 @@ class Banner extends Model
         'description',
         'attc',
         'url',
+        'blob_url',
+        'blob_response',
         'visible'
     ];
 

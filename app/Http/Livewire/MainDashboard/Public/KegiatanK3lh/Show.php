@@ -27,6 +27,9 @@ class Show extends Component
             return view('livewire.main-dashboard.public.error')
                 ->extends('layouts.main-dashboard.dashboard-white');
         }
+        if ($data->url) {
+            $data->url = route('dashboard.files.stream', ['id' => $data->id, 'type' => 'activities']);
+        }
         return view('livewire.main-dashboard.public.kegiatan-k3lh.show', ['data' => $data])
         ->extends('layouts.no-header');
     }

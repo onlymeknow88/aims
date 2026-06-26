@@ -1,7 +1,7 @@
 <div class="inner-content">
 
     <div class="header-detail-maker h-60px border d-flex gap-2 align-items-center px-3">
-        @if (auth()->user()->can('Field Leadsership - View Request Review For PJA'))
+        @if (auth()->user()->can('Field Leadsership - View Request Review For PJA') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete'))
             <a href="{{ route('field-leadership::listing.request-review-pja.index') }}"
                 class="d-flex align-items-center gap-3 ">
                 <span><i class="fa-solid fa-arrow-left"></i></span>
@@ -172,7 +172,7 @@
                                 <div class="thumb">
                                     <img src="{{ asset('./images/no-profile.png') }}" alt="Author">
                                 </div>
-                                <div class="author-name">{{ $field->pjo->user->name ?? null }}</div>
+                                <div class="author-name">{{ $field->pjo->name ?? null }}</div>
                             </div>
                         </div><!-- /.author -->
 
@@ -377,33 +377,33 @@
                 </div>
             @endif --}}
 
-            {{-- @if (auth()->user()->can('Field Leadsership - View Request Review For PJA'))
+            @if (auth()->user()->can('Field Leadsership - View Request Review For PJA') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete'))
                 <div class="footer-action mb-2">
                     <div class="action-wrapper d-flex align-items-center justify-content-end gap-2">
                         <div class="button-document">
                             <button
                                 class="dropdown-toggle btn btn-outline-default bg-green d-flex justify-content-center align-item-center text-white position-relative px-4"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Submit Action
+                                Review Action
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <button type="button" wire:click="savedPja('Draft')" class="dropdown-item"
+                                    <button type="button" wire:click="approved" class="dropdown-item"
                                         href="#">
-                                        Submit as draft
+                                        Forward to Approval
                                     </button>
                                 </li>
                                 <li>
-                                    <button type="button" wire:click="savedPja('Publish')" class="dropdown-item"
-                                        href="#">
-                                        Submit for review
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ReturnWithComment"
+                                        class="dropdown-item" href="#">
+                                        Return With Comment
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            @endif --}}
+            @endif
 
             {{-- @if (auth()->user()->can('Field Leadsership - View Request Review For Approval'))
                 <div class="footer-action mb-2">

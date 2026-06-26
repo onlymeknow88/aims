@@ -700,7 +700,7 @@
                                             </td>
                                         @endif
                                         @if (in_array('Initiator/Auditor', $selectedColumns))
-                                            <td>{{ $items->auditor ?? '-' }}</td>
+                                             <td>{{ $items->auditor_name ?? '-' }}</td>
                                         @endif
                                         @if (in_array('Company', $selectedColumns))
                                             <td>{{ $items->company->company_name ?? '-' }}</td>

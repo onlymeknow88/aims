@@ -147,7 +147,7 @@
                 'ibpr-and-bowtie' => ['url' => 'ibpr-and-bowtie', 'label' => 'Management Risk', 'icon' => 'fa-regular fa-bell'],
                 'kpp' => ['url' => 'kpp', 'label' => 'Compliance Regulation', 'icon' => 'fa-regular fa-handshake'],
                 'mcu' => ['url' => 'mcu', 'label' => 'Medical Check Up', 'icon' => 'fa-regular fa-hospital'],
-                'csms' => ['url' => 'csms', 'label' => 'Contractor Safety Management', 'icon' => 'fa-regular fa-building'],
+                'csms' => ['url' => 'csms', 'label' => 'CMS', 'icon' => 'fa-regular fa-building'],
                 'ko' => ['url' => 'ko', 'label' => 'Safety Operation', 'icon' => 'fa-regular fa-shield-halved'],
                 'pica' => ['url' => 'pica', 'label' => 'PICA', 'icon' => 'fa-regular fa-circle-question'],
             ];
@@ -196,17 +196,17 @@
             </li>
 
             {{-- @if (Auth::guard('web')->check() || Auth::guard('dashboard')->check())
-                <form action="{{ route('logout') }}" method="POST" id="logout-form-sidebar" class="d-none">
-                    @csrf
-                </form>
-                <li class="item-sidebar-danger mx-2">
-                    <a href="javascript:void(0)" onclick="document.getElementById('logout-form-sidebar').submit();"
-                        class="d-flex align-items-center justify-content-between fw-normal py-2 px-3 rounded">
-                        <span class="d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout Account
-                        </span>
-                    </a>
-                </li>
+            <form action="{{ route('logout') }}" method="POST" id="logout-form-sidebar" class="d-none">
+                @csrf
+            </form>
+            <li class="item-sidebar-danger mx-2">
+                <a href="javascript:void(0)" onclick="document.getElementById('logout-form-sidebar').submit();"
+                    class="d-flex align-items-center justify-content-between fw-normal py-2 px-3 rounded">
+                    <span class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout Account
+                    </span>
+                </a>
+            </li>
             @endif --}}
         </ul>
     </div>

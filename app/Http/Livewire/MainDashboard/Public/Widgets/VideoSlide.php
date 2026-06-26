@@ -12,7 +12,7 @@ class VideoSlide extends Component
         $slideshow = Slideshow::where('visible', 'true')
             ->whereNotNull('url')
             ->whereNotNull('attc')
-            ->select('url')
+            ->select('id', 'url')
             ->get();
 
         return view('livewire.main-dashboard.public.widgets.video-slide', ['slideshow' => $slideshow]);

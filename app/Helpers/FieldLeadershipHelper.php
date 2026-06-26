@@ -32,10 +32,14 @@ class FieldLeadershipHelper
 
     function totalRequestApproval()
     {
+        $isSuperAdmin = auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete');
+
         return FieldLeadership::where('requested', FieldLeadershipType::RequestedApproval)
             ->where('published', FieldLeadershipType::Publish)
-            ->whereHas('company', function ($query) {
-                $query->where('user_id', auth()->user()->id);
+            ->when(!$isSuperAdmin, function ($query) {
+                $query->whereHas('company', function ($query) {
+                    $query->where('user_id', auth()->user()->id);
+                });
             })
             ->count();
     }

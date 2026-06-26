@@ -74,6 +74,7 @@ use App\Http\Livewire\MainDashboard\Production\Create as CreateProduction;
 use App\Http\Livewire\MainDashboard\Production\Create as EditProduction;
 
 use App\Http\Livewire\Dashboard\HomeNew;
+use App\Http\Controllers\DashboardFileController;
 
 
 /*
@@ -86,6 +87,9 @@ use App\Http\Livewire\Dashboard\HomeNew;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('dashboard/files/stream', [DashboardFileController::class, 'streamFile'])->name('dashboard.files.stream');
+
 
 
 // Route::get('/test', function () {
@@ -167,6 +171,8 @@ Route::get('/incident-notification/{slug}', IncidentNotificationShow::class)->na
 Route::prefix('dashboard')->group(function () {
     Route::get('/login', Login::class)->name('dashboard-login');
 });
+
+Route::middleware(['auth:dashboard'])->get('/profile/2fa', \App\Http\Livewire\Auth\TwoFactorSetup::class)->name('profile.2fa');
 
 //User
 Route::middleware(['auth:dashboard'])->prefix('dashboard')->group(function () {

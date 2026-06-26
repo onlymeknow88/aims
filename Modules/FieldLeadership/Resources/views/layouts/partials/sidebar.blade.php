@@ -9,7 +9,7 @@
             <a href="{{ route('field-leadership::dashboard') }}"
                 class="link-sidebar text-decoration-none {{ Request::routeIs('field-leadership::dashboard') ? 'active' : '' }}">Dashboard</a>
         </li>
-        @if (auth()->user()->can('Field Leadsership - View Active') || auth()->user()->can('Field Leadsership - View Draft'))
+        @if (auth()->user()->can('Field Leadsership - View Active') || auth()->user()->can('Field Leadsership - View Draft') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership'))
             <li class="item-sidebar">
                 <a href="{{ route('field-leadership::listing.active.index') }}"
                     class="link-sidebar text-decoration-none {{ Request::routeIs('field-leadership::listing.active.*') ? 'active' : '' }}">
@@ -71,7 +71,7 @@
                 </ul>
             </li>
         @endif
-        @if (auth()->user()->can('Field Leadsership - View Request Review For Approval'))
+        @if (auth()->user()->can('Field Leadsership - View Request Review For Approval') || auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership'))
             <li class="item-sidebar">
                 <a class="link-sidebar text-decoration-none d-flex justify-content-between align-items-center"
                     href="{{ route('field-leadership::listing.request-review-reviewer.index') }}" role="button">

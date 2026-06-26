@@ -40,6 +40,7 @@ class CreateUser extends CreateRecord
                 ->label('Departments')
                 ->multiple()
                 ->relationship('departments', 'name')
+                ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} - " . ($record->company->document_code ?? $record->company->company_name ?? ''))
                 ->required(),
             Forms\Components\TextInput::make('password')
                 ->required()

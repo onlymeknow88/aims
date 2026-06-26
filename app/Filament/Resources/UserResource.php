@@ -60,6 +60,16 @@ class UserResource extends Resource
                 TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('Departments')
                     ->relationship('departments', 'name')
+                    ->options(function () {
+                        return \App\Models\Department::with('company')
+                            ->get()
+                            ->mapWithKeys(function ($department) {
+                                $companyCode = $department->company->document_code ?? $department->company->company_name ?? '';
+                                $label = $department->name . ($companyCode ? ' - ' . $companyCode : '');
+                                return [$department->id => $label];
+                            })
+                            ->toArray();
+                    })
                     ->searchable(),
             ])
             ->actions([

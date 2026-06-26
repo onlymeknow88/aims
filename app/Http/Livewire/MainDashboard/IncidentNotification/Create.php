@@ -75,17 +75,28 @@ class Create extends Component
                 }
             }
 
-            //save file
             $ext = $file->extension();
             $nameSlug = Str::slug($input['case'], '-');
             $name = $nameSlug . strtotime(now()) . '.' . $ext;
-            $attc = $file->storePubliclyAs('news_and_update', $name, 'public');
-            $url = Storage::url($attc);
+
+            // Upload directly to Blob Storage
+            $tempPath = $file->getRealPath();
+            $blobResult = uploadToBlobStorage($name, $tempPath, 'dashboard/incident_notification');
+            $url = $blobResult['fileBlobUrl'] ?? null;
+            $attc = $blobResult['fileBlobPathName'] ?? null;
+
+            // Fallback to local public storage if Blob upload fails
+            if (!$url) {
+                $attc = $file->storePubliclyAs('news_and_update', $name, 'public');
+                $url = Storage::url($attc);
+            }
         }
 
         if ($file) {
             $input['attc'] = $attc;
             $input['url'] = $url;
+            $input['blob_url'] = $blobResult['fileBlobUrl'] ?? null;
+            $input['blob_response'] = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
         }
 
         //create or update

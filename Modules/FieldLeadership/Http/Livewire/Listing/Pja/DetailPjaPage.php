@@ -66,14 +66,14 @@ class DetailPjaPage extends Component
             DB::beginTransaction();
 
             $this->field->update([
-                'status' => FieldLeadershipType::Close,
-                'requested' => FieldLeadershipType::Approved
+                'status' => FieldLeadershipType::OnReviewApproval,
+                'requested' => FieldLeadershipType::RequestedApproval
             ]);
 
             FieldLeadershipActivity::create([
                 'fl_id' => $this->field->id,
-                'description' => 'Field Leadership Case Closed',
-                'user_id' => Auth::user()->employee?->id,
+                'description' => 'Document reviewed and submitted to Approval by Reviewer/PJA ' . Auth::user()->name,
+                'user_id' => Auth::user()->employee?->id ?? Auth::user()->id,
             ]);
 
             DB::commit();
@@ -84,7 +84,7 @@ class DetailPjaPage extends Component
                 'toast' => true,
             ]);
 
-            return redirect()->route('field-leadership::listing.request-review-reviewer.index');
+            return redirect()->route('field-leadership::listing.request-review-pja.index');
         } catch (\Throwable $err) {
 
             $this->dispatchBrowserEvent('swal', [
@@ -171,7 +171,7 @@ class DetailPjaPage extends Component
                 'toast' => true,
             ]);
 
-            return redirect()->route('field-leadership::listing.active.detail', $this->field->id);
+            return redirect()->route('field-leadership::listing.request-review-pja.index');
         } catch (\Throwable $err) {
 
             $this->dispatchBrowserEvent('swal', [

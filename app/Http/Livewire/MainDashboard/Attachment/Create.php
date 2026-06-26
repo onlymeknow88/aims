@@ -80,13 +80,25 @@ class Create extends Component
             $ext = $file->extension();
             $nameSlug = Str::slug($input['name'], '-');
             $name = $nameSlug . strtotime(now()) . '.' . $ext;
-            $attc = $file->storePubliclyAs('attachments', $name, 'public');
-            $url = Storage::url($attc);
+
+            // Upload directly to Blob Storage
+            $tempPath = $file->getRealPath();
+            $blobResult = uploadToBlobStorage($name, $tempPath, 'dashboard/attachments');
+            $url = $blobResult['fileBlobUrl'] ?? null;
+            $attc = $blobResult['fileBlobPathName'] ?? null;
+
+            // Fallback to local public storage if Blob upload fails
+            if (!$url) {
+                $attc = $file->storePubliclyAs('attachments', $name, 'public');
+                $url = Storage::url($attc);
+            }
         }
 
         if ($file) {
             $input['attc'] = $attc;
             $input['url'] = $url;
+            $input['blob_url'] = $blobResult['fileBlobUrl'] ?? null;
+            $input['blob_response'] = isset($blobResult['blobResponse']) ? json_encode($blobResult['blobResponse']) : null;
         }
 
         //create or update

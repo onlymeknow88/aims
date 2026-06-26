@@ -441,13 +441,13 @@ sequenceDiagram
 | Method | URL | Komponen | Auth |
 |--------|-----|----------|------|
 | GET | `/coe/` | `Home` | Guest |
-| GET | `/coe/login` | `Auth\Login` | Guest |
-| GET | `/coe/dashboard` | `Dashboard` | `auth:coe` |
-| GET | `/coe/list` | `Lists` | `auth:coe` |
-| GET | `/coe/calendar` | `CallendarView` | `auth:coe` |
-| GET | `/coe/add-event` | `Add` | `auth:coe` |
-| GET | `/coe/edit-event/{event}` | `Edit` | `auth:coe` |
-| GET | `/coe/category` | `Category` | `auth:coe` |
+| GET | `/coe/login` | — | Redirect ke `/login` (Guard: `dashboard`) |
+| GET | `/coe/dashboard` | `Dashboard` | `auth:dashboard` |
+| GET | `/coe/list` | `Lists` | `auth:dashboard` |
+| GET | `/coe/calendar` | `CallendarView` | `auth:dashboard` |
+| GET | `/coe/add-event` | `Add` | `auth:dashboard` |
+| GET | `/coe/edit-event/{event}` | `Edit` | `auth:dashboard` |
+| GET | `/coe/category` | `Category` | `auth:dashboard` |
 | GET | `/coe/inv` | `InvitedEx` | Public |
 | GET | `/coe/attachment/{id}` | `CallendarView@attachment` | Public |
 

@@ -18,6 +18,13 @@ class StrategicProject extends Component
             ->where('visible', 'true')
             ->get();
 
+        $data->transform(function ($item) {
+            if ($item->url) {
+                $item->url = route('dashboard.files.stream', ['id' => $item->id, 'type' => 'strategic_project']);
+            }
+            return $item;
+        });
+
         return view('livewire.main-dashboard.public.widgets.strategic-project', ['data' => $data]);
     }
 }

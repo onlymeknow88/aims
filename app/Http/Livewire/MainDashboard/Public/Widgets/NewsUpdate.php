@@ -20,6 +20,9 @@ class NewsUpdate extends Component
         $dataArr = [];
         foreach ($data as $list) {
             $list['description'] = strip_tags(Str::words($list->description, '25'));
+            if ($list->url) {
+                $list->url = route('dashboard.files.stream', ['id' => $list->id, 'type' => 'news']);
+            }
             $dataArr[] = $list;
         }
         $data = (object) $dataArr;

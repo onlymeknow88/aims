@@ -24,7 +24,9 @@ class IncidentNotification extends Model
         'description',
         'visible',
         'attc',
-        'url'
+        'url',
+        'blob_url',
+        'blob_response'
     ];
 
     protected $hidden = [

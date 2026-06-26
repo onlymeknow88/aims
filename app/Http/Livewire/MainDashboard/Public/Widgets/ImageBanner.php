@@ -12,7 +12,7 @@ class ImageBanner extends Component
         $banner0 = Banner::where('visible', 'true')
             ->first();
         if ($banner0) {
-            $banner0 = $banner0->url;
+            $banner0 = route('dashboard.files.stream', ['id' => $banner0->id, 'type' => 'banner']);
         }
         return view('livewire.main-dashboard.public.widgets.image-banner', ['banner0' => $banner0]);
     }

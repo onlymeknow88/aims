@@ -56,7 +56,7 @@ class Add extends Component
         $this->repeat_day = 'once';
         $this->event->repeat = false;
         $this->event->frequency = 'once';
-        $this->event->category_id = $this->event->category_id ? $this->event->category_id : CalendarCategory::where('name', 'Umum')->first()->id;
+        $this->event->category_id = $this->event->category_id ? $this->event->category_id : CalendarCategory::firstOrCreate(['name' => 'Umum'])->id;
 
     }
 
@@ -177,7 +177,7 @@ class Add extends Component
 
             $this->event->user_id = Auth::user()->id;
             $this->event->attachment = $file_name;
-            $this->event->category_id = $this->event->category_id ? $this->event->category_id : CalendarCategory::where('name', 'Umum')->first()->id;
+            $this->event->category_id = $this->event->category_id ? $this->event->category_id : CalendarCategory::firstOrCreate(['name' => 'Umum'])->id;
             $this->event->invited_emails = $this->invitedPeople;
             $this->event->must_send_email = $this->notif_email;
             $this->event->status = COEStatus::Pending;

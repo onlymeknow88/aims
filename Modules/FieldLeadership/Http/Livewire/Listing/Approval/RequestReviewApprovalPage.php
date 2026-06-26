@@ -60,6 +60,8 @@ class RequestReviewApprovalPage extends Component
 
     public $startDate, $endDate;
 
+    public $isSuperAdmin = false;
+
     protected $listeners = [
         'refreshComponent' => '$refresh',
         'searchUpdated' => 'searchUpdated',
@@ -67,6 +69,8 @@ class RequestReviewApprovalPage extends Component
 
     public function mount()
     {
+        $this->isSuperAdmin = auth()->user()->hasRole('Field Leadership - Super Admin', 'field-leadership') || auth()->user()->can('Field Leadsership - Delete');
+
         $this->selectedColumns = $this->columns;
 
         $last = FieldLeadership::latest()->first();
@@ -142,9 +146,11 @@ class RequestReviewApprovalPage extends Component
                 return $item->first()->potency;
             });
 
-        $this->countData = FieldLeadership::whereHas('company', function ($query) {
-            $query->where('user_id', auth()->user()->id);
-        })
+        $this->countData = FieldLeadership::when(!$this->isSuperAdmin, function ($query) {
+                $query->whereHas('company', function ($query) {
+                    $query->where('user_id', auth()->user()->id);
+                });
+            })
             ->where('published', FieldLeadershipType::Publish)
             ->where('status', FieldLeadershipType::OnReviewApproval)
             ->get()
@@ -426,8 +432,10 @@ class RequestReviewApprovalPage extends Component
                         });
                     });
                 })
-                ->whereHas('company', function ($query) {
-                    $query->where('user_id', auth()->user()->id);
+                ->when(!$this->isSuperAdmin, function ($query) {
+                    $query->whereHas('company', function ($query) {
+                        $query->where('user_id', auth()->user()->id);
+                    });
                 })
                 ->when(!empty($this->search), function ($query) {
                     $query->search($this->search);

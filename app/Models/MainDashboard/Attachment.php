@@ -19,7 +19,9 @@ class Attachment extends Model
         'name',
         'description',
         'attc',
-        'url'
+        'url',
+        'blob_url',
+        'blob_response'
     ];
 
     protected $hidden = [

@@ -31,6 +31,9 @@ class Show extends Component
         }
 
         $data->description = str_replace("&nbsp;", ' ', $data->description);
+        if ($data->url) {
+            $data->url = route('dashboard.files.stream', ['id' => $data->id, 'type' => 'incident']);
+        }
         return view('livewire.main-dashboard.public.incident-notification.show', ['data' => $data])
             ->extends('layouts.no-header');
     }

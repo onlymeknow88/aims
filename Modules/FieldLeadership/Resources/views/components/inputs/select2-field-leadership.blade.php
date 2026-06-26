@@ -67,7 +67,6 @@
     @endpush
 @endonce
 
-@push('scripts')
     <script>
         $(function() {
             const initSelect2_{{ str_replace(['-', '.'], '_', $id) }} = () => {
@@ -139,4 +138,3 @@
             });
         });
     </script>
-@endpush

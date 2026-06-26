@@ -78,8 +78,54 @@ class DetailRequestApprovalPage extends Component
             FieldLeadershipActivity::create([
                 'fl_id' => $this->field->id,
                 'description' => 'Field Leadership Case Closed',
-                'user_id' => Auth::user()->employee?->id,
+                'user_id' => Auth::user()->employee?->id ?? Auth::user()->id,
             ]);
+
+            foreach ($this->field->risks as $value) {
+                if (!$value->pica()->exists()) {
+                    $picaDocument = $value->pica()->create([
+                        'identity_id' => $this->generateIdentityId($this->field->created_at),
+                        'source' => PicaSource::FieldLeadership,
+                        'type' => $this->field->type,
+                        'date' => Carbon::parse($this->field->date)->format('Y-m-d'),
+                        'ccow_id' => $this->field->ccow_id,
+                        'company_id' => $this->field->company_id,
+                        'section_id' => $this->field->section_id,
+                        'location_id' => $this->field->area_location_id,
+                        'location_detail' => $this->field->detail_location,
+                        'company_detail' => $this->field->detail_company,
+                        'pja_id' => $this->field->pja_id,
+                        'pjo_id' => $this->field->pjo_id,
+                        'auditor' => $this->field->createdBy->name ?? (Auth::user()->employee?->name ?? Auth::user()->name),
+                        'non_compliance' => null,
+                        'non_compliance_root_cause' => $this->field->non_compliance_root,
+                        'corrective_action' => $value->repair_action,
+                        'target_settlement_date' => Carbon::parse($value->due_date)->format('Y-m-d'),
+                        'settlement_date' => Carbon::parse($value->due_date)->format('Y-m-d'),
+                        'remarks' => null,
+                        'requested' => $value->type_action ? \App\Enums\Pica\PicaStatus::RequestedCrs : \App\Enums\Pica\PicaStatus::NewRequest,
+                        'published' => \App\Enums\Pica\PicaStatus::Publish,
+                        'status' => $value->type_action ? \App\Enums\Pica\PicaStatus::OnReviewCrs : \App\Enums\Pica\PicaStatus::Open,
+                    ]);
+
+                    $picaDocument->pica()->create([
+                        'source' => PicaSource::FieldLeadership,
+                        'source_id' => $value->id,
+                        'picaable_id' => $picaDocument->id,
+                        'picaable_type' => FieldLeadershipRisk::class,
+                    ]);
+
+                    foreach ($value->files as $file) {
+                        $picaDocument->picaFiles()->create([
+                            'file' => $file->file,
+                            'blob_url' => $file->blob_url,
+                            'blob_response' => $file->blob_response,
+                            'size' => $file->size,
+                            'type' => $file->type,
+                        ]);
+                    }
+                }
+            }
 
             DB::commit();
 
